@@ -101,100 +101,69 @@ AGP builds on gRPC's core features while adding:
 # Security Considerations
 
 
-The Agent Directory Protocol relies on several security mechanisms to ensure the
-integrity, authenticity, and privacy of directory records:
+The Agent Gateway Protocol (AGP) relies on the Messaging Layer Security (MLS) protocol
+to provide end-to-end security for group communications between agents.
 
-## Record Signatures
+## MLS Integration
 
-All agent directory records MUST be digitally signed by the producing agent. The
-signature covers:
+AGP uses MLS for the following security properties:
 
-* The complete set of OASF attributes
-* The agent's capabilities description
-* Any additional metadata including timestamps
-* Version information
+* End-to-end encryption for all agent communications
+* Forward secrecy and post-compromise security
+* Group key management and membership changes
+* Scalable group messaging security
 
-Signatures enable consumers to verify the authenticity and integrity of records
-independent of their location in the DHT.
+## Authentication and Identity
 
-## Location Independence
+Each agent MUST:
 
-Agent directory records are location-independent - their trust is derived from
-cryptographic signatures rather than network location. This means:
+* Maintain cryptographic identities compatible with MLS
+* Use certified credentials for initial authentication
+* Validate peer credentials during connection establishment
+* Support credential revocation and rotation
 
-* Records can be cached and replicated across the DHT
-* Consumers can verify records regardless of the serving node
-* Man-in-the-middle attacks are prevented through signature verification
-* Trust is bound to cryptographic identities rather than network addresses
+## Group Security
 
-## Key Management
+MLS provides the following guarantees for agent groups:
 
-Agents MUST generate and maintain cryptographic key pairs following these requirements:
-
-* Use of asymmetric cryptography (e.g., Ed25519) for signing
-* Private keys MUST be properly secured by agents using hardware security modules where available
-* Public keys are distributed as part of agent records
-* Key rotation procedures MUST be supported and documented
-* Revocation mechanisms MUST be provided
-
-## DHT Security
-
-The DHT implementation MUST provide:
-
-* Node authentication to prevent Sybil attacks
-* Secure routing to prevent record tampering
-* Replication policies to ensure availability
-* Access controls for record updates
-* Protection against eclipse attacks
-* Rate limiting of requests
-* Peer reputation tracking
+* Continuous group key updates
+* Secure member addition and removal
+* Protection against message forgery
+* Perfect forward secrecy for all messages
 
 ## Transport Security
 
-All protocol interactions MUST use secure transport with:
+All AGP connections MUST use:
 
-* Mutual TLS authentication between nodes
-* Perfect forward secrecy
+* TLS 1.3 or higher for transport security
 * Strong cipher suites as defined in TLS 1.3
 * Certificate-based authentication
-* Revocation checking
-
-Implementations MUST NOT support:
-
-* Plaintext communications
-* Weak cipher suites
-* Older TLS versions
-
-## Privacy Considerations
-
-The protocol implements privacy protection through:
-
-* Minimal attribute disclosure
-* Encrypted record contents
-* Anonymous routing capabilities
-* Pseudonymous agent identities
-* Access control mechanisms
+* Perfect forward secrecy
 
 ## Operational Security
 
-Implementers MUST consider:
+Implementations MUST:
 
-* Regular key rotation schedules
-* Secure bootstrapping procedures
-* Node authentication policies
-* Resource exhaustion protections
-* Monitoring and alerting systems
-* Incident response procedures
+* Maintain secure key storage
+* Support MLS epoch advancement
+* Implement proper credential management
+* Monitor for security events
+* Support secure group state recovery
 
+## Privacy Considerations
 
-# IANA Considerations
+AGP with MLS provides:
 
-This document has no IANA actions.
+* Metadata protection
+* Group membership privacy
+* Participant anonymity options
+* Traffic analysis resistance
 
+## Implementation Requirements
 
---- back
+Implementations MUST NOT:
 
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
+* Use non-MLS encryption schemes
+* Support downgrades to less secure modes
+* Allow plaintext communication
+* Skip credential verification
