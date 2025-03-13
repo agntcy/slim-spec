@@ -4,8 +4,8 @@
 
 Independent Submission                                    L. Muscariello
 Internet-Draft                                                     Cisco
-Intended status: Informational                              3 March 2025
-Expires: 4 September 2025
+Intended status: Informational                             13 March 2025
+Expires: 14 September 2025
 
 
                          Agent Gateway Protocol
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 14 September 2025.
 
 Copyright Notice
 
@@ -66,12 +66,13 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Introduction
-     1.1.  Protocol Overview
-   2.  Architecture
-     2.1.  Protocol Layers
-     2.2.  Core Components
-   3.  Conventions and Definitions
+   1.  Conventions and Definitions
+   2.  Introduction
+     2.1.  Protocol Overview
+   3.  Architecture
+     3.1.  Protocol Layers
+     3.2.  Core Components
+       3.2.1.  Gateway Nodes
    4.  Security Considerations
      4.1.  MLS Integration
      4.2.  Authentication and Identity
@@ -83,7 +84,15 @@ Table of Contents
    5.  Normative References
    Author's Address
 
-1.  Introduction
+1.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Introduction
 
    As AI systems become more sophisticated and interconnected, there is
    a growing need for protocols that can support real-time interactive
@@ -98,7 +107,7 @@ Table of Contents
 
    *  Maintaining backward compatibility with gRPC
 
-1.1.  Protocol Overview
+2.1.  Protocol Overview
 
    AGP builds on gRPC's core features while adding:
 
@@ -110,23 +119,23 @@ Table of Contents
 
    *  Dynamic topic creation and management
 
-2.  Architecture
+3.  Architecture
 
-2.1.  Protocol Layers
+3.1.  Protocol Layers
 
         +-------------------+
         |     Application   |
         +-------------------+
         |   AGP Services    |
         +-------------------+
-        |     Pub/Sub      |
+        |     Pub/Sub       |
         +-------------------+
-        |      gRPC        |
+        |      gRPC         |
         +-------------------+
-        |      HTTP/2      |
+        |      HTTP/2       |
         +-------------------+
 
-2.2.  Core Components
+3.2.  Core Components
 
    *  Gateway Nodes: Handle routing and message distribution
 
@@ -136,13 +145,66 @@ Table of Contents
 
    *  Services: Application-specific RPC definitions
 
-3.  Conventions and Definitions
+3.2.1.  Gateway Nodes
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+   Gateway Nodes are essential components of the Agent Gateway Protocol
+   (AGP) architecture.  They handle routing and message distribution
+   between agents and manage the communication infrastructure.  Gateway
+   Nodes are composed of two main tables: the connection table and the
+   subscription table.
+
+3.2.1.1.  Connection Table
+
+   The connection table maintains interfaces with neighboring nodes and
+   local applications.  It is responsible for:
+
+   *  Establishing and managing connections with other Gateway Nodes
+
+   *  Maintaining active connections with local applications
+
+   *  Handling connection setup, teardown, and error recovery
+
+   The connection table entries include:
+
+   *  Node ID: Unique identifier for the neighboring node or local
+      application
+
+   *  Connection Status: Current status of the connection (e.g., active,
+      inactive, error)
+
+   *  Connection Parameters: Details such as IP address, port, and
+      security credentials
+
+3.2.1.2.  Subscription Table
+
+   The subscription table is used to map topic subscriptions to
+   neighboring nodes.  It manages the distribution of messages based on
+   topic subscriptions and ensures efficient routing of pub/sub
+   messages.  The subscription table entries include:
+
+   *  Topic: The name of the topic to which the subscription applies
+
+   *  Subscriber Node IDs: List of node IDs that have subscribed to the
+      topic
+
+   *  Subscription Status: Current status of the subscription (e.g.,
+      active, inactive)
+
+   The subscription table is responsible for:
+
+   *  Managing topic subscriptions from local applications and
+      neighboring nodes
+
+   *  Routing messages to the appropriate subscribers based on topic
+      subscriptions
+
+   *  Handling subscription updates, additions, and removals
+
+   *  Ensuring efficient and reliable message delivery
+
+   By maintaining these tables, Gateway Nodes facilitate seamless
+   communication and message distribution in the AGP network, enabling
+   real-time interactive AI applications at scale.
 
 4.  Security Considerations
 
