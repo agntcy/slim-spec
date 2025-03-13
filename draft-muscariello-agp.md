@@ -164,14 +164,6 @@ MLS provides the following guarantees for agent groups:
 * Protection against message forgery
 * Perfect forward secrecy for all messages
 
-## Transport Security
-
-All AGP connections MUST use:
-
-* TLS 1.3 or higher for transport security
-* Strong cipher suites as defined in TLS 1.3
-* Certificate-based authentication
-* Perfect forward secrecy
 
 ## Operational Security
 
