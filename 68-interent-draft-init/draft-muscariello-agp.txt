@@ -77,10 +77,9 @@ Table of Contents
      4.1.  MLS Integration
      4.2.  Authentication and Identity
      4.3.  Group Security
-     4.4.  Transport Security
-     4.5.  Operational Security
-     4.6.  Privacy Considerations
-     4.7.  Implementation Requirements
+     4.4.  Operational Security
+     4.5.  Privacy Considerations
+     4.6.  Implementation Requirements
    5.  Normative References
    Author's Address
 
@@ -248,19 +247,7 @@ Table of Contents
 
    *  Perfect forward secrecy for all messages
 
-4.4.  Transport Security
-
-   All AGP connections MUST use:
-
-   *  TLS 1.3 or higher for transport security
-
-   *  Strong cipher suites as defined in TLS 1.3
-
-   *  Certificate-based authentication
-
-   *  Perfect forward secrecy
-
-4.5.  Operational Security
+4.4.  Operational Security
 
    Implementations MUST:
 
@@ -274,7 +261,7 @@ Table of Contents
 
    *  Support secure group state recovery
 
-4.6.  Privacy Considerations
+4.5.  Privacy Considerations
 
    AGP with MLS provides:
 
@@ -286,7 +273,7 @@ Table of Contents
 
    *  Traffic analysis resistance
 
-4.7.  Implementation Requirements
+4.6.  Implementation Requirements
 
    Implementations MUST NOT:
 
