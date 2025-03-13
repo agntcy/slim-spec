@@ -48,6 +48,10 @@ compatibility with existing gRPC deployments.
 
 --- middle
 
+# Conventions and Definitions
+
+{::boilerplate bcp14-tagged}
+
 # Introduction
 
 
@@ -78,11 +82,11 @@ AGP builds on gRPC's core features while adding:
          +-------------------+
          |   AGP Services    |
          +-------------------+
-         |     Pub/Sub      |
+         |     Pub/Sub       |
          +-------------------+
-         |      gRPC        |
+         |      gRPC         |
          +-------------------+
-         |      HTTP/2      |
+         |      HTTP/2       |
          +-------------------+
 
 ## Core Components
@@ -92,11 +96,40 @@ AGP builds on gRPC's core features while adding:
 * Streams: Bidirectional communication channels
 * Services: Application-specific RPC definitions
 
+### Gateway Nodes
 
-# Conventions and Definitions
+Gateway Nodes are essential components of the Agent Gateway Protocol (AGP) architecture. They handle routing and message distribution between agents and manage the communication infrastructure. Gateway Nodes are composed of two main tables: the connection table and the subscription table.
 
-{::boilerplate bcp14-tagged}
+#### Connection Table
 
+The connection table maintains interfaces with neighboring nodes and local applications. It is responsible for:
+
+* Establishing and managing connections with other Gateway Nodes
+* Maintaining active connections with local applications
+* Handling connection setup, teardown, and error recovery
+
+The connection table entries include:
+
+* Node ID: Unique identifier for the neighboring node or local application
+* Connection Status: Current status of the connection (e.g., active, inactive, error)
+* Connection Parameters: Details such as IP address, port, and security credentials
+
+#### Subscription Table
+
+The subscription table is used to map topic subscriptions to neighboring nodes. It manages the distribution of messages based on topic subscriptions and ensures efficient routing of pub/sub messages. The subscription table entries include:
+
+* Topic: The name of the topic to which the subscription applies
+* Subscriber Node IDs: List of node IDs that have subscribed to the topic
+* Subscription Status: Current status of the subscription (e.g., active, inactive)
+
+The subscription table is responsible for:
+
+* Managing topic subscriptions from local applications and neighboring nodes
+* Routing messages to the appropriate subscribers based on topic subscriptions
+* Handling subscription updates, additions, and removals
+* Ensuring efficient and reliable message delivery
+
+By maintaining these tables, Gateway Nodes facilitate seamless communication and message distribution in the AGP network, enabling real-time interactive AI applications at scale.
 
 # Security Considerations
 

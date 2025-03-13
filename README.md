@@ -1,13 +1,9 @@
-# Internet-Draft Template Repository
+# Agent Gateway Protocol Specification
 
-Use this repository as a template if you want to start working on
-[IETF](https://www.ietf.org/) documents. [Click here to create a new repository using the
-template](https://github.com/martinthomson/internet-draft-template/generate).
-Make sure to check "Include all branches", or you will need to enable GitHub Pages manually.
+This repo contains sources of the technical specification of the agent
+gateway protocol.
+The sources in markdown format are compiled in HTML and txt and published
+in https://spec.agp.agntcy.org.
 
-[Read the
-instructions](https://github.com/martinthomson/i-d-template/blob/main/doc/TEMPLATE.md)
-for more information.
-
-Once you have created your own repository, start work by
-[renaming the `draft-todo-yourname-protocol.md` file](../../edit/main/draft-todo-yourname-protocol.md).
+This is work in progress and the reference implementation is available
+in the repository https://github.com/agntcy/agp
