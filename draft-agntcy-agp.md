@@ -76,7 +76,7 @@ AGP builds on gRPC's core features while adding:
 # Architecture
 
 ## Protocol Layers
-
+~~~
          +-------------------+
          |     Application   |
          +-------------------+
@@ -88,7 +88,7 @@ AGP builds on gRPC's core features while adding:
          +-------------------+
          |      HTTP/2       |
          +-------------------+
-
+~~~
 ## Core Components
 
 * Gateway Nodes: Handle routing and message distribution
