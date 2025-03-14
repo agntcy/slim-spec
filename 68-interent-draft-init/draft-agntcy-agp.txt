@@ -71,8 +71,7 @@ Table of Contents
      2.1.  Protocol Overview
    3.  Architecture
      3.1.  Protocol Layers
-     3.2.  Core Components
-       3.2.1.  Gateway Nodes
+       3.1.1.  Gateway Nodes
    4.  Security Considerations
      4.1.  MLS Integration
      4.2.  Authentication and Identity
@@ -122,19 +121,19 @@ Table of Contents
 
 3.1.  Protocol Layers
 
-        +-------------------+
-        |     Application   |
-        +-------------------+
-        |   AGP Services    |
-        +-------------------+
-        |     Pub/Sub       |
-        +-------------------+
-        |      gRPC         |
-        +-------------------+
-        |      HTTP/2       |
-        +-------------------+
+            +-------------------+
+            |     Application   |
+            +-------------------+
+            |   AGP Services    |
+            +-------------------+
+            |     Pub/Sub       |
+            +-------------------+
+            |      gRPC         |
+            +-------------------+
+            |      HTTP/2       |
+            +-------------------+
 
-3.2.  Core Components
+   ## Core Components
 
    *  Gateway Nodes: Handle routing and message distribution
 
@@ -144,7 +143,7 @@ Table of Contents
 
    *  Services: Application-specific RPC definitions
 
-3.2.1.  Gateway Nodes
+3.1.1.  Gateway Nodes
 
    Gateway Nodes are essential components of the Agent Gateway Protocol
    (AGP) architecture.  They handle routing and message distribution
@@ -152,7 +151,7 @@ Table of Contents
    Nodes are composed of two main tables: the connection table and the
    subscription table.
 
-3.2.1.1.  Connection Table
+3.1.1.1.  Connection Table
 
    The connection table maintains interfaces with neighboring nodes and
    local applications.  It is responsible for:
@@ -174,7 +173,7 @@ Table of Contents
    *  Connection Parameters: Details such as IP address, port, and
       security credentials
 
-3.2.1.2.  Subscription Table
+3.1.1.2.  Subscription Table
 
    The subscription table is used to map topic subscriptions to
    neighboring nodes.  It manages the distribution of messages based on
