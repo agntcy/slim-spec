@@ -77,7 +77,6 @@ AGP builds on gRPC's core features while adding:
 
 ## Protocol Layers
 
-~~~
          +-------------------+
          |     Application   |
          +-------------------+
@@ -89,8 +88,6 @@ AGP builds on gRPC's core features while adding:
          +-------------------+
          |      HTTP/2       |
          +-------------------+
-~~~
-{: #fig-stack title="Protocol Stack."}
 
 ## Core Components
 
