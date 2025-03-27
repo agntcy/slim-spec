@@ -1,0 +1,313 @@
+
+
+
+
+Independent Submission                                    L. Muscariello
+Internet-Draft                                               M. Papalini
+Intended status: Informational                                M. Sardara
+Expires: 28 September 2025                                         Cisco
+                                                           27 March 2025
+
+
+                         Agent Gateway Protocol
+                        draft-agntcy-agp-latest
+
+Abstract
+
+   This document specifies the Agent Gateway Protocol (AGP), a protocol
+   designed to support real-time interactive AI applications at scale.
+   AGP extends gRPC with publish-subscribe capabilities to enable
+   efficient many-to-many communication patterns between AI agents.  The
+   protocol provides mechanisms for connection management, stream
+   multiplexing, and flow control while maintaining compatibility with
+   existing gRPC deployments.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://spec.agp.agntcy.org.  Status information for this document
+   may be found at https://datatracker.ietf.org/doc/draft-agntcy-agp/.
+
+   Discussion of this document takes place on the WG Working Group
+   mailing list (mailto:discussion@agntcy.org).
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/agntcy/agp.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 28 September 2025.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
+
+Table of Contents
+
+   1.  Conventions and Definitions
+   2.  Introduction
+     2.1.  Protocol Overview
+   3.  Architecture
+     3.1.  Protocol Layers
+     3.2.  Core Components
+       3.2.1.  Gateway Nodes
+   4.  Security Considerations
+     4.1.  MLS Integration
+     4.2.  Authentication and Identity
+     4.3.  Group Security
+     4.4.  Operational Security
+     4.5.  Privacy Considerations
+     4.6.  Implementation Requirements
+   5.  Normative References
+   Authors' Addresses
+
+1.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Introduction
+
+   As AI systems become more sophisticated and interconnected, there is
+   a growing need for protocols that can support real-time interactive
+   applications at scale.  The Agent Gateway Protocol (AGP) addresses
+   this need by:
+
+   *  Extending gRPC with publish-subscribe patterns
+
+   *  Supporting bidirectional streaming between agents
+
+   *  Enabling efficient many-to-many communication
+
+   *  Maintaining backward compatibility with gRPC
+
+2.1.  Protocol Overview
+
+   AGP builds on gRPC's core features while adding:
+
+   *  Native support for pub/sub messaging patterns
+
+   *  Enhanced stream multiplexing capabilities
+
+   *  Real-time event notification system
+
+   *  Dynamic topic creation and management
+
+3.  Architecture
+
+3.1.  Protocol Layers
+
+        +-------------------+
+        |     Application   |
+        +-------------------+
+        |   AGP Services    |
+        +-------------------+
+        |     Pub/Sub       |
+        +-------------------+
+        |      gRPC         |
+        +-------------------+
+        |      HTTP/2       |
+        +-------------------+
+
+3.2.  Core Components
+
+   *  Gateway Nodes: Handle routing and message distribution
+
+   *  Topics: Named channels for pub/sub communication
+
+   *  Streams: Bidirectional communication channels
+
+   *  Services: Application-specific RPC definitions
+
+3.2.1.  Gateway Nodes
+
+   Gateway Nodes are essential components of the Agent Gateway Protocol
+   (AGP) architecture.  They handle routing and message distribution
+   between agents and manage the communication infrastructure.  Gateway
+   Nodes are composed of two main tables: the connection table and the
+   subscription table.
+
+3.2.1.1.  Connection Table
+
+   The connection table maintains interfaces with neighboring nodes and
+   local applications.  It is responsible for:
+
+   *  Establishing and managing connections with other Gateway Nodes
+
+   *  Maintaining active connections with local applications
+
+   *  Handling connection setup, teardown, and error recovery
+
+   The connection table entries include:
+
+   *  Node ID: Unique identifier for the neighboring node or local
+      application
+
+   *  Connection Status: Current status of the connection (e.g., active,
+      inactive, error)
+
+   *  Connection Parameters: Details such as IP address, port, and
+      security credentials
+
+3.2.1.2.  Subscription Table
+
+   The subscription table is used to map topic subscriptions to
+   neighboring nodes.  It manages the distribution of messages based on
+   topic subscriptions and ensures efficient routing of pub/sub
+   messages.  The subscription table entries include:
+
+   *  Topic: The name of the topic to which the subscription applies
+
+   *  Subscriber Node IDs: List of node IDs that have subscribed to the
+      topic
+
+   *  Subscription Status: Current status of the subscription (e.g.,
+      active, inactive)
+
+   The subscription table is responsible for:
+
+   *  Managing topic subscriptions from local applications and
+      neighboring nodes
+
+   *  Routing messages to the appropriate subscribers based on topic
+      subscriptions
+
+   *  Handling subscription updates, additions, and removals
+
+   *  Ensuring efficient and reliable message delivery
+
+   By maintaining these tables, Gateway Nodes facilitate seamless
+   communication and message distribution in the AGP network, enabling
+   real-time interactive AI applications at scale.
+
+4.  Security Considerations
+
+   The Agent Gateway Protocol (AGP) relies on the Messaging Layer
+   Security (MLS) protocol to provide end-to-end security for group
+   communications between agents.
+
+4.1.  MLS Integration
+
+   AGP uses MLS for the following security properties:
+
+   *  End-to-end encryption for all agent communications
+
+   *  Forward secrecy and post-compromise security
+
+   *  Group key management and membership changes
+
+   *  Scalable group messaging security
+
+4.2.  Authentication and Identity
+
+   Each agent MUST:
+
+   *  Maintain cryptographic identities compatible with MLS
+
+   *  Use certified credentials for initial authentication
+
+   *  Validate peer credentials during connection establishment
+
+   *  Support credential revocation and rotation
+
+4.3.  Group Security
+
+   MLS provides the following guarantees for agent groups:
+
+   *  Continuous group key updates
+
+   *  Secure member addition and removal
+
+   *  Protection against message forgery
+
+   *  Perfect forward secrecy for all messages
+
+4.4.  Operational Security
+
+   Implementations MUST:
+
+   *  Maintain secure key storage
+
+   *  Support MLS epoch advancement
+
+   *  Implement proper credential management
+
+   *  Monitor for security events
+
+   *  Support secure group state recovery
+
+4.5.  Privacy Considerations
+
+   AGP with MLS provides:
+
+   *  Metadata protection
+
+   *  Group membership privacy
+
+   *  Participant anonymity options
+
+   *  Traffic analysis resistance
+
+4.6.  Implementation Requirements
+
+   Implementations MUST NOT:
+
+   *  Use non-MLS encryption schemes
+
+   *  Support downgrades to less secure modes
+
+   *  Allow plaintext communication
+
+   *  Skip credential verification
+
+5.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+Authors' Addresses
+
+   Luca Muscariello
+   Cisco
+   Email: lumuscar@cisco.com
+
+
+   Michele Papalini
+   Cisco
+   Email: micpapal@cisco.com
+
+
+   Mauro Sardara
+   Cisco
+   Email: msardara@cisco.com
