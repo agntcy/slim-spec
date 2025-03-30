@@ -1,0 +1,123 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-03-30T00:31:24.559430+00:00",
+  "repo": "agntcy/agp-spec",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDON1QDo86M6Zcv",
+      "title": "docs: init",
+      "url": "https://github.com/agntcy/agp-spec/pull/1",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Signed-off-by: Luca Muscariello <lumuscar@cisco.com>\n",
+      "createdAt": "2025-02-28T09:28:42Z",
+      "updatedAt": "2025-03-14T08:23:30Z",
+      "baseRepository": "agntcy/agp-spec",
+      "baseRefName": "main",
+      "baseRefOid": "aabf64567edfab475024da8e78b04eaada9b8f7a",
+      "headRepository": "agntcy/agp-spec",
+      "headRefName": "68-interent-draft-init",
+      "headRefOid": "b1d95bd2d0944e365d98677285004c5dd28f69f8",
+      "closedAt": "2025-03-14T08:23:30Z",
+      "mergedAt": "2025-03-14T08:23:30Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "be9e719039df7f66801b3b180f8f68c360befabc"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo86gBFXb",
+          "commit": {
+            "abbreviatedOid": "b1d95bd"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-14T07:58:27Z",
+          "updatedAt": "2025-03-14T07:58:27Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDON1QDo86QZZhX",
+      "title": "docs: firs version -0ush",
+      "url": "https://github.com/agntcy/agp-spec/pull/2",
+      "state": "OPEN",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Signed-off-by: Luca Muscariello <lumuscar@cisco.com>\n",
+      "createdAt": "2025-03-27T13:55:46Z",
+      "updatedAt": "2025-03-27T13:55:46Z",
+      "baseRepository": "agntcy/agp-spec",
+      "baseRefName": "main",
+      "baseRefOid": "be9e719039df7f66801b3b180f8f68c360befabc",
+      "headRepository": "agntcy/agp-spec",
+      "headRefName": "123-update-spec-draft",
+      "headRefOid": "4f1dc6a931103a890ad17fa092523b749927848b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
