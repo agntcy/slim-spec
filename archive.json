@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-30T00:31:24.559430+00:00",
+  "timestamp": "2025-04-01T00:32:53.432411+00:00",
   "repo": "agntcy/agp-spec",
   "labels": [
     {
@@ -105,7 +105,7 @@
       "labels": [],
       "body": "Signed-off-by: Luca Muscariello <lumuscar@cisco.com>\n",
       "createdAt": "2025-03-27T13:55:46Z",
-      "updatedAt": "2025-03-27T13:55:46Z",
+      "updatedAt": "2025-03-31T08:46:52Z",
       "baseRepository": "agntcy/agp-spec",
       "baseRefName": "main",
       "baseRefOid": "be9e719039df7f66801b3b180f8f68c360befabc",
@@ -117,7 +117,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo86iowkZ",
+          "commit": {
+            "abbreviatedOid": "4f1dc6a"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "lgtm",
+          "createdAt": "2025-03-31T08:46:52Z",
+          "updatedAt": "2025-03-31T08:46:52Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
