@@ -6,7 +6,7 @@ title: "Agent Gateway Protocol"
 abbrev: "agent-gw"
 category: info
 
-docname: draft-muscariello-agp-latest
+docname: draft-agntcy-agp-latest
 submissiontype: independent
 number:
 date:
@@ -24,20 +24,26 @@ venue:
   type: Working Group
   mail: discussion@agntcy.org
   github: agntcy/agp
-  latest: https://verbose-adventure-1pnqvyr.pages.github.io/
+  latest: https://spec.agp.agntcy.org
 
 author:
- -
+
+-
     fullname: Luca Muscariello
     organization: Cisco
     email: lumuscar@cisco.com
-
+-
+    fullname: Michele Papalini
+    organization: Cisco
+    email: micpapal@cisco.com
+-
+    fullname: Mauro Sardara
+    organization: Cisco
+    email: msardara@cisco.com
 
 informative:
 
-
 --- abstract
-
 
 This document specifies the Agent Gateway Protocol (AGP), a protocol designed to
 support real-time interactive AI applications at scale. AGP extends gRPC with
