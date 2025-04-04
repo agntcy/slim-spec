@@ -3,13 +3,14 @@
 
 
 Independent Submission                                    L. Muscariello
-Internet-Draft                                                     Cisco
-Intended status: Informational                             14 March 2025
-Expires: 15 September 2025
+Internet-Draft                                               M. Papalini
+Intended status: Informational                                M. Sardara
+Expires: 6 October 2025                                            Cisco
+                                                            4 April 2025
 
 
                          Agent Gateway Protocol
-                      draft-muscariello-agp-latest
+                        draft-agntcy-agp-latest
 
 Abstract
 
@@ -25,10 +26,9 @@ About This Document
 
    This note is to be removed before publishing as an RFC.
 
-   The latest revision of this draft can be found at https://verbose-
-   adventure-1pnqvyr.pages.github.io/.  Status information for this
-   document may be found at https://datatracker.ietf.org/doc/draft-
-   muscariello-agp/.
+   The latest revision of this draft can be found at
+   https://spec.agp.agntcy.org.  Status information for this document
+   may be found at https://datatracker.ietf.org/doc/draft-agntcy-agp/.
 
    Discussion of this document takes place on the WG Working Group
    mailing list (mailto:discussion@agntcy.org).
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 September 2025.
+   This Internet-Draft will expire on 6 October 2025.
 
 Copyright Notice
 
@@ -81,7 +81,7 @@ Table of Contents
      4.5.  Privacy Considerations
      4.6.  Implementation Requirements
    5.  Normative References
-   Author's Address
+   Authors' Addresses
 
 1.  Conventions and Definitions
 
@@ -296,8 +296,18 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-Author's Address
+Authors' Addresses
 
    Luca Muscariello
    Cisco
    Email: lumuscar@cisco.com
+
+
+   Michele Papalini
+   Cisco
+   Email: micpapal@cisco.com
+
+
+   Mauro Sardara
+   Cisco
+   Email: msardara@cisco.com
