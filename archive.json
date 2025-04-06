@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-03T00:28:12.446592+00:00",
+  "timestamp": "2025-04-06T00:30:57.223885+00:00",
   "repo": "agntcy/agp-spec",
   "labels": [
     {
@@ -98,24 +98,26 @@
       "id": "PR_kwDON1QDo86QZZhX",
       "title": "docs: firs version -0ush",
       "url": "https://github.com/agntcy/agp-spec/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "Signed-off-by: Luca Muscariello <lumuscar@cisco.com>\n",
       "createdAt": "2025-03-27T13:55:46Z",
-      "updatedAt": "2025-03-31T08:46:52Z",
+      "updatedAt": "2025-04-04T20:36:39Z",
       "baseRepository": "agntcy/agp-spec",
       "baseRefName": "main",
       "baseRefOid": "be9e719039df7f66801b3b180f8f68c360befabc",
       "headRepository": "agntcy/agp-spec",
       "headRefName": "123-update-spec-draft",
       "headRefOid": "4f1dc6a931103a890ad17fa092523b749927848b",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-04-04T20:36:39Z",
+      "mergedAt": "2025-04-04T20:36:39Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "ffc66e6a595a28e02e46e6c27f2746d025337fa1"
+      },
       "comments": [],
       "reviews": [
         {
