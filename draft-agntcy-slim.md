@@ -1,6 +1,6 @@
 ---
 ###
-# Description of Agent Gateway Protocol
+# Description of SLIM
 ###
 title: "Secure Interactive Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
