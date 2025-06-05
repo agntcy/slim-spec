@@ -91,29 +91,33 @@ channel, allowing consumers to retrieve messages using this name.
 
 A routable name is a name prefix that is stored in a forwarding table (FIB).
 This enables requests to reach the producer and fetch a response, if one exists.
-`
-
-## Terminology
-
-- 
-
 
 
 # Architecture
+~~~
+~~~~
++-------------+         +---------------------+         +-------------+
+| Producer 1  |         |                     |         | Consumer 1  |
++-------------+         |  Messaging Node     |         +-------------+
+                        |                     |<------->| Consumer 2  |
++-------------+         |                     |         +-------------+
+| Producer 2  |-------->|                     |<------->| Consumer 3  |
++-------------+         +---------------------+         +-------------+
 
-## Protocol Layers
+         |                        ^   ^   ^
+         |                        |   |   |
+         |                        |   |   |
+         |                        |   |   |
+         v                        |   |   |
++------------------------+        |   |   |
+| MLS Authentication     |<-------+---+---+
+| Service                |
++------------------------+
+~~~
+{: #fig-general-arch title="Producers and Consumers exchanging messages via slim
+messaging."}
 
-         +-------------------+
-         |     Application   |
-         +-------------------+
-         |   SLIM Services    |
-         +-------------------+
-         |     Pub/Sub       |
-         +-------------------+
-         |      gRPC         |
-         +-------------------+
-         |      HTTP/2       |
-         +-------------------+
+~~~
 
 ## Core Components and Termonilogy 
 
@@ -122,7 +126,7 @@ This enables requests to reach the producer and fetch a response, if one exists.
 * Streams: Bidirectional communication channels
 * Services: Application-specific RPC definitions
 
-### Meassging Nodes
+### messafing Nodes
 
 Nodes are essential components of the SLIM architecture.
 They handle routing and message distribution between agents and manage the
