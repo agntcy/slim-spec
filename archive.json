@@ -1,7 +1,7 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-03T00:31:34.508433+00:00",
-  "repo": "agntcy/agp-spec",
+  "timestamp": "2025-06-05T00:31:02.605852+00:00",
+  "repo": "agntcy/slim-spec",
   "labels": [
     {
       "name": "bug",
@@ -55,7 +55,7 @@
       "number": 1,
       "id": "PR_kwDON1QDo86M6Zcv",
       "title": "docs: init",
-      "url": "https://github.com/agntcy/agp-spec/pull/1",
+      "url": "https://github.com/agntcy/slim-spec/pull/1",
       "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
@@ -64,10 +64,10 @@
       "body": "Signed-off-by: Luca Muscariello <lumuscar@cisco.com>\n",
       "createdAt": "2025-02-28T09:28:42Z",
       "updatedAt": "2025-03-14T08:23:30Z",
-      "baseRepository": "agntcy/agp-spec",
+      "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "aabf64567edfab475024da8e78b04eaada9b8f7a",
-      "headRepository": "agntcy/agp-spec",
+      "headRepository": "agntcy/slim-spec",
       "headRefName": "68-interent-draft-init",
       "headRefOid": "b1d95bd2d0944e365d98677285004c5dd28f69f8",
       "closedAt": "2025-03-14T08:23:30Z",
@@ -97,7 +97,7 @@
       "number": 2,
       "id": "PR_kwDON1QDo86QZZhX",
       "title": "docs: firs version -0ush",
-      "url": "https://github.com/agntcy/agp-spec/pull/2",
+      "url": "https://github.com/agntcy/slim-spec/pull/2",
       "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
@@ -106,10 +106,10 @@
       "body": "Signed-off-by: Luca Muscariello <lumuscar@cisco.com>\n",
       "createdAt": "2025-03-27T13:55:46Z",
       "updatedAt": "2025-04-04T20:36:39Z",
-      "baseRepository": "agntcy/agp-spec",
+      "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "be9e719039df7f66801b3b180f8f68c360befabc",
-      "headRepository": "agntcy/agp-spec",
+      "headRepository": "agntcy/slim-spec",
       "headRefName": "123-update-spec-draft",
       "headRefOid": "4f1dc6a931103a890ad17fa092523b749927848b",
       "closedAt": "2025-04-04T20:36:39Z",
@@ -131,6 +131,48 @@
           "body": "lgtm",
           "createdAt": "2025-03-31T08:46:52Z",
           "updatedAt": "2025-03-31T08:46:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDON1QDo86Y_q9n",
+      "title": "fix/naming",
+      "url": "https://github.com/agntcy/slim-spec/pull/3",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- **chore: rename file**\n- **chore: rename file**\n",
+      "createdAt": "2025-06-04T10:11:47Z",
+      "updatedAt": "2025-06-04T11:55:54Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "ffc66e6a595a28e02e46e6c27f2746d025337fa1",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "fix/naming",
+      "headRefOid": "6c15eb1d9b8a7b9543f161c0957908c36e81c276",
+      "closedAt": "2025-06-04T11:55:54Z",
+      "mergedAt": "2025-06-04T11:55:54Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "e0c9a97d48504c3c163821b28b8d71c8a4258dec"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo86so3xr",
+          "commit": {
+            "abbreviatedOid": "6c15eb1"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-04T11:40:50Z",
+          "updatedAt": "2025-06-04T11:40:50Z",
           "comments": []
         }
       ]
