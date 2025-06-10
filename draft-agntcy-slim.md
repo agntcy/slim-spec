@@ -34,7 +34,7 @@ author:
     email: lumuscar@cisco.com
 -
     fullname: Michele Papalini
-    organization: Cisco
+organization: Cisco
     email: micpapal@cisco.com
 -
     fullname: Mauro Sardara
@@ -63,22 +63,8 @@ compatibility with existing gRPC deployments.
 
 
 As AI systems become more sophisticated and interconnected, there is a growing need
-for protocols that can support real-time interactive applications at scale. 
-
-
-## Protocol Overview
-
-SLIM is designed to work as messaging layer for applications running as
-workloads in a data center, but also running in a browser or mobile device while
-guaranteeing end-end security and low-latency communication. SLIM leverages
-HTTP/2 end to end as a thin waist of the communication stack and avoids the need
-to create message transcoding along the path. By leveraging message encryption
-via MLS, TLS connection termination along the path does not negatively affect
-confidentiality. Authentication and authorization are handled at the application
-level and can be managed in a decentralized or federated way or a mix of both.
-
-In SLIM there are three main communication elements: 1) intermediate nodes
-equipped with message queues, 2) message producers and 3) message consumers.
+for protocols that can support real-time interactive applications at scale. SLIM 
+addresses this need.
 
 A producer (also called a "publisher") is an endpoint that encapsulates content
 in SLIM messages for transport within the SLIM message network of nodes. A
@@ -92,13 +78,10 @@ channel, allowing consumers to retrieve messages using this name.
 A routable name is a name prefix that is stored in a forwarding table (FIB).
 This enables requests to reach the producer and fetch a response, if one exists.
 
-
-# Architecture
 ~~~
-~~~~
 +-------------+         +---------------------+         +-------------+
 | Producer 1  |         |                     |         | Consumer 1  |
-+-------------+         |  Messaging Node     |         +-------------+
++-------------+         |   Messaging Node    |         +-------------+
                         |                     |<------->| Consumer 2  |
 +-------------+         |                     |         +-------------+
 | Producer 2  |-------->|                     |<------->| Consumer 3  |
@@ -113,20 +96,26 @@ This enables requests to reach the producer and fetch a response, if one exists.
 | MLS Authentication     |<-------+---+---+
 | Service                |
 +------------------------+
-~~~
-{: #fig-general-arch title="Producers and Consumers exchanging messages via slim
-messaging."}
 
+Legend:
+- Producers publish to topics at the Messaging Node.
+- Consumers subscribe to topics at the Messaging Node.
+- MLS Authentication Service handles group authentication and key management.
+- Encryption group coincides with the topic identifier.
 ~~~
 
-## Core Components and Termonilogy 
+# Architecture
+
+
+
+## Core Components
 
 * Messaging Nodes: Handle routing and message distribution
 * Topics: Named channels for pub/sub communication
 * Streams: Bidirectional communication channels
 * Services: Application-specific RPC definitions
 
-### messafing Nodes
+### Messaging Nodes
 
 Nodes are essential components of the SLIM architecture.
 They handle routing and message distribution between agents and manage the
