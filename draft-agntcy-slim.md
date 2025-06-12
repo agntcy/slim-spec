@@ -64,7 +64,7 @@ compatibility with existing gRPC deployments.
 
 As AI systems become more sophisticated and interconnected, there is a growing need
 for protocols that can support real-time interactive applications at scale. SLIM 
-addresses this need.
+addresses this need by:
 
 A producer (also called a "publisher") is an endpoint that encapsulates content
 in SLIM messages for transport within the SLIM message network of nodes. A
@@ -78,14 +78,7 @@ channel, allowing consumers to retrieve messages using this name.
 A routable name is a name prefix that is stored in a forwarding table (FIB).
 This enables requests to reach the producer and fetch a response, if one exists.
 
-~~~
-+-------------+         +---------------------+         +-------------+
-| Producer 1  |         |                     |         | Consumer 1  |
-+-------------+         |   Messaging Node    |         +-------------+
-                        |                     |<------->| Consumer 2  |
-+-------------+         |                     |         +-------------+
-| Producer 2  |-------->|                     |<------->| Consumer 3  |
-+-------------+         +---------------------+         +-------------+
+SLIM builds on gRPC's core features while adding:
 
          |                        ^   ^   ^
          |                        |   |   |
@@ -107,6 +100,17 @@ Legend:
 # Architecture
 
 
+         +-------------------+
+         |     Application   |
+         +-------------------+
+         |   SLIM Services    |
+         +-------------------+
+         |     Pub/Sub       |
+         +-------------------+
+         |      gRPC         |
+         +-------------------+
+         |      HTTP/2       |
+         +-------------------+
 
 ## Core Components
 
@@ -115,7 +119,7 @@ Legend:
 * Streams: Bidirectional communication channels
 * Services: Application-specific RPC definitions
 
-### Messaging Nodes
+### Meassging Nodes
 
 Nodes are essential components of the SLIM architecture.
 They handle routing and message distribution between agents and manage the
