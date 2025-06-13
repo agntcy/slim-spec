@@ -5,8 +5,8 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 7 December 2025                                           Cisco
-                                                             5 June 2025
+Expires: 15 December 2025                                          Cisco
+                                                            13 June 2025
 
 
       Secure Interactive Low-Latency Interactive Messaging (SLIM)
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 December 2025.
+   This Internet-Draft will expire on 15 December 2025.
 
 Copyright Notice
 
@@ -70,19 +70,15 @@ Table of Contents
    1.  Conventions and Definitions
    2.  Introduction
      2.1.  Protocol Overview
-     2.2.  Terminology
-   3.  Architecture
-     3.1.  Protocol Layers
-     3.2.  Core Components and Termonilogy
-       3.2.1.  Meassging Nodes
-   4.  Security Considerations
-     4.1.  MLS Integration
-     4.2.  Authentication and Identity
-     4.3.  Group Security
-     4.4.  Operational Security
-     4.5.  Privacy Considerations
-     4.6.  Implementation Requirements
-   5.  Normative References
+       2.1.1.  Massaging Nodes
+   3.  Security Considerations
+     3.1.  MLS Integration
+     3.2.  Authentication and Identity
+     3.3.  Group Security
+     3.4.  Operational Security
+     3.5.  Privacy Considerations
+     3.6.  Implementation Requirements
+   4.  Normative References
    Authors' Addresses
 
 1.  Conventions and Definitions
@@ -112,9 +108,9 @@ Table of Contents
    at the application level and can be managed in a decentralized or
    federated way or a mix of both.
 
-   In SLIM there are three main communication elements: 1) intermediate
-   nodes equipped with message queues, 2) message producers and 3)
-   message consumers.
+   In SLIM there are three main communication elements: intermediate
+   nodes equipped with message queues, message producers and message
+   consumers.
 
    A producer (also called a "publisher") is an endpoint that
    encapsulates content in SLIM messages for transport within the SLIM
@@ -129,45 +125,42 @@ Table of Contents
 
    A routable name is a name prefix that is stored in a forwarding table
    (FIB).  This enables requests to reach the producer and fetch a
-   response, if one exists. `
+   response, if one exists.
 
-2.2.  Terminology
+ +-------------+         +---------------------+         +-------------+
+ | Producer 1  |         |                     |         | Consumer 1  |
+ +-------------+         |   Messaging Node    |         +-------------+
+                         |                     |<------->| Consumer 2  |
+ +-------------+         |                     |         +-------------+
+ | Producer 2  |-------->|                     |<------->| Consumer 3  |
+ +-------------+         +---------------------+         +-------------+
 
+          |                        ^   ^   ^
+          |                        |   |   |
+          |                        |   |   |
+          |                        |   |   |
+          v                        |   |   |
+ +------------------------+        |   |   |
+ | MLS Authentication     |<-------+---+---+
+ | Service                |
+ +------------------------+
 
-3.  Architecture
+ Legend:
+ - Producers publish to topics at the Messaging Node.
+ - Consumers subscribe to topics at the Messaging Node.
+ - MLS Authentication Service handles group authentication and key management.
+ - Encryption group coincides with the topic identifier.
 
-3.1.  Protocol Layers
+         Figure 1: Main components of the SLIM architecture.
 
-        +-------------------+
-        |     Application   |
-        +-------------------+
-        |   SLIM Services    |
-        +-------------------+
-        |     Pub/Sub       |
-        +-------------------+
-        |      gRPC         |
-        +-------------------+
-        |      HTTP/2       |
-        +-------------------+
-
-3.2.  Core Components and Termonilogy
-
-   *  Messaging Nodes: Handle routing and message distribution
-
-   *  Topics: Named channels for pub/sub communication
-
-   *  Streams: Bidirectional communication channels
-
-   *  Services: Application-specific RPC definitions
-
-3.2.1.  Meassging Nodes
+2.1.1.  Massaging Nodes
 
    Nodes are essential components of the SLIM architecture.  They handle
    routing and message distribution between agents and manage the
-   communication infrastructure.  Meassaging Nodes are composed of two
+   communication infrastructure.  Massaging Nodes are composed of two
    main tables: the connection table and the subscription table.
 
-3.2.1.1.  Connection Table
+2.1.1.1.  Connection Table
 
    The connection table maintains interfaces with neighboring nodes and
    local applications.  It is responsible for:
@@ -189,7 +182,7 @@ Table of Contents
    *  Connection Parameters: Details such as IP address, port, and
       security credentials
 
-3.2.1.2.  Subscription Table
+2.1.1.2.  Subscription Table
 
    The subscription table is used to map topic subscriptions to
    neighboring nodes.  It manages the distribution of messages based on
@@ -220,12 +213,12 @@ Table of Contents
    communication and message distribution in a SLIM network, enabling
    real-time interactive AI applications at scale.
 
-4.  Security Considerations
+3.  Security Considerations
 
    SLIM relies on the Messaging Layer Security (MLS) protocol to provide
    end-to-end security for group communications between agents.
 
-4.1.  MLS Integration
+3.1.  MLS Integration
 
    SLI uses MLS for the following security properties:
 
@@ -237,7 +230,7 @@ Table of Contents
 
    *  Scalable group messaging security
 
-4.2.  Authentication and Identity
+3.2.  Authentication and Identity
 
    Each agent MUST:
 
@@ -249,7 +242,7 @@ Table of Contents
 
    *  Support credential revocation and rotation
 
-4.3.  Group Security
+3.3.  Group Security
 
    MLS provides the following guarantees for agent groups:
 
@@ -261,7 +254,7 @@ Table of Contents
 
    *  Perfect forward secrecy for all messages
 
-4.4.  Operational Security
+3.4.  Operational Security
 
    Implementations MUST:
 
@@ -275,7 +268,7 @@ Table of Contents
 
    *  Support secure group state recovery
 
-4.5.  Privacy Considerations
+3.5.  Privacy Considerations
 
    SLIM with MLS provides:
 
@@ -287,7 +280,7 @@ Table of Contents
 
    *  Traffic analysis resistance
 
-4.6.  Implementation Requirements
+3.6.  Implementation Requirements
 
    Implementations MUST NOT:
 
@@ -299,7 +292,7 @@ Table of Contents
 
    *  Skip credential verification
 
-5.  Normative References
+4.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
