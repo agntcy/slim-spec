@@ -103,10 +103,10 @@ Table of Contents
    latency communication.  SLIM leverages HTTP/2 end to end as a thin
    waist of the communication stack and avoids the need to create
    message transcoding along the path.  By leveraging message encryption
-   via MLS, TLS connection termination along the path does not
-   negatively affect confidentiality.  Authentication and authorization
-   are handled at the application level and can be managed in a
-   decentralized or federated way or a mix of both.
+   via MLS [RFC9420] [RFC9750], TLS connection termination along the
+   path does not negatively affect confidentiality.  Authentication and
+   authorization are handled at the application level and can be managed
+   in a decentralized or federated way or a mix of both.
 
    In SLIM there are three main communication elements: intermediate
    nodes equipped with message queues, message producers and message
@@ -305,13 +305,13 @@ Table of Contents
 
    [RFC9420]  Barnes, R., Beurdouche, B., Robert, R., Millican, J.,
               Omara, E., and K. Cohn-Gordon, "The Messaging Layer
-              Security (MLS) Protocol", July 2023,
-              <https://www.rfc-editor.org/rfc/rfc9420.html>.
+              Security (MLS) Protocol", RFC 9420, DOI 10.17487/RFC9420,
+              July 2023, <https://www.rfc-editor.org/rfc/rfc9420>.
 
-   [RFC9750]  Barnes, R., Beurdouche, B., Millican, J., Omara, E., and
-              K. Cohn-Gordon, "The Messaging Layer Security (MLS)
-              Architecture", May 2024,
-              <https://www.rfc-editor.org/rfc/rfc9750.html>.
+   [RFC9750]  Beurdouche, B., Rescorla, E., Omara, E., Inguva, S., and
+              A. Duric, "The Messaging Layer Security (MLS)
+              Architecture", RFC 9750, DOI 10.17487/RFC9750, April 2025,
+              <https://www.rfc-editor.org/rfc/rfc9750>.
 
 Authors' Addresses
 

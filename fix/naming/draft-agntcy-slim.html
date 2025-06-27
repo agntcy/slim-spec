@@ -1242,7 +1242,8 @@ workloads in a data center, but also running in a browser or mobile device while
 guaranteeing end-to-end security and low-latency communication. SLIM leverages
 HTTP/2 end to end as a thin waist of the communication stack and avoids the need
 to create message transcoding along the path. By leveraging message encryption
-via MLS, TLS connection termination along the path does not negatively affect
+via MLS <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>, TLS connection termination along the path
+does not negatively affect
 confidentiality. Authentication and authorization are handled at the application
 level and can be managed in a decentralized or federated way or a mix of both.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2">In SLIM there are three main communication elements: intermediate nodes equipped
@@ -1539,11 +1540,11 @@ to provide end-to-end security for group communications between agents.<a href="
 <dd class="break"></dd>
 <dt id="RFC9420">[RFC9420]</dt>
       <dd>
-<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Beurdouche, B.</span>, <span class="refAuthor">Robert, R.</span>, <span class="refAuthor">Millican, J.</span>, <span class="refAuthor">Omara, E.</span>, and <span class="refAuthor">K. Cohn-Gordon</span>, <span class="refTitle">"The Messaging Layer Security (MLS) Protocol"</span>, <time datetime="2023-07" class="refDate">July 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9420.html">https://www.rfc-editor.org/rfc/rfc9420.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Beurdouche, B.</span>, <span class="refAuthor">Robert, R.</span>, <span class="refAuthor">Millican, J.</span>, <span class="refAuthor">Omara, E.</span>, and <span class="refAuthor">K. Cohn-Gordon</span>, <span class="refTitle">"The Messaging Layer Security (MLS) Protocol"</span>, <span class="seriesInfo">RFC 9420</span>, <span class="seriesInfo">DOI 10.17487/RFC9420</span>, <time datetime="2023-07" class="refDate">July 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9420">https://www.rfc-editor.org/rfc/rfc9420</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9750">[RFC9750]</dt>
     <dd>
-<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Beurdouche, B.</span>, <span class="refAuthor">Millican, J.</span>, <span class="refAuthor">Omara, E.</span>, and <span class="refAuthor">K. Cohn-Gordon</span>, <span class="refTitle">"The Messaging Layer Security (MLS) Architecture"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9750.html">https://www.rfc-editor.org/rfc/rfc9750.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Beurdouche, B.</span>, <span class="refAuthor">Rescorla, E.</span>, <span class="refAuthor">Omara, E.</span>, <span class="refAuthor">Inguva, S.</span>, and <span class="refAuthor">A. Duric</span>, <span class="refTitle">"The Messaging Layer Security (MLS) Architecture"</span>, <span class="seriesInfo">RFC 9750</span>, <span class="seriesInfo">DOI 10.17487/RFC9750</span>, <time datetime="2025-04" class="refDate">April 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9750">https://www.rfc-editor.org/rfc/rfc9750</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
