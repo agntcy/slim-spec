@@ -97,7 +97,8 @@ workloads in a data center, but also running in a browser or mobile device while
 guaranteeing end-to-end security and low-latency communication. SLIM leverages
 HTTP/2 end to end as a thin waist of the communication stack and avoids the need
 to create message transcoding along the path. By leveraging message encryption
-via MLS, TLS connection termination along the path does not negatively affect
+via MLS {{!RFC9420}} {{!RFC9750}}, TLS connection termination along the path
+does not negatively affect
 confidentiality. Authentication and authorization are handled at the application
 level and can be managed in a decentralized or federated way or a mix of both.
 
