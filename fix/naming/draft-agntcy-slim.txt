@@ -308,6 +308,11 @@ Table of Contents
               Security (MLS) Protocol", July 2023,
               <https://www.rfc-editor.org/rfc/rfc9420.html>.
 
+   [RFC9750]  Barnes, R., Beurdouche, B., Millican, J., Omara, E., and
+              K. Cohn-Gordon, "The Messaging Layer Security (MLS)
+              Architecture", May 2024,
+              <https://www.rfc-editor.org/rfc/rfc9750.html>.
+
 Authors' Addresses
 
    Luca Muscariello
