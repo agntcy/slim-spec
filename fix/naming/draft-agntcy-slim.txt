@@ -5,8 +5,8 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 15 December 2025                                          Cisco
-                                                            13 June 2025
+Expires: 29 December 2025                                          Cisco
+                                                            27 June 2025
 
 
       Secure Interactive Low-Latency Interactive Messaging (SLIM)
@@ -14,9 +14,9 @@ Expires: 15 December 2025                                          Cisco
 
 Abstract
 
-   This document specifies the Secure Low-Latency Interactive RealTime
+   This document specifies the Secure Low-Latency Interactive Real-Time
    Messaging (SLIM), a protocol designed to support real-time
-   interactive AI applications at scale.  SLIM leverates gRPC and add
+   interactive AI applications at scale.  SLIM leverages gRPC and adds
    publish-subscribe capabilities to enable efficient many-to-many
    communication patterns between AI agentic applications (AI models,
    tools and data).  The protocol provides mechanisms for connection
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 December 2025.
+   This Internet-Draft will expire on 29 December 2025.
 
 Copyright Notice
 
@@ -70,7 +70,7 @@ Table of Contents
    1.  Conventions and Definitions
    2.  Introduction
      2.1.  Protocol Overview
-       2.1.1.  Massaging Nodes
+       2.1.1.  Messaging Nodes
    3.  Security Considerations
      3.1.  MLS Integration
      3.2.  Authentication and Identity
@@ -97,16 +97,16 @@ Table of Contents
 
 2.1.  Protocol Overview
 
-   SLIM is designed to work as messaging layer for applications running
-   as workloads in a data center, but also running in a browser or
-   mobile device while guaranteeing end-end security and low-latency
-   communication.  SLIM leverages HTTP/2 end to end as a thin waist of
-   the communication stack and avoids the need to create message
-   transcoding along the path.  By leveraging message encryption via
-   MLS, TLS connection termination along the path does not negatively
-   affect confidentiality.  Authentication and authorization are handled
-   at the application level and can be managed in a decentralized or
-   federated way or a mix of both.
+   SLIM is designed to work as a messaging layer for applications
+   running as workloads in a data center, but also running in a browser
+   or mobile device while guaranteeing end-to-end security and low-
+   latency communication.  SLIM leverages HTTP/2 end to end as a thin
+   waist of the communication stack and avoids the need to create
+   message transcoding along the path.  By leveraging message encryption
+   via MLS, TLS connection termination along the path does not
+   negatively affect confidentiality.  Authentication and authorization
+   are handled at the application level and can be managed in a
+   decentralized or federated way or a mix of both.
 
    In SLIM there are three main communication elements: intermediate
    nodes equipped with message queues, message producers and message
@@ -153,11 +153,11 @@ Table of Contents
 
          Figure 1: Main components of the SLIM architecture.
 
-2.1.1.  Massaging Nodes
+2.1.1.  Messaging Nodes
 
    Nodes are essential components of the SLIM architecture.  They handle
    routing and message distribution between agents and manage the
-   communication infrastructure.  Massaging Nodes are composed of two
+   communication infrastructure.  Messaging Nodes are composed of two
    main tables: the connection table and the subscription table.
 
 2.1.1.1.  Connection Table
@@ -209,7 +209,7 @@ Table of Contents
 
    *  Ensuring efficient and reliable message delivery
 
-   By maintaining these tables, Meassaging Nodes facilitate seamless
+   By maintaining these tables, Messaging Nodes facilitate seamless
    communication and message distribution in a SLIM network, enabling
    real-time interactive AI applications at scale.
 
@@ -220,7 +220,7 @@ Table of Contents
 
 3.1.  MLS Integration
 
-   SLI uses MLS for the following security properties:
+   SLIM uses MLS for the following security properties:
 
    *  End-to-end encryption for all agent communications
 
@@ -302,6 +302,11 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9420]  Barnes, R., Beurdouche, B., Robert, R., Millican, J.,
+              Omara, E., and K. Cohn-Gordon, "The Messaging Layer
+              Security (MLS) Protocol", July 2023,
+              <https://www.rfc-editor.org/rfc/rfc9420.html>.
 
 Authors' Addresses
 
