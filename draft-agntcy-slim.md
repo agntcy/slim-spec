@@ -41,13 +41,27 @@ author:
     organization: Cisco
     email: msardara@cisco.com
 
+normative:
+  RFC9420:
+    title: "The Messaging Layer Security (MLS) Protocol"
+    date: 2023-07
+    author:
+      - name: R. Barnes
+      - name: B. Beurdouche
+      - name: R. Robert
+      - name: J. Millican
+      - name: E. Omara
+      - name: K. Cohn-Gordon
+    target: https://www.rfc-editor.org/rfc/rfc9420.html
+
 informative:
+
 
 --- abstract
 
-This document specifies the Secure Low-Latency Interactive RealTime Messaging
+This document specifies the Secure Low-Latency Interactive Real-Time Messaging
 (SLIM), a protocol designed to support real-time interactive AI applications at
-scale. SLIM leverates gRPC and add publish-subscribe capabilities to enable
+scale. SLIM leverages gRPC and adds publish-subscribe capabilities to enable
 efficient many-to-many communication patterns between AI agentic applications
 (AI models, tools and data). The protocol provides mechanisms for connection
 management, stream multiplexing, and flow control while maintaining
@@ -68,9 +82,9 @@ for protocols that can support real-time interactive applications at scale.
 
 ## Protocol Overview
 
-SLIM is designed to work as messaging layer for applications running as
+SLIM is designed to work as a messaging layer for applications running as
 workloads in a data center, but also running in a browser or mobile device while
-guaranteeing end-end security and low-latency communication. SLIM leverages
+guaranteeing end-to-end security and low-latency communication. SLIM leverages
 HTTP/2 end to end as a thin waist of the communication stack and avoids the need
 to create message transcoding along the path. By leveraging message encryption
 via MLS, TLS connection termination along the path does not negatively affect
@@ -119,11 +133,13 @@ This enables requests to reach the producer and fetch a response, if one exists.
 ~~~
 {: #fig-general-arch title="Main components of the SLIM architecture."}
 
-### Massaging Nodes
+
+
+### Messaging Nodes
 
 Nodes are essential components of the SLIM architecture.
 They handle routing and message distribution between agents and manage the
-communication infrastructure. Massaging Nodes are composed of two main tables: the
+communication infrastructure. Messaging Nodes are composed of two main tables: the
 connection table and the subscription table.
 
 #### Connection Table
@@ -161,7 +177,7 @@ The subscription table is responsible for:
 * Handling subscription updates, additions, and removals
 * Ensuring efficient and reliable message delivery
 
-By maintaining these tables, Meassaging Nodes facilitate seamless communication and
+By maintaining these tables, Messaging Nodes facilitate seamless communication and
 message distribution in a SLIM network, enabling real-time interactive AI
 applications at scale.
 
@@ -173,7 +189,7 @@ to provide end-to-end security for group communications between agents.
 
 ## MLS Integration
 
-SLI uses MLS for the following security properties:
+SLIM uses MLS for the following security properties:
 
 * End-to-end encryption for all agent communications
 * Forward secrecy and post-compromise security
