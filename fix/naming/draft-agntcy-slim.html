@@ -1291,6 +1291,14 @@ This enables requests to reach the producer and fetch a response, if one exists.
 <a href="#name-main-components-of-the-slim" class="selfRef">Main components of the SLIM architecture.</a>
           </figcaption></figure>
 </div>
+<p id="section-2.1-6">Secure group members are clients as described in <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> which can
+write messages as producers or read messages as consumers. Most of the time,
+clients are able to read and write messages in the same secure group.
+Clients join secure groups as described in the MLS standard <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>
+via an authentication service and by exchanging messages via the delivery service.
+In the SLIM architecture, the SLIM nodes constitute the infrastructure that
+is responsible for delivering messages in a secure group via a logical SLIM
+channel.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
 <div id="messaging-nodes">
 <section id="section-2.1.1">
           <h4 id="name-messaging-nodes">
@@ -1309,13 +1317,10 @@ connection table and the subscription table.<a href="#section-2.1.1-1" class="pi
 applications. It is responsible for:<a href="#section-2.1.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1.1.1-2.1">
-                <p id="section-2.1.1.1-2.1.1">Establishing and managing connections with other Gateway Nodes<a href="#section-2.1.1.1-2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1.1.1-2.1.1">Establishing and managing connections with other Messaging Nodes<a href="#section-2.1.1.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1.1.1-2.2">
                 <p id="section-2.1.1.1-2.2.1">Maintaining active connections with local applications<a href="#section-2.1.1.1-2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-2.1.1.1-2.3">
-                <p id="section-2.1.1.1-2.3.1">Handling connection setup, teardown, and error recovery<a href="#section-2.1.1.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-2.1.1.1-3">The connection table entries include:<a href="#section-2.1.1.1-3" class="pilcrow">¶</a></p>
@@ -1518,6 +1523,12 @@ to provide end-to-end security for group communications between agents.<a href="
 </li>
           <li class="normal" id="section-3.6-2.4">
             <p id="section-3.6-2.4.1">Skip credential verification<a href="#section-3.6-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-2.5">
+            <p id="section-3.6-2.5.1">Allow plaintext communication<a href="#section-3.6-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-2.6">
+            <p id="section-3.6-2.6.1">Skip credential verification<a href="#section-3.6-2.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
