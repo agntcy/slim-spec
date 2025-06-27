@@ -124,7 +124,14 @@ This enables requests to reach the producer and fetch a response, if one exists.
 ~~~
 {: #fig-general-arch title="Main components of the SLIM architecture."}
 
-
+Secure group members are clients as described in {{!RFC9750}} which can
+write messages as producers or read messages as consumers. Most of the time,
+clients are able to read and write messages in the same secure group.
+Clients join secure groups as described in the MLS standard {{!RFC9750}}
+via an authentication service and by exchanging messages via the delivery service.
+In the SLIM architecture, the SLIM nodes constitute the infrastructure that
+is responsible for delivering messages in a secure group via a logical SLIM
+channel.
 
 ### Messaging Nodes
 
@@ -138,9 +145,8 @@ connection table and the subscription table.
 The connection table maintains interfaces with neighboring nodes and local
 applications. It is responsible for:
 
-* Establishing and managing connections with other Gateway Nodes
+* Establishing and managing connections with other Messaging Nodes
 * Maintaining active connections with local applications
-* Handling connection setup, teardown, and error recovery
 
 The connection table entries include:
 
@@ -231,5 +237,7 @@ Implementations MUST NOT:
 
 * Use non-MLS encryption schemes
 * Support downgrades to less secure modes
+* Allow plaintext communication
+* Skip credential verification
 * Allow plaintext communication
 * Skip credential verification
