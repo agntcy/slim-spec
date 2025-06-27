@@ -53,6 +53,16 @@ normative:
       - name: E. Omara
       - name: K. Cohn-Gordon
     target: https://www.rfc-editor.org/rfc/rfc9420.html
+  RFC9750:
+    title: "The Messaging Layer Security (MLS) Architecture"
+    date: 2024-05
+    author:
+      - name: R. Barnes
+      - name: B. Beurdouche
+      - name: J. Millican
+      - name: E. Omara
+      - name: K. Cohn-Gordon
+    target: https://www.rfc-editor.org/rfc/rfc9750.html
 
 informative:
 
