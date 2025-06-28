@@ -1059,7 +1059,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Muscariello, et al.</td>
-<td class="center">Expires 29 December 2025</td>
+<td class="center">Expires 30 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-agntcy-slim-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-27" class="published">27 June 2025</time>
+<time datetime="2025-06-28" class="published">28 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-29">29 December 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-30">30 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1139,7 +1139,7 @@ compatibility with existing gRPC deployments.<a href="#section-abstract-1" class
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 30 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1291,52 +1291,67 @@ This enables requests to reach the producer and fetch a response, if one exists.
 <a href="#name-main-components-of-the-slim" class="selfRef">Main components of the SLIM architecture.</a>
           </figcaption></figure>
 </div>
-<p id="section-2.1-6">Secure group members are clients as described in <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> which can
-write messages as producers or read messages as consumers. Most of the time,
-clients are able to read and write messages in the same secure group.
-Clients join secure groups as described in the MLS standard <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>
-via an authentication service and by exchanging messages via the delivery service.
-In the SLIM architecture, the SLIM nodes constitute the infrastructure that
-is responsible for delivering messages in a secure group via a logical SLIM
-channel.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">Secure group members are clients as described in <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> which can write
+messages as producers or read messages as consumers. Most of the time, clients
+are able to read and write messages in the same secure group. Clients join
+secure groups as described in the MLS standard <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> via an
+authentication service and by exchanging messages via the delivery service. In
+the SLIM architecture, the SLIM nodes constitute the infrastructure that is
+responsible for delivering messages in a secure group via a logical SLIM
+channel. MLS commit messages are exchanged directly using the SLIM messaging
+nodes.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
 <div id="messaging-nodes">
 <section id="section-2.1.1">
           <h4 id="name-messaging-nodes">
 <a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-messaging-nodes" class="section-name selfRef">Messaging Nodes</a>
           </h4>
-<p id="section-2.1.1-1">Nodes are essential components of the SLIM architecture.
-They handle routing and message distribution between agents and manage the
-communication infrastructure. Messaging Nodes are composed of two main tables: the
-connection table and the subscription table.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-1">Messaging nodes are fundamental components of the SLIM architecture that serve
+as specialized message queues. They fulfill several critical functions in the
+messaging infrastructure. At their core, nodes efficiently route messages
+between connected clients using intelligent routing algorithms while handling
+the distribution and delivery of messages across the network infrastructure.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-2">The node architecture relies on two essential data structures that work in
+concert. The connection table forms the foundation for tracking all active
+client connections and their states, maintaining crucial metadata about each
+connected client. Alongside it, the subscription table manages topic
+subscriptions and implements message filtering rules, determining which messages
+should be delivered to which clients.<a href="#section-2.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-3">Through this dual-table architecture, messaging nodes can effectively coordinate
+message delivery while maintaining optimal system performance. The connection
+and subscription mechanisms work together seamlessly to ensure reliable message
+routing, proper client tracking, and efficient subscription management across
+the distributed system. Each node operates autonomously while participating in
+the broader network, creating a resilient and scalable messaging infrastructure.<a href="#section-2.1.1-3" class="pilcrow">¶</a></p>
 <div id="connection-table">
 <section id="section-2.1.1.1">
             <h5 id="name-connection-table">
 <a href="#section-2.1.1.1" class="section-number selfRef">2.1.1.1. </a><a href="#name-connection-table" class="section-name selfRef">Connection Table</a>
             </h5>
-<p id="section-2.1.1.1-1">The connection table maintains interfaces with neighboring nodes and local
-applications. It is responsible for:<a href="#section-2.1.1.1-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.1.1.1-2.1">
-                <p id="section-2.1.1.1-2.1.1">Establishing and managing connections with other Messaging Nodes<a href="#section-2.1.1.1-2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-2.1.1.1-2.2">
-                <p id="section-2.1.1.1-2.2.1">Maintaining active connections with local applications<a href="#section-2.1.1.1-2.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-<p id="section-2.1.1.1-3">The connection table entries include:<a href="#section-2.1.1.1-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.1.1.1-4.1">
-                <p id="section-2.1.1.1-4.1.1">Node ID: Unique identifier for the neighboring node or local application<a href="#section-2.1.1.1-4.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-2.1.1.1-4.2">
-                <p id="section-2.1.1.1-4.2.1">Connection Status: Current status of the connection (e.g., active, inactive,
-error)<a href="#section-2.1.1.1-4.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-2.1.1.1-4.3">
-                <p id="section-2.1.1.1-4.3.1">Connection Parameters: Details such as IP address, port, and security
-credentials<a href="#section-2.1.1.1-4.3.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
+<p id="section-2.1.1.1-1">ValidateThe connection table serves as a fundamental data structure within the
+SLIM messaging node architecture, maintaining a comprehensive registry of both
+client-to-node and node-to-node connections. Each entry in the table contains
+essential metadata about connected endpoints, including their unique
+identifiers, connection timestamps, authentication status, and current state
+information.<a href="#section-2.1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-2">For client connections, the table tracks end-user applications that connect to
+receive or send messages through the system. For node connections, it maintains
+the network fabric topology by recording inter-node relationships and routing
+paths. This dual-purpose nature enables SLIM to manage both the edge
+connectivity with clients and the internal communication infrastructure between
+nodes.<a href="#section-2.1.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-3">Connection states are dynamically tracked and updated to reflect the real-time
+status of each endpoint. This includes monitoring whether clients or nodes are
+actively connected, temporarily disconnected, or in various intermediate states.
+The table maintains crucial session information such as endpoint capabilities,
+protocol versions, and quality of service parameters that influence message
+handling.<a href="#section-2.1.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-4">By maintaining this detailed connection state, the table enables efficient
+routing decisions across the entire network fabric. It provides each messaging
+node with immediate access to both client and node status information, allowing
+for rapid determination of message delivery paths and handling of
+connection-related events. The connection table also plays a vital role in
+system reliability by tracking connection health and enabling quick detection of
+disconnections or network issues at both the client and node levels. `<a href="#section-2.1.1.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="subscription-table">
