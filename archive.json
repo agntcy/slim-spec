@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-26T00:31:06.157055+00:00",
+  "timestamp": "2025-06-29T00:35:29.817133+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -189,13 +189,13 @@
       "labels": [],
       "body": "- **chore: rename file**\n- **chore: rename file**\n- **chore: rename file**\n- **chore: rename file**\n- **chore: update doc**\n",
       "createdAt": "2025-06-10T11:28:09Z",
-      "updatedAt": "2025-06-13T07:36:18Z",
+      "updatedAt": "2025-06-28T13:33:26Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "e0c9a97d48504c3c163821b28b8d71c8a4258dec",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "fix/naming",
-      "headRefOid": "7a136aaeacd28b69acc306e4bab6899774462a90",
+      "headRefOid": "3cb643e0970fa5d9303846e761928c3d780b04e8",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
