@@ -1178,17 +1178,28 @@ compatibility with existing gRPC deployments.<a href="#section-abstract-1" class
                     <p id="section-toc.1-1.2.2.1.2.1.1" class="keepWithNext"><a href="#section-2.1.1" class="auto internal xref">2.1.1</a>.  <a href="#name-messaging-nodes" class="internal xref">Messaging Nodes</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.2">
-                    <p id="section-toc.1-1.2.2.1.2.2.1" class="keepWithNext"><a href="#section-2.1.2" class="auto internal xref">2.1.2</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+                    <p id="section-toc.1-1.2.2.1.2.2.1" class="keepWithNext"><a href="#section-2.1.2" class="auto internal xref">2.1.2</a>.  <a href="#name-control-plane" class="internal xref">Control Plane</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-authentication-and-authoriz" class="internal xref">Authentication and Authorization</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-confidentiality-and-integri" class="internal xref">Confidentiality and Integrity</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1408,104 +1419,104 @@ Legend:
 </div>
 </section>
 </div>
+</section>
+</div>
 <div id="control-plane">
-<section id="section-2.1.1.3">
-            <h5 id="name-control-plane">
-<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-control-plane" class="section-name selfRef">Control Plane</a>
-            </h5>
-<p id="section-2.1.1.3-1">The control plane is responsible for the management and orchestration of
+<section id="section-2.1.2">
+          <h4 id="name-control-plane">
+<a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-control-plane" class="section-name selfRef">Control Plane</a>
+          </h4>
+<p id="section-2.1.2-1">The control plane is responsible for the management and orchestration of
 SLIM messaging nodes and their interconnections. It handles the configuration,
 provisioning, and monitoring of nodes, ensuring that the messaging
-infrastructure operates smoothly and efficiently.<a href="#section-2.1.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.3-2">Key functions of the control plane include:<a href="#section-2.1.1.3-2" class="pilcrow">¶</a></p>
+infrastructure operates smoothly and efficiently.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-2">Key functions of the control plane include:<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.1.1.3-3.1">
-                <p id="section-2.1.1.3-3.1.1"><strong>Node Discovery and Registration</strong>: New messaging nodes discover
+<li class="normal" id="section-2.1.2-3.1">
+              <p id="section-2.1.2-3.1.1"><strong>Node Discovery and Registration</strong>: New messaging nodes discover
 each other and register their presence with the control plane. This
 enables the control plane to maintain an up-to-date view of the
-messaging infrastructure.<a href="#section-2.1.1.3-3.1.1" class="pilcrow">¶</a></p>
+messaging infrastructure.<a href="#section-2.1.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.3-3.2">
-                <p id="section-2.1.1.3-3.2.1"><strong>Configuration Management</strong>: The control plane distributes
+            <li class="normal" id="section-2.1.2-3.2">
+              <p id="section-2.1.2-3.2.1"><strong>Configuration Management</strong>: The control plane distributes
 configuration updates to messaging nodes, including connection and
 subscription table updates. This ensures consistent and correct
-routing behavior across the node network.<a href="#section-2.1.1.3-3.2.1" class="pilcrow">¶</a></p>
+routing behavior across the node network.<a href="#section-2.1.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.3-3.3">
-                <p id="section-2.1.1.3-3.3.1"><strong>Monitoring and Analytics</strong>: The control plane collects and
+            <li class="normal" id="section-2.1.2-3.3">
+              <p id="section-2.1.2-3.3.1"><strong>Monitoring and Analytics</strong>: The control plane collects and
 analyzes telemetry data from messaging nodes, providing insights
-into system performance, message flow, and potential issues.<a href="#section-2.1.1.3-3.3.1" class="pilcrow">¶</a></p>
+into system performance, message flow, and potential issues.<a href="#section-2.1.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.3-3.4">
-                <p id="section-2.1.1.3-3.4.1"><strong>Fault Detection and Recovery</strong>: In case of node failures or
+            <li class="normal" id="section-2.1.2-3.4">
+              <p id="section-2.1.2-3.4.1"><strong>Fault Detection and Recovery</strong>: In case of node failures or
 network issues, the control plane detects faults and initiates
 recovery procedures, such as rerouting messages or reallocating
-resources.<a href="#section-2.1.1.3-3.4.1" class="pilcrow">¶</a></p>
+resources.<a href="#section-2.1.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.3-3.5">
-                <p id="section-2.1.1.3-3.5.1"><strong>Security and Access Control</strong>: The control plane manages
+            <li class="normal" id="section-2.1.2-3.5">
+              <p id="section-2.1.2-3.5.1"><strong>Security and Access Control</strong>: The control plane manages
 security policies, authentication, and authorization of nodes and
-clients, ensuring a secure messaging environment.<a href="#section-2.1.1.3-3.5.1" class="pilcrow">¶</a></p>
+clients, ensuring a secure messaging environment.<a href="#section-2.1.2-3.5.1" class="pilcrow">¶</a></p>
 </li>
-            </ul>
-<p id="section-2.1.1.3-4">By centralizing these management functions, the control plane enhances
+          </ul>
+<p id="section-2.1.2-4">By centralizing these management functions, the control plane enhances
 the overall reliability, security, and performance of the SLIM messaging
 infrastructure. It enables efficient scaling, dynamic reconfiguration,
-and proactive maintenance of the node network.<a href="#section-2.1.1.3-4" class="pilcrow">¶</a></p>
+and proactive maintenance of the node network.<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-2.1.2">
-          <h4 id="name-security-considerations">
-<a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
-          </h4>
-<p id="section-2.1.2-1">Security is a paramount concern for SLIM, given the sensitive nature of
+<section id="section-3">
+      <h2 id="name-security-considerations">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-3-1">Security is a paramount concern for SLIM, given the sensitive nature of
 the data being transmitted and the need for reliable access control.
 SLIM inherits security features from MLS, gRPC, and TLS, but also
-introduces new mechanisms to address its unique requirements.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+introduces new mechanisms to address its unique requirements.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div id="authentication-and-authorization">
-<section id="section-2.1.2.1">
-            <h5 id="name-authentication-and-authoriz">
-<a href="#section-2.1.2.1" class="section-number selfRef">2.1.2.1. </a><a href="#name-authentication-and-authoriz" class="section-name selfRef">Authentication and Authorization</a>
-            </h5>
-<p id="section-2.1.2.1-1">Authentication and authorization in SLIM are handled at the application
+<section id="section-3.1">
+        <h3 id="name-authentication-and-authoriz">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-authentication-and-authoriz" class="section-name selfRef">Authentication and Authorization</a>
+        </h3>
+<p id="section-3.1-1">Authentication and authorization in SLIM are handled at the application
 level, leveraging the capabilities of the underlying MLS groups. Clients
 must authenticate themselves to the MLS Authentication Service, which
 issues credentials that are used to sign messages. These credentials
 are then used by other clients to verify the authenticity of the
-messages and the identity of the sender.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.2.1-2">Authorization policies determine what actions an authenticated client
+messages and the identity of the sender.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Authorization policies determine what actions an authenticated client
 is allowed to perform, such as publishing or subscribing to specific
 channels. These policies are enforced by the messaging nodes, which
 check the client's credentials and the requested operation against the
-configured policies.<a href="#section-2.1.2.1-2" class="pilcrow">¶</a></p>
+configured policies.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="confidentiality-and-integrity">
-<section id="section-2.1.2.2">
-            <h5 id="name-confidentiality-and-integri">
-<a href="#section-2.1.2.2" class="section-number selfRef">2.1.2.2. </a><a href="#name-confidentiality-and-integri" class="section-name selfRef">Confidentiality and Integrity</a>
-            </h5>
-<p id="section-2.1.2.2-1">Confidentiality and integrity of messages are ensured through end-to-end
+<section id="section-3.2">
+        <h3 id="name-confidentiality-and-integri">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-confidentiality-and-integri" class="section-name selfRef">Confidentiality and Integrity</a>
+        </h3>
+<p id="section-3.2-1">Confidentiality and integrity of messages are ensured through end-to-end
 encryption using MLS. Messages are encrypted by the producer before
 being sent and can only be decrypted by consumers that are members of
 the same MLS group. This ensures that even if messages are intercepted
 in transit, they cannot be read or tampered with by unauthorized
-parties.<a href="#section-2.1.2.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-</section>
-</div>
+parties.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="sec-normative-references">
-<section id="section-3">
+<section id="section-4">
       <h2 id="name-normative-references">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
