@@ -252,7 +252,7 @@ Legend:
 {: #fig-message-structure title="SLIM message structure carrying channel name,
 address locator, and data."}
 
-#### Control Plane
+### Control Plane
 
 The control plane is responsible for the management and orchestration of
 SLIM messaging nodes and their interconnections. It handles the configuration,
@@ -290,14 +290,14 @@ the overall reliability, security, and performance of the SLIM messaging
 infrastructure. It enables efficient scaling, dynamic reconfiguration,
 and proactive maintenance of the node network.
 
-### Security Considerations
+# Security Considerations
 
 Security is a paramount concern for SLIM, given the sensitive nature of
 the data being transmitted and the need for reliable access control.
 SLIM inherits security features from MLS, gRPC, and TLS, but also
 introduces new mechanisms to address its unique requirements.
 
-#### Authentication and Authorization
+## Authentication and Authorization
 
 Authentication and authorization in SLIM are handled at the application
 level, leveraging the capabilities of the underlying MLS groups. Clients
@@ -312,7 +312,7 @@ channels. These policies are enforced by the messaging nodes, which
 check the client's credentials and the requested operation against the
 configured policies.
 
-#### Confidentiality and Integrity
+## Confidentiality and Integrity
 
 Confidentiality and integrity of messages are ensured through end-to-end
 encryption using MLS. Messages are encrypted by the producer before
