@@ -142,6 +142,31 @@ messaging infrastructure. At their core, nodes efficiently route messages
 between connected clients using intelligent routing algorithms while handling
 the distribution and delivery of messages across the network infrastructure.
 
+~~~
+    Producer A              Producer B              Producer C
+        |                       |                       |
+        v                       v                       v
+   +----------+            +----------+            +----------+
+   |  Node 1  |<---------->|  Node 2  |<---------->|  Node 3  |
+   +----------+            +----------+            +----------+
+        ^                       ^                       ^
+        |                       |                       |
+        v                       v                       v
+   +----------+            +----------+            +----------+
+   |  Node 4  |<---------->|  Node 5  |<---------->|  Node 6  |
+   +----------+            +----------+            +----------+
+        ^                       ^                       ^
+        |                       |                       |
+    Consumer X             Consumer Y             Consumer Z
+
+Legend:
+- Each Node maintains connection and subscription tables
+- Bidirectional arrows represent inter-node communication paths
+- Producers and Consumers connect to their local nodes
+- Messages are routed through the node network based on subscriptions
+~~~
+{: #fig-node-network title="SLIM messaging node network topology."}
+
 The node architecture relies on two essential data structures that work in
 concert. The connection table forms the foundation for tracking all active
 client connections and their states, maintaining crucial metadata about each
@@ -159,7 +184,8 @@ the broader network, creating a resilient and scalable messaging infrastructure.
 
 
 #### Connection Table
-ValidateThe connection table serves as a fundamental data structure within the
+
+The connection table serves as a fundamental data structure within the
 SLIM messaging node architecture, maintaining a comprehensive registry of both
 client-to-node and node-to-node connections. Each entry in the table contains
 essential metadata about connected endpoints, including their unique
@@ -186,91 +212,112 @@ node with immediate access to both client and node status information, allowing
 for rapid determination of message delivery paths and handling of
 connection-related events. The connection table also plays a vital role in
 system reliability by tracking connection health and enabling quick detection of
-disconnections or network issues at both the client and node levels. `
+disconnections or network issues at both the client and node levels.
+
+A connection table maps location-independent channel names to connections to
+remote nodes. The mapping is used to forward messages towards nodes that can
+either route messages or consume them in case consumers are directly connected
+to the node.
+
+Channel names are encoded as human-readable hierarchical names for efficient
+table lookup operations.
 
 
-#### Subscription Table
+#### Subscription Table and Matching
 
-The subscription table is used to map topic subscriptions to neighboring nodes.
-It manages the distribution of messages based on topic subscriptions and ensures
-efficient routing of pub/sub messages. The subscription table entries include:
+The subscription table is used to map channel subscriptions to neighboring
+nodes. It manages the distribution of messages based on subscriptions and
+ensures efficient delivery of messages.
+A message carries the data to be delivered as well as the channel name and the
+address locator of the message producer.
 
-* Topic: The name of the topic to which the subscription applies
-* Subscriber Node IDs: List of node IDs that have subscribed to the topic
-* Subscription Status: Current status of the subscription (e.g., active,
-inactive)
+The control plane manages the configuration and updates of the connection and
+subscription tables.
 
-The subscription table is responsible for:
+~~~
++-------------------------------------------------------------+
+|                    SLIM Message Structure                   |
++-------------------------------------------------------------+
+| Channel Name   | Address Locator   |      Data Payload       |
++-------------------------------------------------------------+
+| "/foo/bar"     | 192.0.2.10:12345 |   { ... application ... |
+|                |                  |         data ... }      |
++-------------------------------------------------------------+
 
-* Managing topic subscriptions from local applications and neighboring nodes
-* Routing messages to the appropriate subscribers based on topic subscriptions
-* Handling subscription updates, additions, and removals
-* Ensuring efficient and reliable message delivery
+Legend:
+- Channel Name: Identifies the logical channel/topic for routing.
+- Address Locator: Specifies the producer's network address.
+- Data Payload: Contains the actual message content.
+~~~
+{: #fig-message-structure title="SLIM message structure carrying channel name,
+address locator, and data."}
 
-By maintaining these tables, Messaging Nodes facilitate seamless communication and
-message distribution in a SLIM network, enabling real-time interactive AI
-applications at scale.
+#### Control Plane
 
-# Security Considerations
+The control plane is responsible for the management and orchestration of
+SLIM messaging nodes and their interconnections. It handles the configuration,
+provisioning, and monitoring of nodes, ensuring that the messaging
+infrastructure operates smoothly and efficiently.
 
+Key functions of the control plane include:
 
-SLIM relies on the Messaging Layer Security (MLS) protocol
-to provide end-to-end security for group communications between agents.
+- **Node Discovery and Registration**: New messaging nodes discover
+  each other and register their presence with the control plane. This
+  enables the control plane to maintain an up-to-date view of the
+  messaging infrastructure.
 
-## MLS Integration
+- **Configuration Management**: The control plane distributes
+  configuration updates to messaging nodes, including connection and
+  subscription table updates. This ensures consistent and correct
+  routing behavior across the node network.
 
-SLIM uses MLS for the following security properties:
+- **Monitoring and Analytics**: The control plane collects and
+  analyzes telemetry data from messaging nodes, providing insights
+  into system performance, message flow, and potential issues.
 
-* End-to-end encryption for all agent communications
-* Forward secrecy and post-compromise security
-* Group key management and membership changes
-* Scalable group messaging security
+- **Fault Detection and Recovery**: In case of node failures or
+  network issues, the control plane detects faults and initiates
+  recovery procedures, such as rerouting messages or reallocating
+  resources.
 
-## Authentication and Identity
-
-Each agent MUST:
-
-* Maintain cryptographic identities compatible with MLS
-* Use certified credentials for initial authentication
-* Validate peer credentials during connection establishment
-* Support credential revocation and rotation
-
-## Group Security
-
-MLS provides the following guarantees for agent groups:
-
-* Continuous group key updates
-* Secure member addition and removal
-* Protection against message forgery
-* Perfect forward secrecy for all messages
+- **Security and Access Control**: The control plane manages
+  security policies, authentication, and authorization of nodes and
+  clients, ensuring a secure messaging environment.
 
 
-## Operational Security
+By centralizing these management functions, the control plane enhances
+the overall reliability, security, and performance of the SLIM messaging
+infrastructure. It enables efficient scaling, dynamic reconfiguration,
+and proactive maintenance of the node network.
 
-Implementations MUST:
+### Security Considerations
 
-* Maintain secure key storage
-* Support MLS epoch advancement
-* Implement proper credential management
-* Monitor for security events
-* Support secure group state recovery
+Security is a paramount concern for SLIM, given the sensitive nature of
+the data being transmitted and the need for reliable access control.
+SLIM inherits security features from MLS, gRPC, and TLS, but also
+introduces new mechanisms to address its unique requirements.
 
-## Privacy Considerations
+#### Authentication and Authorization
 
-SLIM with MLS provides:
+Authentication and authorization in SLIM are handled at the application
+level, leveraging the capabilities of the underlying MLS groups. Clients
+must authenticate themselves to the MLS Authentication Service, which
+issues credentials that are used to sign messages. These credentials
+are then used by other clients to verify the authenticity of the
+messages and the identity of the sender.
 
-* Metadata protection
-* Group membership privacy
-* Participant anonymity options
-* Traffic analysis resistance
+Authorization policies determine what actions an authenticated client
+is allowed to perform, such as publishing or subscribing to specific
+channels. These policies are enforced by the messaging nodes, which
+check the client's credentials and the requested operation against the
+configured policies.
 
-## Implementation Requirements
+#### Confidentiality and Integrity
 
-Implementations MUST NOT:
+Confidentiality and integrity of messages are ensured through end-to-end
+encryption using MLS. Messages are encrypted by the producer before
+being sent and can only be decrypted by consumers that are members of
+the same MLS group. This ensures that even if messages are intercepted
+in transit, they cannot be read or tampered with by unauthorized
+parties.
 
-* Use non-MLS encryption schemes
-* Support downgrades to less secure modes
-* Allow plaintext communication
-* Skip credential verification
-* Allow plaintext communication
-* Skip credential verification
