@@ -353,7 +353,7 @@ the Named Information {{!RFC6920}} standard, referencing the IANA registry
 
 SLIM routable name prefixes and client names can use different did methods which
 will have different resolution systems such as did:web {{DID-Web}}, did:key
-{{DID-Key}} and did:plc {{DID>ATProto}}, see {{DID-Methods}} for well known did
+{{DID-Key}} and did:plc {{DID-ATProto}}, see {{DID-Methods}} for well known did
 methods.
 
 
