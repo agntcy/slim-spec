@@ -308,23 +308,24 @@ Clients connect to messaging nodes via a session layer.
 
 ## Naming Considerations
 
-SLIM requires different identifiers, i.e. channel names, client names and
-client locators.
+SLIM requires several types of identifiers, including channel names, client
+names, and client locators.
 
-A channel name is used to identify a messaging group and must be
-routable, i.e. it must be composed of a globally unique network prefix
-which can be aggregated for scalable lookups and message forwarding.
+A channel name identifies a messaging group and must be routable; that is, it
+must include a globally unique network prefix that can be aggregated for
+scalable lookups and message forwarding.
 
-A group in SLIM is an MLS group with a moderator client which is responsible for
-adding and removing group members. The moderator is identified via a
-cryptographic public key as defined in MLS {{!RFC9750}} and in SLIM with
-a decentralized identifier as the hash of the public key {{DID-W3C}}.
-By naming things with hashes {{!RFC6920}} SLIM obtains secure and globally
-unique naming which allows to define a permission-less systems where
-channel names and client names can be distributed across administrative
-boundaries. W3C DIDs are not necessary but can be used when hashlinks
-are used and match the Named Information {{!RFC6920}} standard
-matching the IANA registry {{NI-Registry}}.
+A group in SLIM is an MLS group with a moderator client responsible for adding
+and removing group members. The moderator is identified by a cryptographic
+public key as defined in MLS {{!RFC9750}}, and in SLIM, also by a decentralized
+identifier derived as the hash of the public key {{DID-W3C}}.
+
+By naming entities with hashes {{!RFC6920}}, SLIM achieves secure and globally
+unique naming, enabling the creation of permissionless systems where channel
+names and client names can be distributed across administrative boundaries. W3C
+DIDs are optional but can be used when hashlinks are employed and conform to the
+Named Information {{!RFC6920}} standard, referencing the IANA registry
+{{NI-Registry}}.
 
 
 ## Deployment Considerations
