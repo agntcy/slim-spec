@@ -48,6 +48,12 @@ normative:
     author:
       - name: W3C Credentials Community Group
     target: https://www.w3.org/TR/did-core/
+  NI-Registry:
+    title: "Named Information Hash Algorithm Registry"
+    date: 2013-08-01
+    author:
+      - name: IANA
+    target: https://www.iana.org/assignments/named-information/named-information.xhtml
 
 informative:
 
@@ -316,7 +322,9 @@ a decentralized identifier as the hash of the public key {{DID-W3C}}.
 By naming things with hashes {{!RFC6920}} SLIM obtains secure and globally
 unique naming which allows to define a permission-less systems where
 channel names and client names can be distributed across administrative
-boundaries.
+boundaries. W3C DIDs are not necessary but can be used when hashlinks
+are used and match the Named Information {{!RFC6920}} standard
+matching the IANA registry {{NI-Registry}}.
 
 
 ## Deployment Considerations
