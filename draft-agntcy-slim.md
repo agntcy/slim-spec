@@ -54,9 +54,36 @@ normative:
     author:
       - name: IANA
     target: https://www.iana.org/assignments/named-information/named-information.xhtml
+  DID-Methods:
+    title: "Known DID Methods in the Decentralized Identifier Ecosystem"
+    date: 2025-04-29
+    author:
+      - name: W3C Credentials Community Group
+    target: https://www.w3.org/TR/did-extensions-methods/
+
 
 informative:
-
+  CID-Spec:
+    title: "CID (Content IDentifier) Specification"
+    author:
+      - name: Multiformats Community
+    target: https://github.com/multiformats/cid
+  DID-Key:
+    title: "The did:key Method v0.7: A DID Method for Static Cryptographic Keys"
+    date: 2025-03-26
+    author:
+      - name: W3C Credentials Community Group
+    target: https://w3c-ccg.github.io/did-method-key/
+  DID-ATProto:
+    title: "Decentralized Identifiers (DIDs) in the AT Protocol"
+    author:
+      - name: Bluesky/AT Protocol Community
+    target: https://atproto.wiki/en/wiki/reference/identifiers/did
+  DID-Web:
+    title: "The did:web Method Specification"
+    author:
+      - name: W3C Credentials Community Group
+    target: https://w3c-ccg.github.io/did-method-web/
 
 --- abstract
 
@@ -310,22 +337,26 @@ Clients connect to messaging nodes via a session layer.
 
 SLIM requires several types of identifiers, including channel names, client
 names, and client locators.
-
 A channel name identifies a messaging group and must be routable; that is, it
 must include a globally unique network prefix that can be aggregated for
 scalable lookups and message forwarding.
-
 A group in SLIM is an MLS group with a moderator client responsible for adding
 and removing group members. The moderator is identified by a cryptographic
 public key as defined in MLS {{!RFC9750}}, and in SLIM, also by a decentralized
 identifier derived as the hash of the public key {{DID-W3C}}.
-
 By naming entities with hashes {{!RFC6920}}, SLIM achieves secure and globally
 unique naming, enabling the creation of permissionless systems where channel
 names and client names can be distributed across administrative boundaries. W3C
-DIDs are optional but can be used when hashlinks are employed and conform to the
-Named Information {{!RFC6920}} standard, referencing the IANA registry
+DIDs are optional but can be used when hash links are employed and conform to
+the Named Information {{!RFC6920}} standard, referencing the IANA registry
 {{NI-Registry}}.
+
+SLIM routable name prefixes and client names can use different did methods which
+will have different resolution systems such as did:web {{DID-Web}}, did:key
+{{DID-Key}} and did:plc {{DID>ATProto}}, see {{DID-Methods}} for well known did
+methods.
+
+
 
 
 ## Deployment Considerations
