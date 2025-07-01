@@ -340,7 +340,10 @@ Table of Contents
    key [DID-W3C].  By naming things with hashes [RFC6920] SLIM obtains
    secure and globally unique naming which allows to define a
    permission-less systems where channel names and client names can be
-   distributed across administrative boundaries.
+   distributed across administrative boundaries.  W3C DIDs are not
+   necessary but can be used when hashlinks are used and match the Named
+   Information [RFC6920] standard matching the IANA registry
+   [NI-Registry].
 
 2.3.  Deployment Considerations
 
@@ -381,6 +384,11 @@ Table of Contents
 
    [DID-W3C]  Group, W. C. C., "Decentralized Identifiers (DIDs) v1.0",
               19 July 2022, <https://www.w3.org/TR/did-core/>.
+
+   [NI-Registry]
+              IANA, "Named Information Hash Algorithm Registry", 1
+              August 2013, <https://www.iana.org/assignments/named-
+              information/named-information.xhtml>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
