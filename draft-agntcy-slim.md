@@ -42,7 +42,12 @@ author:
     email: msardara@cisco.com
 
 normative:
-
+  DID-W3C:
+    title: "Decentralized Identifiers (DIDs) v1.0"
+    date: 2022-07-19
+    author:
+      - name: W3C Credentials Community Group
+    target: https://www.w3.org/TR/did-core/
 
 informative:
 
@@ -289,6 +294,32 @@ By centralizing these management functions, the control plane enhances
 the overall reliability, security, and performance of the SLIM messaging
 infrastructure. It enables efficient scaling, dynamic reconfiguration,
 and proactive maintenance of the node network.
+
+### Session Layer
+
+Clients connect to messaging nodes via a session layer.
+
+
+## Naming Considerations
+
+SLIM requires different identifiers, i.e. channel names, client names and
+client locators.
+
+A channel name is used to identify a messaging group and must be
+routable, i.e. it must be composed of a globally unique network prefix
+which can be aggregated for scalable lookups and message forwarding.
+
+A group in SLIM is an MLS group with a moderator client which is responsible for
+adding and removing group members. The moderator is identified via a
+cryptographic public key as defined in MLS {{!RFC9750}} and in SLIM with
+a decentralized identifier as the hash of the public key.
+By naming things with hashes {{!RFC6920}} SLIM obtains secure and globally
+unique naming which allows to define a permission-less systems where
+channel names and client names can be distributed across administrative
+boundaries.
+
+
+## Deployment Considerations
 
 # Security Considerations
 
