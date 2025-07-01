@@ -312,7 +312,7 @@ which can be aggregated for scalable lookups and message forwarding.
 A group in SLIM is an MLS group with a moderator client which is responsible for
 adding and removing group members. The moderator is identified via a
 cryptographic public key as defined in MLS {{!RFC9750}} and in SLIM with
-a decentralized identifier as the hash of the public key.
+a decentralized identifier as the hash of the public key {{DID-W3C}}.
 By naming things with hashes {{!RFC6920}} SLIM obtains secure and globally
 unique naming which allows to define a permission-less systems where
 channel names and client names can be distributed across administrative
