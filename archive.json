@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-01T00:36:03.890720+00:00",
+  "timestamp": "2025-07-03T00:31:46.269552+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -182,26 +182,42 @@
       "id": "PR_kwDON1QDo86Z10Xh",
       "title": "fix/naming",
       "url": "https://github.com/agntcy/slim-spec/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "- **chore: rename file**\n- **chore: rename file**\n- **chore: rename file**\n- **chore: rename file**\n- **chore: update doc**\n",
       "createdAt": "2025-06-10T11:28:09Z",
-      "updatedAt": "2025-06-30T20:36:49Z",
+      "updatedAt": "2025-07-01T08:06:49Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "e0c9a97d48504c3c163821b28b8d71c8a4258dec",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "fix/naming",
-      "headRefOid": "d1441ebaa4918d60b21905553a8cbd0058039083",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "9223d1bd5add1b04d6c1ca4c127f8c392d058977",
+      "closedAt": "2025-07-01T08:06:48Z",
+      "mergedAt": "2025-07-01T08:06:48Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "19b15a88c2693c4b91c086024689f67e37b0f4ac"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo86xRN7p",
+          "commit": {
+            "abbreviatedOid": "9223d1b"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-01T08:05:51Z",
+          "updatedAt": "2025-07-01T08:05:51Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
