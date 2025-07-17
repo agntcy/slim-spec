@@ -1489,7 +1489,76 @@ and proactive maintenance of the node network.<a href="#section-2.1.2-4" class="
           <h4 id="name-session-layer">
 <a href="#section-2.1.3" class="section-number selfRef">2.1.3. </a><a href="#name-session-layer" class="section-name selfRef">Session Layer</a>
           </h4>
-<p id="section-2.1.3-1">The session layer is used by clients to<a href="#section-2.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-1">The session layer serves as a critical abstraction component that bridges
+application frameworks with the underlying SLIM messaging infrastructure. It
+provides a unified interface that simplifies the complexity of secure messaging
+while handling the details of MLS client operations and message distribution.<a href="#section-2.1.3-1" class="pilcrow">¶</a></p>
+<div id="core-responsibilities">
+<section id="section-2.1.3.1">
+            <h5 id="name-core-responsibilities">
+<a href="#section-2.1.3.1" class="section-number selfRef">2.1.3.1. </a><a href="#name-core-responsibilities" class="section-name selfRef">Core Responsibilities</a>
+            </h5>
+<p id="section-2.1.3.1-1">The session layer encapsulates several key functionalities:<a href="#section-2.1.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.3.1-2"><strong>MLS Client Operations</strong>: The layer implements comprehensive MLS client
+functionality including authentication procedures, message encryption and
+decryption, key management, and group membership operations. It handles the
+complex cryptographic operations transparently from the application perspective.<a href="#section-2.1.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.3.1-3"><strong>Channel Management</strong>: It provides seamless channel subscription and
+unsubscription capabilities, managing the lifecycle of channel memberships and
+maintaining subscription state across connection interruptions or node
+failures.<a href="#section-2.1.3.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.3.1-4"><strong>Message Abstraction</strong>: The session layer abstracts message passing between
+applications and the SLIM message distribution network, handling message
+formatting, routing, and delivery confirmation while providing simple send and
+receive primitives to applications.<a href="#section-2.1.3.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.3.1-5"><strong>Configuration Abstraction</strong>: It eliminates the need for applications to
+manage complex configuration details required to connect to SLIM nodes,
+automatically handling node discovery, connection establishment, and
+subscription management.<a href="#section-2.1.3.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="api-design-principles">
+<section id="section-2.1.3.2">
+            <h5 id="name-api-design-principles">
+<a href="#section-2.1.3.2" class="section-number selfRef">2.1.3.2. </a><a href="#name-api-design-principles" class="section-name selfRef">API Design Principles</a>
+            </h5>
+<p id="section-2.1.3.2-1">The session layer API is designed with the following principles:<a href="#section-2.1.3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1.3.2-2.1">
+                <p id="section-2.1.3.2-2.1.1"><strong>Simplicity</strong>: Applications interact with the messaging system through
+intuitive publish/subscribe operations without needing to understand the
+underlying MLS or routing complexities.<a href="#section-2.1.3.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1.3.2-2.2">
+                <p id="section-2.1.3.2-2.2.1"><strong>Asynchronous Operations</strong>: All messaging operations are designed to be
+non-blocking, supporting high-performance applications with callback-based
+or promise-based result handling.<a href="#section-2.1.3.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1.3.2-2.3">
+                <p id="section-2.1.3.2-2.3.1"><strong>Framework Agnostic</strong>: The API provides language bindings and framework
+adapters for various application development environments, ensuring broad
+compatibility across different technology stacks.<a href="#section-2.1.3.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1.3.2-2.4">
+                <p id="section-2.1.3.2-2.4.1"><strong>Error Handling</strong>: Comprehensive error reporting and recovery mechanisms
+help applications handle network issues, authentication failures, and other
+operational problems gracefully.<a href="#section-2.1.3.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</section>
+</div>
+<div id="session-management">
+<section id="section-2.1.3.3">
+            <h5 id="name-session-management">
+<a href="#section-2.1.3.3" class="section-number selfRef">2.1.3.3. </a><a href="#name-session-management" class="section-name selfRef">Session Management</a>
+            </h5>
+<p id="section-2.1.3.3-1">The session layer maintains persistent session state across network
+disconnections and node failures. It implements automatic reconnection logic,
+subscription recovery, and message queuing to ensure reliable message delivery
+even in unstable network conditions. Session persistence includes maintaining
+MLS group membership state, channel subscriptions, and pending message queues.<a href="#section-2.1.3.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
