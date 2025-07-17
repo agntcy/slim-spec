@@ -330,7 +330,62 @@ and proactive maintenance of the node network.
 
 ### Session Layer
 
-The session layer is used by clients to
+The session layer serves as a critical abstraction component that bridges
+application frameworks with the underlying SLIM messaging infrastructure. It
+provides a unified interface that simplifies the complexity of secure messaging
+while handling the details of MLS client operations and message distribution.
+
+#### Core Responsibilities
+
+The session layer encapsulates several key functionalities:
+
+**MLS Client Operations**: The layer implements comprehensive MLS client
+functionality including authentication procedures, message encryption and
+decryption, key management, and group membership operations. It handles the
+complex cryptographic operations transparently from the application perspective.
+
+**Channel Management**: It provides seamless channel subscription and
+unsubscription capabilities, managing the lifecycle of channel memberships and
+maintaining subscription state across connection interruptions or node
+failures.
+
+**Message Abstraction**: The session layer abstracts message passing between
+applications and the SLIM message distribution network, handling message
+formatting, routing, and delivery confirmation while providing simple send and
+receive primitives to applications.
+
+**Configuration Abstraction**: It eliminates the need for applications to
+manage complex configuration details required to connect to SLIM nodes,
+automatically handling node discovery, connection establishment, and
+subscription management.
+
+#### API Design Principles
+
+The session layer API is designed with the following principles:
+
+- **Simplicity**: Applications interact with the messaging system through
+  intuitive publish/subscribe operations without needing to understand the
+  underlying MLS or routing complexities.
+
+- **Asynchronous Operations**: All messaging operations are designed to be
+  non-blocking, supporting high-performance applications with callback-based
+  or promise-based result handling.
+
+- **Framework Agnostic**: The API provides language bindings and framework
+  adapters for various application development environments, ensuring broad
+  compatibility across different technology stacks.
+
+- **Error Handling**: Comprehensive error reporting and recovery mechanisms
+  help applications handle network issues, authentication failures, and other
+  operational problems gracefully.
+
+#### Session Management
+
+The session layer maintains persistent session state across network
+disconnections and node failures. It implements automatic reconnection logic,
+subscription recovery, and message queuing to ensure reliable message delivery
+even in unstable network conditions. Session persistence includes maintaining
+MLS group membership state, channel subscriptions, and pending message queues.
 
 
 ## Naming Considerations
