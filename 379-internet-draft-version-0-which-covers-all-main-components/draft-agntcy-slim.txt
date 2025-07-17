@@ -5,11 +5,11 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 2 January 2026                                            Cisco
-                                                             1 July 2025
+Expires: 18 January 2026                                           Cisco
+                                                            17 July 2025
 
 
-      Secure Interactive Low-Latency Interactive Messaging (SLIM)
+            Secure Low-Latency Interactive Messaging (SLIM)
                         draft-agntcy-slim-latest
 
 Abstract
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 January 2026.
+   This Internet-Draft will expire on 18 January 2026.
 
 Copyright Notice
 
@@ -323,7 +323,7 @@ Table of Contents
 
 2.1.3.  Session Layer
 
-   Clients connect to messaging nodes via a session layer.
+   The session layer is used by clients to
 
 2.2.  Naming Considerations
 
@@ -345,8 +345,15 @@ Table of Contents
 
    SLIM routable name prefixes and client names can use different did
    methods which will have different resolution systems such as did:web
-   [DID-Web], did:key [DID-Key] and did:plc [DID-ATProto], see
+   [DID-Web], did:key [DID-Key] or did:plc [DID-ATProto], see
    [DID-Methods] for well known did methods.
+
+   In this document we consider the did:key method for simplicity of
+   exposition.
+
+   Examples of channel names are
+
+   did:key:
 
 2.3.  Deployment Considerations
 
