@@ -2,7 +2,7 @@
 ###
 # Description of SLIM
 ###
-title: "Secure Interactive Low-Latency Interactive Messaging (SLIM)"
+title: "Secure Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
 category: info
 
@@ -330,7 +330,7 @@ and proactive maintenance of the node network.
 
 ### Session Layer
 
-Clients connect to messaging nodes via a session layer.
+The session layer is used by clients to
 
 
 ## Naming Considerations
@@ -353,9 +353,14 @@ the Named Information {{!RFC6920}} standard, referencing the IANA registry
 
 SLIM routable name prefixes and client names can use different did methods which
 will have different resolution systems such as did:web {{DID-Web}}, did:key
-{{DID-Key}} and did:plc {{DID-ATProto}}, see {{DID-Methods}} for well known did
+{{DID-Key}} or did:plc {{DID-ATProto}}, see {{DID-Methods}} for well known did
 methods.
 
+In this document we consider the did:key method for simplicity of exposition.
+
+Examples of channel names are
+
+did:key:
 
 
 
