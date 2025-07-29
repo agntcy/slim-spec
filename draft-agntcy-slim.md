@@ -363,42 +363,51 @@ subscription management.
 
 The session layer API is designed with the following principles:
 
-- **Simplicity**: Applications interact with the messaging system through
+- Simplicity: Applications interact with the messaging system through
   intuitive publish/subscribe operations without needing to understand the
   underlying MLS or routing complexities.
 
-- **Asynchronous Operations**: All messaging operations are designed to be
-  non-blocking, supporting high-performance applications with callback-based
-  or promise-based result handling.
+- Asynchronous Operations: All messaging operations are designed to be
+  non-blocking, supporting high-performance applications.
 
-- **Framework Agnostic**: The API provides language bindings and framework
+- Framework Agnostic: The API provides language bindings and framework
   adapters for various application development environments, ensuring broad
   compatibility across different technology stacks.
 
-- **Error Handling**: Comprehensive error reporting and recovery mechanisms
-  help applications handle network issues, authentication failures, and other
-  operational problems gracefully.
+- Error Handling: Comprehensive error reporting and recovery mechanisms
+  help applications handle communication issues and authentication failures.
 
 #### Session Management
 
-The session layer maintains persistent session state across network
+The session layer maintains persistent session state at the client across network
 disconnections and node failures. It implements automatic reconnection logic,
 subscription recovery, and message queuing to ensure reliable message delivery
 even in unstable network conditions. Session persistence includes maintaining
 MLS group membership state, channel subscriptions, and pending message queues.
 
 
+
 ## Naming Considerations
 
-SLIM requires several types of identifiers, including channel names, client
-names, and client locators.
+SLIM requires several types of identifiers: node names, channel names,
+and client locators.
+
+Node names are used for secure onboarding and authentication. Node names do not
+have aggregation requirements and therefore use decentralized identifiers:
+
+```
+node name A: did:key(node_A)
+```
+
 A channel name identifies a messaging group and must be routable; that is, it
 must include a globally unique network prefix that can be aggregated for
 scalable lookups and message forwarding.
+
 A group in SLIM is an MLS group with a moderator client responsible for adding
 and removing group members. The moderator is identified by a cryptographic
 public key as defined in MLS {{!RFC9750}}, and in SLIM, also by a decentralized
 identifier derived as the hash of the public key {{DID-W3C}}.
+
 By naming entities with hashes {{!RFC6920}}, SLIM achieves secure and globally
 unique naming, enabling the creation of permissionless systems where channel
 names and client names can be distributed across administrative boundaries. W3C
@@ -406,17 +415,25 @@ DIDs are optional but can be used when hash links are employed and conform to
 the Named Information {{!RFC6920}} standard, referencing the IANA registry
 {{NI-Registry}}.
 
-SLIM routable name prefixes and client names can use different did methods which
-will have different resolution systems such as did:web {{DID-Web}}, did:key
-{{DID-Key}} or did:plc {{DID-ATProto}}, see {{DID-Methods}} for well known did
+SLIM routable name prefixes and client names can use different DID methods
+which have different resolution systems such as did:web {{DID-Web}}, did:key
+{{DID-Key}} or did:plc {{DID-ATProto}}. See {{DID-Methods}} for well-known DID
 methods.
 
-In this document we consider the did:key method for simplicity of exposition.
+The naming structure follows these patterns:
 
-Examples of channel names are
+```
+client locator: did:key(org)/namespace(org)/service/did:key(client)
+channel name: did:key(org)/namespace(org)/service/did:key(moderator)
+```
+Where the moderator is the special client that has the role to create a channel,
+add actual application clients and remove them from the group.
+The moderator is a data place client which is a decentralized instance
+of the MLS delivery service.
 
-did:key:
-
+The hierarchical structure is required to maximize aggregation in subscription
+tables, which can aggregate multiple names under name prefixes such as
+organization identifiers, organization namespaces, and services.
 
 
 ## Deployment Considerations
