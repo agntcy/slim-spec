@@ -144,7 +144,7 @@ access policies. The protocol supports deployment in various environments, from
 data center workloads and mobile applications, while maintaining
 consistent security guarantees and low-latency performance characteristics.
 
-## Protocol Overview
+# Protocol Overview
 
 SLIM is designed to work as a messaging layer for applications running as
 workloads in a data center, but also running in a browser or mobile device while
