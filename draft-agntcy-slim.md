@@ -2,7 +2,7 @@
 ###
 # Description of SLIM
 ###
-title: "Secure Interactive Low-Latency Interactive Messaging (SLIM)"
+title: "Secure Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
 category: info
 
@@ -54,9 +54,36 @@ normative:
     author:
       - name: IANA
     target: https://www.iana.org/assignments/named-information/named-information.xhtml
+  DID-Methods:
+    title: "Known DID Methods in the Decentralized Identifier Ecosystem"
+    date: 2025-04-29
+    author:
+      - name: W3C Credentials Community Group
+    target: https://www.w3.org/TR/did-extensions-methods/
+
 
 informative:
-
+  CID-Spec:
+    title: "CID (Content IDentifier) Specification"
+    author:
+      - name: Multiformats Community
+    target: https://github.com/multiformats/cid
+  DID-Key:
+    title: "The did:key Method v0.7: A DID Method for Static Cryptographic Keys"
+    date: 2025-03-26
+    author:
+      - name: W3C Credentials Community Group
+    target: https://w3c-ccg.github.io/did-method-key/
+  DID-ATProto:
+    title: "Decentralized Identifiers (DIDs) in the AT Protocol"
+    author:
+      - name: Bluesky/AT Protocol Community
+    target: https://atproto.wiki/en/wiki/reference/identifiers/did
+  DID-Web:
+    title: "The did:web Method Specification"
+    author:
+      - name: W3C Credentials Community Group
+    target: https://w3c-ccg.github.io/did-method-web/
 
 --- abstract
 
@@ -286,11 +313,6 @@ Key functions of the control plane include:
   analyzes telemetry data from messaging nodes, providing insights
   into system performance, message flow, and potential issues.
 
-- **Fault Detection and Recovery**: In case of node failures or
-  network issues, the control plane detects faults and initiates
-  recovery procedures, such as rerouting messages or reallocating
-  resources.
-
 - **Security and Access Control**: The control plane manages
   security policies, authentication, and authorization of nodes and
   clients, ensuring a secure messaging environment.
@@ -303,13 +325,72 @@ and proactive maintenance of the node network.
 
 ### Session Layer
 
-Clients connect to messaging nodes via a session layer.
+The session layer serves as a critical abstraction component that bridges
+application frameworks with the underlying SLIM messaging infrastructure. It
+provides a unified interface that simplifies the complexity of secure messaging
+while handling the details of MLS client operations and message distribution.
 
+#### Core Responsibilities
+
+The session layer encapsulates several key functionalities:
+
+**MLS Client Operations**: The layer implements comprehensive MLS client
+functionality including authentication procedures, message encryption and
+decryption, key management, and group membership operations. It handles the
+complex cryptographic operations transparently from the application perspective.
+
+**Channel Management**: It provides seamless channel subscription and
+unsubscription capabilities, managing the lifecycle of channel memberships and
+maintaining subscription state across connection interruptions or node
+failures.
+
+**Message Abstraction**: The session layer abstracts message passing between
+applications and the SLIM message distribution network, handling message
+formatting, routing, and delivery confirmation while providing simple send and
+receive primitives to applications.
+
+**Configuration Abstraction**: It eliminates the need for applications to
+manage complex configuration details required to connect to SLIM nodes,
+automatically handling node discovery, connection establishment, and
+subscription management.
+
+#### API Design Principles
+
+The session layer API is designed with the following principles:
+
+- Simplicity: Applications interact with the messaging system through
+  intuitive publish/subscribe operations without needing to understand the
+  underlying MLS or routing complexities.
+
+- Asynchronous Operations: All messaging operations are designed to be
+  non-blocking, supporting high-performance applications.
+
+- Framework Agnostic: The API provides language bindings and framework
+  adapters for various application development environments, ensuring broad
+  compatibility across different technology stacks.
+
+- Error Handling: Comprehensive error reporting and recovery mechanisms
+  help applications handle communication issues and authentication failures.
+
+#### Session Management
+
+The session layer maintains persistent session state at the client across network
+disconnections and node failures. It implements automatic reconnection logic,
+subscription recovery, and message queuing to ensure reliable message delivery
+even in unstable network conditions. Session persistence includes maintaining
+MLS group membership state, channel subscriptions, and pending message queues.
 
 ## Naming Considerations
 
-SLIM requires several types of identifiers, including channel names, client
-names, and client locators.
+SLIM requires several types of identifiers: node names, channel names,
+and client locators.
+
+Node names are used for secure onboarding and authentication. Node names do not
+have aggregation requirements and therefore use decentralized identifiers:
+
+```
+node name A: did:key(node_A)
+```
 
 A channel name identifies a messaging group and must be routable; that is, it
 must include a globally unique network prefix that can be aggregated for
@@ -323,9 +404,29 @@ identifier derived as the hash of the public key {{DID-W3C}}.
 By naming entities with hashes {{!RFC6920}}, SLIM achieves secure and globally
 unique naming, enabling the creation of permissionless systems where channel
 names and client names can be distributed across administrative boundaries. W3C
-DIDs are optional but can be used when hashlinks are employed and conform to the
-Named Information {{!RFC6920}} standard, referencing the IANA registry
+DIDs are optional but can be used when hash links are employed and conform to
+the Named Information {{!RFC6920}} standard, referencing the IANA registry
 {{NI-Registry}}.
+
+SLIM routable name prefixes and client names can use different DID methods
+which have different resolution systems such as did:web {{DID-Web}}, did:key
+{{DID-Key}} or did:plc {{DID-ATProto}}. See {{DID-Methods}} for well-known DID
+methods.
+
+The naming structure follows these patterns:
+
+```
+client locator: did:key(org)/namespace(org)/service/did:key(client)
+channel name: did:key(org)/namespace(org)/service/did:key(moderator)
+```
+Where the moderator is the special client that has the role to create a channel,
+add actual application clients and remove them from the group.
+As mentioned above the moderator is a data plane client which is a decentralized
+instance of the MLS delivery service as described in {{!RFC9420}}.
+
+The hierarchical structure is required to maximize aggregation in subscription
+tables, which can aggregate multiple names under name prefixes such as
+organization identifiers, organization namespaces, and services.
 
 
 ## Deployment Considerations
