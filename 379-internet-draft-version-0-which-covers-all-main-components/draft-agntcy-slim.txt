@@ -70,17 +70,18 @@ Table of Contents
    1.  Conventions and Definitions
    2.  Introduction
      2.1.  Summary
-     2.2.  Protocol Overview
-       2.2.1.  Messaging Nodes
-       2.2.2.  Control Plane
-       2.2.3.  Session Layer
-     2.3.  Naming Considerations
-     2.4.  Deployment Considerations
-   3.  Security Considerations
-     3.1.  Authentication and Authorization
-   4.  References
-     4.1.  Normative References
-     4.2.  Informative References
+   3.  Protocol Overview
+     3.1.  Messaging Nodes
+       3.1.1.  Connection Table
+       3.1.2.  Control Plane
+       3.1.3.  Session Layer
+     3.2.  Naming Considerations
+     3.3.  Deployment Considerations
+   4.  Security Considerations
+     4.1.  Authentication and Authorization
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Authors' Addresses
 
 1.  Conventions and Definitions
@@ -139,7 +140,7 @@ Table of Contents
    mobile applications, while maintaining consistent security guarantees
    and low-latency performance characteristics.
 
-2.2.  Protocol Overview
+3.  Protocol Overview
 
    SLIM is designed to work as a messaging layer for applications
    running as workloads in a data center, but also running in a browser
@@ -208,7 +209,7 @@ Table of Contents
    MLS commit messages are exchanged directly using the SLIM messaging
    nodes.
 
-2.2.1.  Messaging Nodes
+3.1.  Messaging Nodes
 
    Messaging nodes are fundamental components of the SLIM architecture
    that serve as specialized message queues.  They fulfill several
@@ -258,7 +259,7 @@ Table of Contents
    participating in the broader network, creating a resilient and
    scalable messaging infrastructure.
 
-2.2.1.1.  Connection Table
+3.1.1.  Connection Table
 
    The connection table serves as a fundamental data structure within
    the SLIM messaging node architecture, maintaining a comprehensive
@@ -298,7 +299,7 @@ Table of Contents
    Channel names are encoded as human-readable hierarchical names for
    efficient table lookup operations.
 
-2.2.1.2.  Subscription Table and Matching
+3.1.1.1.  Subscription Table and Matching
 
    The subscription table is used to map channel subscriptions to
    neighboring nodes.  It manages the distribution of messages based on
@@ -326,7 +327,7 @@ Table of Contents
       Figure 3: SLIM message structure carrying channel name, address
                              locator, and data.
 
-2.2.2.  Control Plane
+3.1.2.  Control Plane
 
    The control plane is responsible for the management and orchestration
    of SLIM messaging nodes and their interconnections.  It handles the
@@ -358,7 +359,7 @@ Table of Contents
    SLIM messaging infrastructure.  It enables efficient scaling, dynamic
    reconfiguration, and proactive maintenance of the node network.
 
-2.2.3.  Session Layer
+3.1.3.  Session Layer
 
    The session layer serves as a critical abstraction component that
    bridges application frameworks with the underlying SLIM messaging
@@ -366,7 +367,7 @@ Table of Contents
    complexity of secure messaging while handling the details of MLS
    client operations and message distribution.
 
-2.2.3.1.  Core Responsibilities
+3.1.3.1.  Core Responsibilities
 
    The session layer encapsulates several key functionalities:
 
@@ -391,7 +392,7 @@ Table of Contents
    nodes, automatically handling node discovery, connection
    establishment, and subscription management.
 
-2.2.3.2.  API Design Principles
+3.1.3.2.  API Design Principles
 
    The session layer API is designed with the following principles:
 
@@ -411,7 +412,7 @@ Table of Contents
       mechanisms help applications handle communication issues and
       authentication failures.
 
-2.2.3.3.  Session Management
+3.1.3.3.  Session Management
 
    The session layer maintains persistent session state at the client
    across network disconnections and node failures.  It implements
@@ -420,7 +421,7 @@ Table of Contents
    conditions.  Session persistence includes maintaining MLS group
    membership state, channel subscriptions, and pending message queues.
 
-2.3.  Naming Considerations
+3.2.  Naming Considerations
 
    SLIM requires several types of identifiers: node names, channel
    names, and client locators.
@@ -469,9 +470,9 @@ Table of Contents
    prefixes such as organization identifiers, organization namespaces,
    and services.
 
-2.4.  Deployment Considerations
+3.3.  Deployment Considerations
 
-3.  Security Considerations
+4.  Security Considerations
 
    Security is a paramount concern for SLIM, given the sensitive nature
    of the data being transmitted and the need for reliable access
@@ -479,7 +480,7 @@ Table of Contents
    but also introduces new mechanisms to address its unique
    requirements.
 
-3.1.  Authentication and Authorization
+4.1.  Authentication and Authorization
 
    Authentication and authorization in SLIM are handled at the
    application level, leveraging the capabilities of the underlying MLS
@@ -492,9 +493,9 @@ Table of Contents
    Authorization policies determine what actions an authenticated client
    is allowed to perform, such as publishing or subscribing to specific
 
-4.  References
+5.  References
 
-4.1.  Normative References
+5.1.  Normative References
 
    [DID-Methods]
               Group, W. C. C., "Known DID Methods in the Decentralized
@@ -533,7 +534,7 @@ Table of Contents
               Architecture", RFC 9750, DOI 10.17487/RFC9750, April 2025,
               <https://www.rfc-editor.org/rfc/rfc9750>.
 
-4.2.  Informative References
+5.2.  Informative References
 
    [CID-Spec] Community, M., "CID (Content IDentifier) Specification",
               n.d., <https://github.com/multiformats/cid>.
