@@ -455,6 +455,8 @@ The naming structure follows these patterns:
 client locator: did:key(org)/namespace(org)/service/did:key(client)
 channel name: did:key(org)/namespace(org)/service/did:key(moderator)
 ```
+
+
 Where the moderator is the special client that has the role to create a channel,
 add actual application clients and remove them from the group.
 As mentioned above the moderator is a data plane client which is a decentralized
