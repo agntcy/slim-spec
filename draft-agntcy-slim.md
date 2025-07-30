@@ -313,11 +313,6 @@ Key functions of the control plane include:
   analyzes telemetry data from messaging nodes, providing insights
   into system performance, message flow, and potential issues.
 
-- **Fault Detection and Recovery**: In case of node failures or
-  network issues, the control plane detects faults and initiates
-  recovery procedures, such as rerouting messages or reallocating
-  resources.
-
 - **Security and Access Control**: The control plane manages
   security policies, authentication, and authorization of nodes and
   clients, ensuring a secure messaging environment.
@@ -385,8 +380,6 @@ subscription recovery, and message queuing to ensure reliable message delivery
 even in unstable network conditions. Session persistence includes maintaining
 MLS group membership state, channel subscriptions, and pending message queues.
 
-
-
 ## Naming Considerations
 
 SLIM requires several types of identifiers: node names, channel names,
@@ -428,8 +421,8 @@ channel name: did:key(org)/namespace(org)/service/did:key(moderator)
 ```
 Where the moderator is the special client that has the role to create a channel,
 add actual application clients and remove them from the group.
-The moderator is a data place client which is a decentralized instance
-of the MLS delivery service.
+As mentioned above the moderator is a data plane client which is a decentralized
+instance of the MLS delivery service as described in {{!RFC9420}}.
 
 The hierarchical structure is required to maximize aggregation in subscription
 tables, which can aggregate multiple names under name prefixes such as
