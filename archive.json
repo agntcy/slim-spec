@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-29T00:36:27.522659+00:00",
+  "timestamp": "2025-07-31T00:33:43.825735+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -215,6 +215,168 @@
           "body": "",
           "createdAt": "2025-07-01T08:05:51Z",
           "updatedAt": "2025-07-01T08:05:51Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDON1QDo86hQAdN",
+      "title": "379 internet draft version 0 which covers all main components",
+      "url": "https://github.com/agntcy/slim-spec/pull/5",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-29T21:06:03Z",
+      "updatedAt": "2025-07-30T16:40:51Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "19b15a88c2693c4b91c086024689f67e37b0f4ac",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "379-internet-draft-version-0-which-covers-all-main-components",
+      "headRefOid": "c0343d5b429ee59385775e2acc5aa93295dfd291",
+      "closedAt": "2025-07-30T16:40:51Z",
+      "mergedAt": "2025-07-30T16:40:51Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "9081d62b703a3f4cea902f18ebd0c8c32006547f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo863FMA5",
+          "commit": {
+            "abbreviatedOid": "1f1ea16"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-30T13:35:15Z",
+          "updatedAt": "2025-07-30T13:35:15Z",
+          "comments": [
+            {
+              "originalPosition": 106,
+              "body": "should we say that message delivery is guaranteed up to a point, meaning that we operate similarly to a real-time app, where after a while messages are dropped and not delivered anymore. ",
+              "createdAt": "2025-07-30T13:35:15Z",
+              "updatedAt": "2025-07-30T13:35:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON1QDo863FTjd",
+          "commit": {
+            "abbreviatedOid": "1f1ea16"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-30T13:43:06Z",
+          "updatedAt": "2025-07-30T13:43:07Z",
+          "comments": [
+            {
+              "originalPosition": 149,
+              "body": "- data place -> data plane\r\n- Is it better to move this paragraph up like at line 409 where the MLS group and the moderator are described?\r\n- If not present in other places I would add a reference to the RFC with the explanation of the MLS delivery servuce ",
+              "createdAt": "2025-07-30T13:43:06Z",
+              "updatedAt": "2025-07-30T13:43:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON1QDo863IBce",
+          "commit": {
+            "abbreviatedOid": "c0343d5"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "lgtm",
+          "createdAt": "2025-07-30T16:10:09Z",
+          "updatedAt": "2025-07-30T16:10:09Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDON1QDo86hZoPx",
+      "title": "379 internet draft version 0 which covers all main components",
+      "url": "https://github.com/agntcy/slim-spec/pull/6",
+      "state": "OPEN",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- **docs: describe naming system**\n- **docs: describe naming system**\n- **chore: sections update**\n- **chore: sections update**\n- **feat:  namespace description**\n- **feat:  namespace description**\n- **feat:  namespace description**\n",
+      "createdAt": "2025-07-30T17:02:07Z",
+      "updatedAt": "2025-07-30T17:15:07Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "9081d62b703a3f4cea902f18ebd0c8c32006547f",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "379-internet-draft-version-0-which-covers-all-main-components",
+      "headRefOid": "7252c616264b042db14e1ddc033ddff2bb2c9462",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo863JGYq",
+          "commit": {
+            "abbreviatedOid": "7252c61"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-30T17:13:25Z",
+          "updatedAt": "2025-07-30T17:13:25Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "and mobile -> to mobile",
+              "createdAt": "2025-07-30T17:13:25Z",
+              "updatedAt": "2025-07-30T17:13:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON1QDo863JHqH",
+          "commit": {
+            "abbreviatedOid": "7252c61"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-30T17:14:59Z",
+          "updatedAt": "2025-07-30T17:14:59Z",
+          "comments": [
+            {
+              "originalPosition": 82,
+              "body": "I think \"channels\" is missing here at the end ",
+              "createdAt": "2025-07-30T17:14:59Z",
+              "updatedAt": "2025-07-30T17:14:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON1QDo863JH4x",
+          "commit": {
+            "abbreviatedOid": "7252c61"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-30T17:15:07Z",
+          "updatedAt": "2025-07-30T17:15:07Z",
           "comments": []
         }
       ]
