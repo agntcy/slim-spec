@@ -468,6 +468,14 @@ organization identifiers, organization namespaces, and services.
 
 
 ## Deployment Considerations
+SLIM helps the deployment of agentic AI applications where a combination of
+data streams, tools and LLMs are combined to create a distributed multi-agent
+systems that can solve problems via AI.
+
+These applications work as SLIM clients and MAY expose a service to the secure
+group. The channel and client naming structure combined allows for service
+discovery capabilities by binding the application a specific application
+namespace and service name.
 
 # Security Considerations
 
@@ -487,3 +495,4 @@ messages and the identity of the sender.
 
 Authorization policies determine what actions an authenticated client
 is allowed to perform, such as publishing or subscribing to specific
+channels.
