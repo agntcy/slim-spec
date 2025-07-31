@@ -103,12 +103,48 @@ compatibility with existing gRPC deployments.
 
 # Introduction
 
+## Summary
 
-As AI systems become more sophisticated and interconnected, there is a growing need
-for protocols that can support real-time interactive applications at scale.
+The Secure Low-Latency Interactive Messaging (SLIM) protocol addresses the
+unique communication requirements of modern AI agentic applications by providing
+a secure, scalable, and efficient messaging infrastructure. SLIM combines the
+reliability and performance of gRPC with publish-subscribe messaging
+capabilities, creating a comprehensive solution for interactive AI application
+communication.
 
+At its core, SLIM consists of three primary components: messaging nodes that
+serve as intelligent message queues, message producers that publish encrypted
+content, and message consumers that subscribe to and receive messages. The
+protocol leverages Message Layer Security (MLS) for end-to-end encryption,
+ensuring that messages remain confidential even when passing through
+intermediate nodes or experiencing TLS termination along the communication path.
 
-## Protocol Overview
+The architecture is built around a distributed network of messaging nodes, each
+maintaining connection and subscription tables to enable efficient message
+routing.  A centralized control plane orchestrates the entire system, handling
+node discovery, configuration management, security policies, and system
+monitoring. This separation of control and data planes allows for scalable
+deployment while maintaining centralized administrative control.
+
+SLIM employs a hierarchical naming system based on Decentralized Identifiers
+(DIDs) to ensure globally unique, secure, and routable channel names. This
+naming scheme supports both decentralized and federated authentication models,
+enabling flexible deployment across different organizational boundaries while
+maintaining security and interoperability.
+
+The protocol includes a session layer that abstracts the complexity of MLS
+operations and messaging infrastructure from applications, providing simple
+publish-subscribe APIs while handling authentication, encryption, connection
+management, and fault recovery automatically. This design enables developers
+to focus on application logic rather than the underlying messaging complexities.
+
+Security is fundamental to SLIM's design, with authentication and authorization
+handled through MLS groups, cryptographic client identities, and configurable
+access policies. The protocol supports deployment in various environments, from
+data center workloads and mobile applications, while maintaining
+consistent security guarantees and low-latency performance characteristics.
+
+# Protocol Overview
 
 SLIM is designed to work as a messaging layer for applications running as
 workloads in a data center, but also running in a browser or mobile device while
@@ -419,6 +455,8 @@ The naming structure follows these patterns:
 client locator: did:key(org)/namespace(org)/service/did:key(client)
 channel name: did:key(org)/namespace(org)/service/did:key(moderator)
 ```
+
+
 Where the moderator is the special client that has the role to create a channel,
 add actual application clients and remove them from the group.
 As mentioned above the moderator is a data plane client which is a decentralized
@@ -430,6 +468,14 @@ organization identifiers, organization namespaces, and services.
 
 
 ## Deployment Considerations
+SLIM helps the deployment of agentic AI applications where a combination of
+data streams, tools and LLMs are combined to create a distributed multi-agent
+systems that can solve problems via AI.
+
+These applications work as SLIM clients and MAY expose a service to the secure
+group. The channel and client naming structure combined allows for service
+discovery capabilities by binding the application a specific application
+namespace and service name.
 
 # Security Considerations
 
@@ -449,16 +495,4 @@ messages and the identity of the sender.
 
 Authorization policies determine what actions an authenticated client
 is allowed to perform, such as publishing or subscribing to specific
-channels. These policies are enforced by the messaging nodes, which
-check the client's credentials and the requested operation against the
-configured policies.
-
-## Confidentiality and Integrity
-
-Confidentiality and integrity of messages are ensured through end-to-end
-encryption using MLS. Messages are encrypted by the producer before
-being sent and can only be decrypted by consumers that are members of
-the same MLS group. This ensures that even if messages are intercepted
-in transit, they cannot be read or tampered with by unauthorized
-parties.
-
+channels.
