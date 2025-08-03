@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-31T00:33:43.825735+00:00",
+  "timestamp": "2025-08-03T00:37:23.958763+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -306,24 +306,26 @@
       "id": "PR_kwDON1QDo86hZoPx",
       "title": "379 internet draft version 0 which covers all main components",
       "url": "https://github.com/agntcy/slim-spec/pull/6",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "- **docs: describe naming system**\n- **docs: describe naming system**\n- **chore: sections update**\n- **chore: sections update**\n- **feat:  namespace description**\n- **feat:  namespace description**\n- **feat:  namespace description**\n",
       "createdAt": "2025-07-30T17:02:07Z",
-      "updatedAt": "2025-07-30T17:15:07Z",
+      "updatedAt": "2025-07-31T06:23:44Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "9081d62b703a3f4cea902f18ebd0c8c32006547f",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "379-internet-draft-version-0-which-covers-all-main-components",
-      "headRefOid": "7252c616264b042db14e1ddc033ddff2bb2c9462",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "26cca1617f20a16a6ed6fbfe7d37b7abde2064d0",
+      "closedAt": "2025-07-31T06:23:44Z",
+      "mergedAt": "2025-07-31T06:23:44Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "20176a2eb97c2754ec32aced283ec22964f86a79"
+      },
       "comments": [],
       "reviews": [
         {
