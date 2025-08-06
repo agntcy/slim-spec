@@ -94,7 +94,7 @@ Table 1 provides a detailed comparison of three popular messaging protocols comm
 
 Table 2 extends the comparison to include additional protocols relevant to modern agentic AI systems:
 
-| Feature | AMQP over WebSockets | Kafka | AGP |
+| Feature | AMQP over WebSockets | Kafka | SLIM |
 |---------|---------------------|-------|-----|
 | **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | AGP Spec |
 | **Transport** | WebSockets over TLS | TCP (optionally TLS) | gRPC (over HTTP/2-HTTP/3) |
