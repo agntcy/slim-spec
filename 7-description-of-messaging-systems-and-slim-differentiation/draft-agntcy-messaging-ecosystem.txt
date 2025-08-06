@@ -188,7 +188,7 @@ Table of Contents
    relevant to modern agentic AI systems:
 
    +================+==============+===============+===================+
-   |Feature         |AMQP over     |Kafka          |AGP                |
+   |Feature         |AMQP over     |Kafka          |SLIM               |
    |                |WebSockets    |               |                   |
    +================+==============+===============+===================+
    |*Protocol Type* |AMQP tunneled |Distributed    |AGP Spec           |
