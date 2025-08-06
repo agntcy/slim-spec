@@ -35,11 +35,12 @@ Abstract
    attacker to decrypt future communications.
 
    Below, we compare six popular messaging protocols—AMQP, MQTT, NATS,
-   AMQP over WebSockets, Kafka, and the emerging AGP (Agent Gateway
-   Protocol)—across dimensions that matter for GenAI agent systems:
-   streaming performance, delivery guarantees, flexible pub/sub
-   patterns, agent coordination, security (including end-to-end
-   encryption and zero-trust support), and real-world adoption.
+   AMQP over WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure
+   Low-Latency Interactive Messaging )—across dimensions that matter for
+   GenAI agent systems: streaming performance, delivery guarantees,
+   flexible pub/sub patterns, agent coordination, security (including
+   end-to-end encryption and zero-trust support), and real-world
+   adoption.
 
 About This Document
 
@@ -191,7 +192,7 @@ Table of Contents
    |Feature         |AMQP over     |Kafka          |SLIM               |
    |                |WebSockets    |               |                   |
    +================+==============+===============+===================+
-   |*Protocol Type* |AMQP tunneled |Distributed    |AGP Spec           |
+   |*Protocol Type* |AMQP tunneled |Distributed    |SLIM Spec          |
    |                |through       |commit log,    |                   |
    |                |WebSockets    |high-throughput|                   |
    |                |              |pub/sub        |                   |
