@@ -57,7 +57,8 @@ forward secrecy are vital when compromised credentials must not enable an
 attacker to decrypt future communications.
 
 Below, we compare six popular messaging protocols—AMQP, MQTT, NATS, AMQP over
-WebSockets, Kafka, and the emerging AGP (Agent Gateway Protocol)—across
+WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure Low-Latency Interactive
+Messaging )—across
 dimensions that matter for GenAI agent systems: streaming performance, delivery
 guarantees, flexible pub/sub patterns, agent coordination, security (including
 end-to-end encryption and zero-trust support), and real-world adoption.
@@ -96,7 +97,7 @@ Table 2 extends the comparison to include additional protocols relevant to moder
 
 | Feature | AMQP over WebSockets | Kafka | SLIM |
 |---------|---------------------|-------|-----|
-| **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | AGP Spec |
+| **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | SLIM Spec |
 | **Transport** | WebSockets over TLS | TCP (optionally TLS) | gRPC (over HTTP/2-HTTP/3) |
 | **Message Model** | Same as AMQP (depends on the broker's AMQP model) | Topics with partitions, consumer groups, offset-based consumption | Topics based on organization, namespace, agent types etc. |
 | **QoS / Delivery** | Same as AMQP | At-least-once default; exactly-once possible via transactions | Fire&Forget unreliable (at-most-once), unreliable and reliable (exactly-once). This extends to request/reply and streaming as well. |
