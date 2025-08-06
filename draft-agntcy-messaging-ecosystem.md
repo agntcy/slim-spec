@@ -37,6 +37,22 @@ author:
 
 --- abstract
 
+Agentic AI systems require messaging infrastructure that supports real-time collaboration, high-volume streaming, and dynamic group coordination across distributed networks. Traditional protocols like AMQP, MQTT, and NATS address some requirements but fall short on security, particularly regarding post-compromise protection and quantum-safe encryption essential for autonomous agents handling sensitive data.
+
+This document analyzes six messaging protocols—AMQP, MQTT, NATS, AMQP over WebSockets, Kafka, and AGNTCY SLIM—across dimensions critical for GenAI agent systems: streaming performance, delivery guarantees, security models, and operational complexity. We examine how each protocol's design decisions impact agentic AI deployments, from lightweight edge computing scenarios to large-scale multi-organizational collaborations.
+
+AGNTCY SLIM emerges as a purpose-built solution, integrating Message Layer Security (MLS) with gRPC over HTTP/2 to provide quantum-safe end-to-end encryption, efficient streaming, and OAuth-based authentication. Unlike transport-layer security approaches, SLIM's MLS implementation ensures secure communication even through untrusted intermediaries while supporting dynamic group membership changes essential for collaborative AI agents.
+
+--- middle
+
+# Conventions and Definitions
+
+{::boilerplate bcp14-tagged}
+
+# Introduction
+
+
+
 When designing a multi-agent system for generative AI, the messaging layer
 becomes a critical piece of infrastructure. GenAI agents—built with frameworks
 like LangGraph, AutoGen, or LlamaIndex—often need to collaborate in real time,
@@ -62,16 +78,6 @@ Messaging )—across
 dimensions that matter for GenAI agent systems: streaming performance, delivery
 guarantees, flexible pub/sub patterns, agent coordination, security (including
 end-to-end encryption and zero-trust support), and real-world adoption.
-
-
---- middle
-
-# Conventions and Definitions
-
-{::boilerplate bcp14-tagged}
-
-# Introduction
-
 # Comparison
 
 Table 1 provides a detailed comparison of three popular messaging protocols commonly considered for agent communication systems:
