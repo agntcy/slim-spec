@@ -5,11 +5,11 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 2 January 2026                                            Cisco
-                                                             1 July 2025
+Expires: 7 February 2026                                           Cisco
+                                                           6 August 2025
 
 
-      Secure Interactive Low-Latency Interactive Messaging (SLIM)
+            Secure Low-Latency Interactive Messaging (SLIM)
                         draft-agntcy-slim-latest
 
 Abstract
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 January 2026.
+   This Internet-Draft will expire on 7 February 2026.
 
 Copyright Notice
 
@@ -69,16 +69,19 @@ Table of Contents
 
    1.  Conventions and Definitions
    2.  Introduction
-     2.1.  Protocol Overview
-       2.1.1.  Messaging Nodes
-       2.1.2.  Control Plane
-       2.1.3.  Session Layer
-     2.2.  Naming Considerations
-     2.3.  Deployment Considerations
-   3.  Security Considerations
-     3.1.  Authentication and Authorization
-     3.2.  Confidentiality and Integrity
-   4.  Normative References
+     2.1.  Summary
+   3.  Protocol Overview
+     3.1.  Messaging Nodes
+       3.1.1.  Connection Table
+       3.1.2.  Control Plane
+       3.1.3.  Session Layer
+     3.2.  Naming Considerations
+     3.3.  Deployment Considerations
+   4.  Security Considerations
+     4.1.  Authentication and Authorization
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Authors' Addresses
 
 1.  Conventions and Definitions
@@ -91,11 +94,53 @@ Table of Contents
 
 2.  Introduction
 
-   As AI systems become more sophisticated and interconnected, there is
-   a growing need for protocols that can support real-time interactive
-   applications at scale.
+2.1.  Summary
 
-2.1.  Protocol Overview
+   The Secure Low-Latency Interactive Messaging (SLIM) protocol
+   addresses the unique communication requirements of modern AI agentic
+   applications by providing a secure, scalable, and efficient messaging
+   infrastructure.  SLIM combines the reliability and performance of
+   gRPC with publish-subscribe messaging capabilities, creating a
+   comprehensive solution for interactive AI application communication.
+
+   At its core, SLIM consists of three primary components: messaging
+   nodes that serve as intelligent message queues, message producers
+   that publish encrypted content, and message consumers that subscribe
+   to and receive messages.  The protocol leverages Message Layer
+   Security (MLS) for end-to-end encryption, ensuring that messages
+   remain confidential even when passing through intermediate nodes or
+   experiencing TLS termination along the communication path.
+
+   The architecture is built around a distributed network of messaging
+   nodes, each maintaining connection and subscription tables to enable
+   efficient message routing.  A centralized control plane orchestrates
+   the entire system, handling node discovery, configuration management,
+   security policies, and system monitoring.  This separation of control
+   and data planes allows for scalable deployment while maintaining
+   centralized administrative control.
+
+   SLIM employs a hierarchical naming system based on Decentralized
+   Identifiers (DIDs) to ensure globally unique, secure, and routable
+   channel names.  This naming scheme supports both decentralized and
+   federated authentication models, enabling flexible deployment across
+   different organizational boundaries while maintaining security and
+   interoperability.
+
+   The protocol includes a session layer that abstracts the complexity
+   of MLS operations and messaging infrastructure from applications,
+   providing simple publish-subscribe APIs while handling
+   authentication, encryption, connection management, and fault recovery
+   automatically.  This design enables developers to focus on
+   application logic rather than the underlying messaging complexities.
+
+   Security is fundamental to SLIM's design, with authentication and
+   authorization handled through MLS groups, cryptographic client
+   identities, and configurable access policies.  The protocol supports
+   deployment in various environments, from data center workloads and
+   mobile applications, while maintaining consistent security guarantees
+   and low-latency performance characteristics.
+
+3.  Protocol Overview
 
    SLIM is designed to work as a messaging layer for applications
    running as workloads in a data center, but also running in a browser
@@ -164,7 +209,7 @@ Table of Contents
    MLS commit messages are exchanged directly using the SLIM messaging
    nodes.
 
-2.1.1.  Messaging Nodes
+3.1.  Messaging Nodes
 
    Messaging nodes are fundamental components of the SLIM architecture
    that serve as specialized message queues.  They fulfill several
@@ -214,7 +259,7 @@ Table of Contents
    participating in the broader network, creating a resilient and
    scalable messaging infrastructure.
 
-2.1.1.1.  Connection Table
+3.1.1.  Connection Table
 
    The connection table serves as a fundamental data structure within
    the SLIM messaging node architecture, maintaining a comprehensive
@@ -254,7 +299,7 @@ Table of Contents
    Channel names are encoded as human-readable hierarchical names for
    efficient table lookup operations.
 
-2.1.1.2.  Subscription Table and Matching
+3.1.1.1.  Subscription Table and Matching
 
    The subscription table is used to map channel subscriptions to
    neighboring nodes.  It manages the distribution of messages based on
@@ -282,7 +327,7 @@ Table of Contents
       Figure 3: SLIM message structure carrying channel name, address
                              locator, and data.
 
-2.1.2.  Control Plane
+3.1.2.  Control Plane
 
    The control plane is responsible for the management and orchestration
    of SLIM messaging nodes and their interconnections.  It handles the
@@ -305,11 +350,6 @@ Table of Contents
       analyzes telemetry data from messaging nodes, providing insights
       into system performance, message flow, and potential issues.
 
-   *  *Fault Detection and Recovery*: In case of node failures or
-      network issues, the control plane detects faults and initiates
-      recovery procedures, such as rerouting messages or reallocating
-      resources.
-
    *  *Security and Access Control*: The control plane manages security
       policies, authentication, and authorization of nodes and clients,
       ensuring a secure messaging environment.
@@ -319,14 +359,78 @@ Table of Contents
    SLIM messaging infrastructure.  It enables efficient scaling, dynamic
    reconfiguration, and proactive maintenance of the node network.
 
-2.1.3.  Session Layer
+3.1.3.  Session Layer
 
-   Clients connect to messaging nodes via a session layer.
+   The session layer serves as a critical abstraction component that
+   bridges application frameworks with the underlying SLIM messaging
+   infrastructure.  It provides a unified interface that simplifies the
+   complexity of secure messaging while handling the details of MLS
+   client operations and message distribution.
 
-2.2.  Naming Considerations
+3.1.3.1.  Core Responsibilities
 
-   SLIM requires several types of identifiers, including channel names,
-   client names, and client locators.
+   The session layer encapsulates several key functionalities:
+
+   *MLS Client Operations*: The layer implements comprehensive MLS
+   client functionality including authentication procedures, message
+   encryption and decryption, key management, and group membership
+   operations.  It handles the complex cryptographic operations
+   transparently from the application perspective.
+
+   *Channel Management*: It provides seamless channel subscription and
+   unsubscription capabilities, managing the lifecycle of channel
+   memberships and maintaining subscription state across connection
+   interruptions or node failures.
+
+   *Message Abstraction*: The session layer abstracts message passing
+   between applications and the SLIM message distribution network,
+   handling message formatting, routing, and delivery confirmation while
+   providing simple send and receive primitives to applications.
+
+   *Configuration Abstraction*: It eliminates the need for applications
+   to manage complex configuration details required to connect to SLIM
+   nodes, automatically handling node discovery, connection
+   establishment, and subscription management.
+
+3.1.3.2.  API Design Principles
+
+   The session layer API is designed with the following principles:
+
+   *  Simplicity: Applications interact with the messaging system
+      through intuitive publish/subscribe operations without needing to
+      understand the underlying MLS or routing complexities.
+
+   *  Asynchronous Operations: All messaging operations are designed to
+      be non-blocking, supporting high-performance applications.
+
+   *  Framework Agnostic: The API provides language bindings and
+      framework adapters for various application development
+      environments, ensuring broad compatibility across different
+      technology stacks.
+
+   *  Error Handling: Comprehensive error reporting and recovery
+      mechanisms help applications handle communication issues and
+      authentication failures.
+
+3.1.3.3.  Session Management
+
+   The session layer maintains persistent session state at the client
+   across network disconnections and node failures.  It implements
+   automatic reconnection logic, subscription recovery, and message
+   queuing to ensure reliable message delivery even in unstable network
+   conditions.  Session persistence includes maintaining MLS group
+   membership state, channel subscriptions, and pending message queues.
+
+3.2.  Naming Considerations
+
+   SLIM requires several types of identifiers: node names, channel
+   names, and client locators.
+
+   Node names are used for secure onboarding and authentication.  Node
+   names do not have aggregation requirements and therefore use
+   decentralized identifiers:
+
+   node name A: did:key(node_A)
 
    A channel name identifies a messaging group and must be routable;
    that is, it must include a globally unique network prefix that can be
@@ -342,12 +446,43 @@ Table of Contents
    globally unique naming, enabling the creation of permissionless
    systems where channel names and client names can be distributed
    across administrative boundaries.  W3C DIDs are optional but can be
-   used when hashlinks are employed and conform to the Named Information
-   [RFC6920] standard, referencing the IANA registry [NI-Registry].
+   used when hash links are employed and conform to the Named
+   Information [RFC6920] standard, referencing the IANA registry
+   [NI-Registry].
 
-2.3.  Deployment Considerations
+   SLIM routable name prefixes and client names can use different DID
+   methods which have different resolution systems such as did:web
+   [DID-Web], did:key [DID-Key] or did:plc [DID-ATProto].  See
+   [DID-Methods] for well-known DID methods.
 
-3.  Security Considerations
+   The naming structure follows these patterns:
+
+   client locator: did:key(org)/namespace(org)/service/did:key(client)
+   channel name: did:key(org)/namespace(org)/service/did:key(moderator)
+
+   Where the moderator is the special client that has the role to create
+   a channel, add actual application clients and remove them from the
+   group.  As mentioned above the moderator is a data plane client which
+   is a decentralized instance of the MLS delivery service as described
+   in [RFC9420].
+
+   The hierarchical structure is required to maximize aggregation in
+   subscription tables, which can aggregate multiple names under name
+   prefixes such as organization identifiers, organization namespaces,
+   and services.
+
+3.3.  Deployment Considerations
+
+   SLIM helps the deployment of agentic AI applications where a
+   combination of data streams, tools and LLMs are combined to create a
+   distributed multi-agent systems that can solve problems via AI.
+
+   These applications work as SLIM clients and MAY expose a service to
+   the secure group.  The channel and client naming structure combined
+   allows for service discovery capabilities by binding the application
+   a specific application namespace and service name.
+
+4.  Security Considerations
 
    Security is a paramount concern for SLIM, given the sensitive nature
    of the data being transmitted and the need for reliable access
@@ -355,7 +490,7 @@ Table of Contents
    but also introduces new mechanisms to address its unique
    requirements.
 
-3.1.  Authentication and Authorization
+4.1.  Authentication and Authorization
 
    Authentication and authorization in SLIM are handled at the
    application level, leveraging the capabilities of the underlying MLS
@@ -367,20 +502,16 @@ Table of Contents
 
    Authorization policies determine what actions an authenticated client
    is allowed to perform, such as publishing or subscribing to specific
-   channels.  These policies are enforced by the messaging nodes, which
-   check the client's credentials and the requested operation against
-   the configured policies.
+   channels.
 
-3.2.  Confidentiality and Integrity
+5.  References
 
-   Confidentiality and integrity of messages are ensured through end-to-
-   end encryption using MLS.  Messages are encrypted by the producer
-   before being sent and can only be decrypted by consumers that are
-   members of the same MLS group.  This ensures that even if messages
-   are intercepted in transit, they cannot be read or tampered with by
-   unauthorized parties.
+5.1.  Normative References
 
-4.  Normative References
+   [DID-Methods]
+              Group, W. C. C., "Known DID Methods in the Decentralized
+              Identifier Ecosystem", 29 April 2025,
+              <https://www.w3.org/TR/did-extensions-methods/>.
 
    [DID-W3C]  Group, W. C. C., "Decentralized Identifiers (DIDs) v1.0",
               19 July 2022, <https://www.w3.org/TR/did-core/>.
@@ -413,6 +544,23 @@ Table of Contents
               A. Duric, "The Messaging Layer Security (MLS)
               Architecture", RFC 9750, DOI 10.17487/RFC9750, April 2025,
               <https://www.rfc-editor.org/rfc/rfc9750>.
+
+5.2.  Informative References
+
+   [CID-Spec] Community, M., "CID (Content IDentifier) Specification",
+              n.d., <https://github.com/multiformats/cid>.
+
+   [DID-ATProto]
+              Community, B. P., "Decentralized Identifiers (DIDs) in the
+              AT Protocol", n.d.,
+              <https://atproto.wiki/en/wiki/reference/identifiers/did>.
+
+   [DID-Key]  Group, W. C. C., "The did:key Method v0.7: A DID Method
+              for Static Cryptographic Keys", 26 March 2025,
+              <https://w3c-ccg.github.io/did-method-key/>.
+
+   [DID-Web]  Group, W. C. C., "The did:web Method Specification", n.d.,
+              <https://w3c-ccg.github.io/did-method-web/>.
 
 Authors' Addresses
 
