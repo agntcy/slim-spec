@@ -13,34 +13,29 @@ Expires: 7 February 2026
 
 Abstract
 
-   When designing a multi-agent system for generative AI, the messaging
-   layer becomes a critical piece of infrastructure.  GenAI agents—built
-   with frameworks like LangGraph, AutoGen, or LlamaIndex—often need to
-   collaborate in real time, exchange high volumes of streaming data
-   (e.g., token-by-token outputs), and coordinate complex tasks such as
-   voting or consensus.  Moreover, security requirements extend well
-   beyond basic TLS; in scenarios where agents share sensitive models or
-   partial computations, post-compromise security and robust end-to-end
-   encryption are essential.
+   Agentic AI systems require messaging infrastructure that supports
+   real-time collaboration, high-volume streaming, and dynamic group
+   coordination across distributed networks.  Traditional protocols like
+   AMQP, MQTT, and NATS address some requirements but fall short on
+   security, particularly regarding post-compromise protection and
+   quantum-safe encryption essential for autonomous agents handling
+   sensitive data.
 
-   In practice, you’ll want a protocol that efficiently handles one-to-
-   many or many-to-many communication, supports dynamic membership (with
-   agents joining or leaving on the fly), and scales to accommodate a
-   “forest” of agents spread across global networks.  Some protocols
-   excel at ultra-low-latency, high-throughput streaming—critical for
-   continuous token streams or aggregated embeddings—while others
-   emphasize strong consistency and durability.  Additionally, advanced
-   cryptographic features such as automatic key rotation and forward
-   secrecy are vital when compromised credentials must not enable an
-   attacker to decrypt future communications.
+   This document analyzes six messaging protocols—AMQP, MQTT, NATS, AMQP
+   over WebSockets, Kafka, and AGNTCY SLIM—across dimensions critical
+   for GenAI agent systems: streaming performance, delivery guarantees,
+   security models, and operational complexity.  We examine how each
+   protocol's design decisions impact agentic AI deployments, from
+   lightweight edge computing scenarios to large-scale multi-
+   organizational collaborations.
 
-   Below, we compare six popular messaging protocols—AMQP, MQTT, NATS,
-   AMQP over WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure
-   Low-Latency Interactive Messaging )—across dimensions that matter for
-   GenAI agent systems: streaming performance, delivery guarantees,
-   flexible pub/sub patterns, agent coordination, security (including
-   end-to-end encryption and zero-trust support), and real-world
-   adoption.
+   AGNTCY SLIM emerges as a purpose-built solution, integrating Message
+   Layer Security (MLS) with gRPC over HTTP/2 to provide quantum-safe
+   end-to-end encryption, efficient streaming, and OAuth-based
+   authentication.  Unlike transport-layer security approaches, SLIM's
+   MLS implementation ensures secure communication even through
+   untrusted intermediaries while supporting dynamic group membership
+   changes essential for collaborative AI agents.
 
 About This Document
 
@@ -89,18 +84,17 @@ Table of Contents
 
    1.  Conventions and Definitions
    2.  Introduction
-   3.  Comparison
-   4.  Protocol Analysis for Agentic AI Systems
-     4.1.  Traditional Enterprise Messaging: AMQP
-     4.2.  IoT-Optimized Messaging: MQTT
-     4.3.  Cloud-Native Messaging: NATS
-     4.4.  Browser Integration: AMQP over WebSockets
-     4.5.  High-Throughput Streaming: Apache Kafka
-     4.6.  Next-Generation Agent Messaging: SLIM
-     4.7.  Security Considerations for Agentic AI
-     4.8.  Performance Implications
-     4.9.  Deployment and Operational Considerations
-   5.  Normative References
+   3.  Protocol Analysis for Agentic AI Systems
+     3.1.  Traditional Enterprise Messaging: AMQP
+     3.2.  IoT-Optimized Messaging: MQTT
+     3.3.  Cloud-Native Messaging: NATS
+     3.4.  Browser Integration: AMQP over WebSockets
+     3.5.  High-Throughput Streaming: Apache Kafka
+     3.6.  Next-Generation Agent Messaging: SLIM
+     3.7.  Security Considerations for Agentic AI
+     3.8.  Performance Implications
+     3.9.  Deployment and Operational Considerations
+   4.  Normative References
    Author's Address
 
 1.  Conventions and Definitions
@@ -113,7 +107,34 @@ Table of Contents
 
 2.  Introduction
 
-3.  Comparison
+   When designing a multi-agent system for generative AI, the messaging
+   layer becomes a critical piece of infrastructure.  GenAI agents—built
+   with frameworks like LangGraph, AutoGen, or LlamaIndex—often need to
+   collaborate in real time, exchange high volumes of streaming data
+   (e.g., token-by-token outputs), and coordinate complex tasks such as
+   voting or consensus.  Moreover, security requirements extend well
+   beyond basic TLS; in scenarios where agents share sensitive models or
+   partial computations, post-compromise security and robust end-to-end
+   encryption are essential.
+
+   In practice, you’ll want a protocol that efficiently handles one-to-
+   many or many-to-many communication, supports dynamic membership (with
+   agents joining or leaving on the fly), and scales to accommodate a
+   “forest” of agents spread across global networks.  Some protocols
+   excel at ultra-low-latency, high-throughput streaming—critical for
+   continuous token streams or aggregated embeddings—while others
+   emphasize strong consistency and durability.  Additionally, advanced
+   cryptographic features such as automatic key rotation and forward
+   secrecy are vital when compromised credentials must not enable an
+   attacker to decrypt future communications.
+
+   Below, we compare six popular messaging protocols—AMQP, MQTT, NATS,
+   AMQP over WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure
+   Low-Latency Interactive Messaging )—across dimensions that matter for
+   GenAI agent systems: streaming performance, delivery guarantees,
+   flexible pub/sub patterns, agent coordination, security (including
+   end-to-end encryption and zero-trust support), and real-world
+   adoption. # Comparison
 
    Table 1 provides a detailed comparison of three popular messaging
    protocols commonly considered for agent communication systems:
@@ -313,12 +334,12 @@ Table of Contents
 
                                   Table 2
 
-4.  Protocol Analysis for Agentic AI Systems
+3.  Protocol Analysis for Agentic AI Systems
 
    The following sections provide detailed analysis of each messaging
    protocol in the context of agentic AI requirements.
 
-4.1.  Traditional Enterprise Messaging: AMQP
+3.1.  Traditional Enterprise Messaging: AMQP
 
    The Advanced Message Queuing Protocol (AMQP), most commonly
    implemented through RabbitMQ, represents the gold standard for
@@ -347,7 +368,7 @@ Table of Contents
    corporate identity systems but may not align with modern cloud-native
    authentication patterns preferred in AI infrastructure.
 
-4.2.  IoT-Optimized Messaging: MQTT
+3.2.  IoT-Optimized Messaging: MQTT
 
    Message Queuing Telemetry Transport (MQTT) emerged from the IoT world
    with a focus on lightweight, efficient communication over constrained
@@ -374,7 +395,7 @@ Table of Contents
    features required for complex multi-agent AI systems involving
    different trust domains.
 
-4.3.  Cloud-Native Messaging: NATS
+3.3.  Cloud-Native Messaging: NATS
 
    NATS represents a modern approach to messaging designed for cloud-
    native architectures.  Its lightweight design and support for
@@ -401,7 +422,7 @@ Table of Contents
    transport-layer security rather than providing built-in end-to-end
    message encryption.
 
-4.4.  Browser Integration: AMQP over WebSockets
+3.4.  Browser Integration: AMQP over WebSockets
 
    AMQP over WebSockets addresses a specific deployment challenge:
    enabling browser-based AI agents or user interfaces to participate in
@@ -423,7 +444,7 @@ Table of Contents
    suitable for scenarios where browser integration is essential rather
    than for high-performance agent-to-agent communication.
 
-4.5.  High-Throughput Streaming: Apache Kafka
+3.5.  High-Throughput Streaming: Apache Kafka
 
    Apache Kafka represents a fundamentally different approach to
    messaging, based on distributed commit logs rather than traditional
@@ -459,7 +480,7 @@ Table of Contents
    requirements of AI systems handling sensitive model data or
    proprietary algorithms.
 
-4.6.  Next-Generation Agent Messaging: SLIM
+3.6.  Next-Generation Agent Messaging: SLIM
 
    AGNTCY SLIM (Secure Low-Latency Interactive Messaging) represents a
    purpose-built protocol for modern agentic AI systems, designed to
@@ -518,7 +539,7 @@ Table of Contents
    typical in agent coordination scenarios, peer-to-peer capabilities
    enable direct agent-to-agent communication when appropriate.
 
-4.7.  Security Considerations for Agentic AI
+3.7.  Security Considerations for Agentic AI
 
    Security requirements for agentic AI systems extend well beyond the
    capabilities provided by traditional messaging protocols.  The
@@ -555,7 +576,7 @@ Table of Contents
    while maintaining security properties, unlike approaches that require
    complete cryptographic context regeneration.
 
-4.8.  Performance Implications
+3.8.  Performance Implications
 
    The performance characteristics of messaging protocols significantly
    impact the behavior and capabilities of agentic AI systems,
@@ -588,7 +609,7 @@ Table of Contents
    provides efficient bidirectional streaming without the overhead of
    connection-per-stream approaches.
 
-4.9.  Deployment and Operational Considerations
+3.9.  Deployment and Operational Considerations
 
    The operational characteristics of messaging protocols significantly
    impact the total cost of ownership and operational complexity of
@@ -620,7 +641,7 @@ Table of Contents
    regulatory requirements, while the end-to-end encryption provides
    compliance with data protection regulations.
 
-5.  Normative References
+4.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
