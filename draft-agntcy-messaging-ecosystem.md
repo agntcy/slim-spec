@@ -37,16 +37,6 @@ author:
 
 --- abstract
 
-
-
---- middle
-
-# Conventions and Definitions
-
-{::boilerplate bcp14-tagged}
-
-# Introduction
-
 When designing a multi-agent system for generative AI, the messaging layer
 becomes a critical piece of infrastructure. GenAI agents—built with frameworks
 like LangGraph, AutoGen, or LlamaIndex—often need to collaborate in real time,
@@ -70,4 +60,14 @@ Below, we compare six popular messaging protocols—AMQP, MQTT, NATS, AMQP over
 WebSockets, Kafka, and the emerging AGP (Agent Gateway Protocol)—across
 dimensions that matter for GenAI agent systems: streaming performance, delivery
 guarantees, flexible pub/sub patterns, agent coordination, security (including
-end-to-end encryption and zero-trust support), and real-world adoption
+end-to-end encryption and zero-trust support), and real-world adoption.
+
+
+--- middle
+
+# Conventions and Definitions
+
+{::boilerplate bcp14-tagged}
+
+# Introduction
+
