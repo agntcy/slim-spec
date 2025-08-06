@@ -71,3 +71,23 @@ end-to-end encryption and zero-trust support), and real-world adoption.
 
 # Introduction
 
+# Comparison
+
+Table 1 provides a detailed comparison of three popular messaging protocols commonly considered for agent communication systems:
+
+| Feature | AMQP (e.g. RabbitMQ) | MQTT | NATS |
+|---------|----------------------|------|------|
+| **Protocol Type** | Message queueing (queues/exchanges) | Lightweight pub/sub for IoT | Lightweight messaging (pub/sub, req/reply, queue groups) |
+| **Transport** | TCP (optionally TLS) | TCP (optionally TLS) | TCP (optionally TLS) |
+| **Message Model** | Queues, exchanges, routing keys | Topic-based | Subjects (pub/sub), queue groups, request/reply |
+| **QoS / Delivery** | At-least-once, exactly-once (AMQP 1.0) | QoS 0 (at-most-once), 1, 2 (exactly-once) | At-most-once (core), at-least-once with JetStream |
+| **Streaming** | Via extensions/plugins (e.g. RabbitMQ Streams) | Not native (requires broker extensions) | Native with JetStream |
+| **Persistence** | Yes (durable queues) | Broker-dependent | Optional via JetStream |
+| **Protocol Overhead** | Higher (rich feature set) | Very low | Very low |
+| **Broker Required** | Yes | Yes | Optional (but common) |
+| **Authentication** | User/password, SASL (e.g., LDAP, Kerberos) | Username/password or custom tokens | NKey, JWT, token, user/password |
+| **Transport Security** | TLS | TLS | TLS |
+| **Message Security** | Typically broker-level or plugin-based encryption | Usually none at message level; rely on TLS | None in core (TLS in transit), JetStream can encrypt at rest |
+| **Binary or Text** | Binary framing | Binary framing | Text-based protocol (core), binary clients available |
+| **Use Cases** | Enterprise messaging, financial transactions, RPC | IoT, mobile, sensor networks | Cloud-native microservices, real-time communications |
+| **Real-World Usage** | Very widely used via RabbitMQ (top open-source broker) in enterprises of all sizes | Dominant in IoT ecosystems; supported by many device/broker vendors | Gaining traction in cloud-native (CNCF project), used by major tech companies |
