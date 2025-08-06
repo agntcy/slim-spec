@@ -184,6 +184,124 @@ Table of Contents
 
                                   Table 1
 
+   Table 2 extends the comparison to include additional protocols
+   relevant to modern agentic AI systems:
+
+   +================+==============+===============+===================+
+   |Feature         |AMQP over     |Kafka          |AGP                |
+   |                |WebSockets    |               |                   |
+   +================+==============+===============+===================+
+   |*Protocol Type* |AMQP tunneled |Distributed    |AGP Spec           |
+   |                |through       |commit log,    |                   |
+   |                |WebSockets    |high-throughput|                   |
+   |                |              |pub/sub        |                   |
+   +----------------+--------------+---------------+-------------------+
+   |*Transport*     |WebSockets    |TCP (optionally|gRPC (over         |
+   |                |over TLS      |TLS)           |HTTP/2-HTTP/3)     |
+   +----------------+--------------+---------------+-------------------+
+   |*Message Model* |Same as AMQP  |Topics with    |Topics based on    |
+   |                |(depends on   |partitions,    |organization,      |
+   |                |the broker's  |consumer       |namespace, agent   |
+   |                |AMQP model)   |groups, offset-|types etc.         |
+   |                |              |based          |                   |
+   |                |              |consumption    |                   |
+   +----------------+--------------+---------------+-------------------+
+   |*QoS / Delivery*|Same as AMQP  |At-least-once  |Fire&Forget        |
+   |                |              |default;       |unreliable (at-    |
+   |                |              |exactly-once   |most-once),        |
+   |                |              |possible via   |unreliable and     |
+   |                |              |transactions   |reliable (exactly- |
+   |                |              |               |once).  This       |
+   |                |              |               |extends to         |
+   |                |              |               |request/reply and  |
+   |                |              |               |streaming as well. |
+   +----------------+--------------+---------------+-------------------+
+   |*Streaming*     |Same as AMQP  |Native log-    |Native gRPC        |
+   |                |if broker     |based streaming|support via        |
+   |                |supports      |(Kafka Streams,|HTTP/2/3 client    |
+   |                |streaming     |KSQL, etc.)    |streaming, server  |
+   |                |              |               |streaming.  Notice |
+   |                |              |               |that Server Sent   |
+   |                |              |               |Events (SSE) with  |
+   |                |              |               |HTTP/1.1 cannot    |
+   |                |              |               |carry binary nor   |
+   |                |              |               |compressed data.   |
+   +----------------+--------------+---------------+-------------------+
+   |*Persistence*   |Same as AMQP  |Built-in:      |Not supported      |
+   |                |              |messages       |                   |
+   |                |              |persist on disk|                   |
+   |                |              |across clusters|                   |
+   +----------------+--------------+---------------+-------------------+
+   |*Protocol       |Higher (AMQP +|Moderate       |Low: Wire format   |
+   |Overhead*       |WebSockets    |(custom binary |uses protocol      |
+   |                |handshake)    |protocol, but  |buffer.  Supports  |
+   |                |              |optimized for  |also binary (byte  |
+   |                |              |high           |type in protobuf)  |
+   |                |              |throughput)    |                   |
+   +----------------+--------------+---------------+-------------------+
+   |*Broker         |Yes           |Yes            |Yes for efficient  |
+   |Required*       |              |(distributed   |multi-party.  P2P  |
+   |                |              |cluster)       |is also possible.  |
+   +----------------+--------------+---------------+-------------------+
+   |*Authentication*|Same as AMQP  |SASL/PLAIN,    |Transports MLS     |
+   |                |(broker-based)|SASL/SCRAM,    |credentials and    |
+   |                |              |Kerberos, OAuth|proofs inside      |
+   |                |              |               |OAuth bearer       |
+   |                |              |               |tokens over        |
+   |                |              |               |HTTP/2.  This      |
+   |                |              |               |gives you:         |
+   |                |              |               |Interoperability:  |
+   |                |              |               |Leverage standard  |
+   |                |              |               |HTTP/2 and OAuth   |
+   |                |              |               |libraries.         |
+   |                |              |               |Scalability: One   |
+   |                |              |               |persistent HTTP/2  |
+   |                |              |               |connection carries |
+   |                |              |               |many MLS messages. |
+   |                |              |               |Immediate          |
+   |                |              |               |revocation: Eject  |
+   |                |              |               |bad actors by      |
+   |                |              |               |revoking their     |
+   |                |              |               |OAuth tokens—no    |
+   |                |              |               |need to rebalance  |
+   |                |              |               |the ratchet tree   |
+   |                |              |               |first.             |
+   +----------------+--------------+---------------+-------------------+
+   |*Transport      |WSS (WebSocket|TLS            |TLS                |
+   |Security*       |Secure)       |               |                   |
+   +----------------+--------------+---------------+-------------------+
+   |*Message        |Same as AMQP  |TLS in-flight  |MLS (Quantum safe, |
+   |Security*       |(depends on   |encryption,    |Secure end-to-end, |
+   |                |the broker's  |optional at-   |even across        |
+   |                |encryption at |rest encryption|insecure hops,     |
+   |                |rest/in-      |(broker config)|post-compromise    |
+   |                |transit)      |               |security)          |
+   +----------------+--------------+---------------+-------------------+
+   |*Binary or Text*|Binary AMQP   |Binary protocol|Binary or Text     |
+   |                |frames over   |(common        |                   |
+   |                |WebSockets    |payloads: Avro,|                   |
+   |                |              |JSON, Protobuf)|                   |
+   +----------------+--------------+---------------+-------------------+
+   |*Use Cases*     |Browser-based |High-throughput|Group messaging,   |
+   |                |apps needing  |data pipelines,|one-to-many, many- |
+   |                |AMQP behind   |streaming      |to-many, Cloud-    |
+   |                |firewalls     |analytics,     |native             |
+   |                |              |event sourcing |microservices,     |
+   |                |              |               |real-time          |
+   |                |              |               |communications,    |
+   |                |              |               |streaming          |
+   +----------------+--------------+---------------+-------------------+
+   |*Real-World     |Less common,  |Extremely      |New Entrant, low   |
+   |Usage*          |mainly for    |widespread     |                   |
+   |                |browser/      |across         |                   |
+   |                |firewall      |industries; de |                   |
+   |                |scenarios     |facto standard |                   |
+   |                |using RabbitMQ|for large-scale|                   |
+   |                |or similar    |event streaming|                   |
+   +----------------+--------------+---------------+-------------------+
+
+                                  Table 2
+
 4.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate

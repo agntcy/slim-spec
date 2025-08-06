@@ -1353,6 +1353,132 @@ appear in all capitals, as shown here.<a href="#section-1-1" class="pilcrow">¶<
           </tr>
         </tbody>
       </table>
+<p id="section-3-3">Table 2 extends the comparison to include additional protocols relevant to modern agentic AI systems:<a href="#section-3-3" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+        <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Feature</th>
+            <th class="text-left" rowspan="1" colspan="1">AMQP over WebSockets</th>
+            <th class="text-left" rowspan="1" colspan="1">Kafka</th>
+            <th class="text-left" rowspan="1" colspan="1">AGP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Protocol Type</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">AMQP tunneled through WebSockets</td>
+            <td class="text-left" rowspan="1" colspan="1">Distributed commit log, high-throughput pub/sub</td>
+            <td class="text-left" rowspan="1" colspan="1">AGP Spec</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Transport</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">WebSockets over TLS</td>
+            <td class="text-left" rowspan="1" colspan="1">TCP (optionally TLS)</td>
+            <td class="text-left" rowspan="1" colspan="1">gRPC (over HTTP/2-HTTP/3)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Message Model</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Same as AMQP (depends on the broker's AMQP model)</td>
+            <td class="text-left" rowspan="1" colspan="1">Topics with partitions, consumer groups, offset-based consumption</td>
+            <td class="text-left" rowspan="1" colspan="1">Topics based on organization, namespace, agent types etc.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>QoS / Delivery</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Same as AMQP</td>
+            <td class="text-left" rowspan="1" colspan="1">At-least-once default; exactly-once possible via transactions</td>
+            <td class="text-left" rowspan="1" colspan="1">Fire&amp;Forget unreliable (at-most-once), unreliable and reliable (exactly-once). This extends to request/reply and streaming as well.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Streaming</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Same as AMQP if broker supports streaming</td>
+            <td class="text-left" rowspan="1" colspan="1">Native log-based streaming (Kafka Streams, KSQL, etc.)</td>
+            <td class="text-left" rowspan="1" colspan="1">Native gRPC support via HTTP/2/3 client streaming, server streaming. Notice that Server Sent Events (SSE) with HTTP/1.1 cannot carry binary nor compressed data.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Persistence</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Same as AMQP</td>
+            <td class="text-left" rowspan="1" colspan="1">Built-in: messages persist on disk across clusters</td>
+            <td class="text-left" rowspan="1" colspan="1">Not supported</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Protocol Overhead</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Higher (AMQP + WebSockets handshake)</td>
+            <td class="text-left" rowspan="1" colspan="1">Moderate (custom binary protocol, but optimized for high throughput)</td>
+            <td class="text-left" rowspan="1" colspan="1">Low: Wire format uses protocol buffer. Supports also binary (byte type in protobuf)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Broker Required</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes (distributed cluster)</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes for efficient multi-party. P2P is also possible.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Authentication</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Same as AMQP (broker-based)</td>
+            <td class="text-left" rowspan="1" colspan="1">SASL/PLAIN, SASL/SCRAM, Kerberos, OAuth</td>
+            <td class="text-left" rowspan="1" colspan="1">Transports MLS credentials and proofs inside OAuth bearer tokens over HTTP/2. This gives you: Interoperability: Leverage standard HTTP/2 and OAuth libraries. Scalability: One persistent HTTP/2 connection carries many MLS messages. Immediate revocation: Eject bad actors by revoking their OAuth tokens—no need to rebalance the ratchet tree first.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Transport Security</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">WSS (WebSocket Secure)</td>
+            <td class="text-left" rowspan="1" colspan="1">TLS</td>
+            <td class="text-left" rowspan="1" colspan="1">TLS</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Message Security</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Same as AMQP (depends on the broker's encryption at rest/in-transit)</td>
+            <td class="text-left" rowspan="1" colspan="1">TLS in-flight encryption, optional at-rest encryption (broker config)</td>
+            <td class="text-left" rowspan="1" colspan="1">MLS (Quantum safe, Secure end-to-end, even across insecure hops, post-compromise security)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Binary or Text</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Binary AMQP frames over WebSockets</td>
+            <td class="text-left" rowspan="1" colspan="1">Binary protocol (common payloads: Avro, JSON, Protobuf)</td>
+            <td class="text-left" rowspan="1" colspan="1">Binary or Text</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Use Cases</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Browser-based apps needing AMQP behind firewalls</td>
+            <td class="text-left" rowspan="1" colspan="1">High-throughput data pipelines, streaming analytics, event sourcing</td>
+            <td class="text-left" rowspan="1" colspan="1">Group messaging, one-to-many, many-to-many, Cloud-native microservices, real-time communications, streaming</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Real-World Usage</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Less common, mainly for browser/firewall scenarios using RabbitMQ or similar</td>
+            <td class="text-left" rowspan="1" colspan="1">Extremely widespread across industries; de facto standard for large-scale event streaming</td>
+            <td class="text-left" rowspan="1" colspan="1">New Entrant, low</td>
+          </tr>
+        </tbody>
+      </table>
 </section>
 </div>
 <div id="sec-normative-references">
