@@ -88,7 +88,8 @@ Table of Contents
 
    1.  Conventions and Definitions
    2.  Introduction
-   3.  Normative References
+   3.  Comparison
+   4.  Normative References
    Author's Address
 
 1.  Conventions and Definitions
@@ -101,7 +102,89 @@ Table of Contents
 
 2.  Introduction
 
-3.  Normative References
+3.  Comparison
+
+   Table 1 provides a detailed comparison of three popular messaging
+   protocols commonly considered for agent communication systems:
+
+   +================+================+==================+==============+
+   |Feature         | AMQP (e.g.     | MQTT             |NATS          |
+   |                | RabbitMQ)      |                  |              |
+   +================+================+==================+==============+
+   |*Protocol Type* | Message        | Lightweight pub/ |Lightweight   |
+   |                | queueing       | sub for IoT      |messaging     |
+   |                | (queues/       |                  |(pub/sub, req/|
+   |                | exchanges)     |                  |reply, queue  |
+   |                |                |                  |groups)       |
+   +----------------+----------------+------------------+--------------+
+   |*Transport*     | TCP            | TCP (optionally  |TCP           |
+   |                | (optionally    | TLS)             |(optionally   |
+   |                | TLS)           |                  |TLS)          |
+   +----------------+----------------+------------------+--------------+
+   |*Message Model* | Queues,        | Topic-based      |Subjects (pub/|
+   |                | exchanges,     |                  |sub), queue   |
+   |                | routing keys   |                  |groups,       |
+   |                |                |                  |request/reply |
+   +----------------+----------------+------------------+--------------+
+   |*QoS / Delivery*| At-least-once, | QoS 0 (at-most-  |At-most-once  |
+   |                | exactly-once   | once), 1, 2      |(core), at-   |
+   |                | (AMQP 1.0)     | (exactly-once)   |least-once    |
+   |                |                |                  |with JetStream|
+   +----------------+----------------+------------------+--------------+
+   |*Streaming*     | Via            | Not native       |Native with   |
+   |                | extensions/    | (requires broker |JetStream     |
+   |                | plugins (e.g.  | extensions)      |              |
+   |                | RabbitMQ       |                  |              |
+   |                | Streams)       |                  |              |
+   +----------------+----------------+------------------+--------------+
+   |*Persistence*   | Yes (durable   | Broker-dependent |Optional via  |
+   |                | queues)        |                  |JetStream     |
+   +----------------+----------------+------------------+--------------+
+   |*Protocol       | Higher (rich   | Very low         |Very low      |
+   |Overhead*       | feature set)   |                  |              |
+   +----------------+----------------+------------------+--------------+
+   |*Broker         | Yes            | Yes              |Optional (but |
+   |Required*       |                |                  |common)       |
+   +----------------+----------------+------------------+--------------+
+   |*Authentication*| User/password, | Username/        |NKey, JWT,    |
+   |                | SASL (e.g.,    | password or      |token, user/  |
+   |                | LDAP,          | custom tokens    |password      |
+   |                | Kerberos)      |                  |              |
+   +----------------+----------------+------------------+--------------+
+   |*Transport      | TLS            | TLS              |TLS           |
+   |Security*       |                |                  |              |
+   +----------------+----------------+------------------+--------------+
+   |*Message        | Typically      | Usually none at  |None in core  |
+   |Security*       | broker-level   | message level;   |(TLS in       |
+   |                | or plugin-     | rely on TLS      |transit),     |
+   |                | based          |                  |JetStream can |
+   |                | encryption     |                  |encrypt at    |
+   |                |                |                  |rest          |
+   +----------------+----------------+------------------+--------------+
+   |*Binary or Text*| Binary framing | Binary framing   |Text-based    |
+   |                |                |                  |protocol      |
+   |                |                |                  |(core), binary|
+   |                |                |                  |clients       |
+   |                |                |                  |available     |
+   +----------------+----------------+------------------+--------------+
+   |*Use Cases*     | Enterprise     | IoT, mobile,     |Cloud-native  |
+   |                | messaging,     | sensor networks  |microservices,|
+   |                | financial      |                  |real-time     |
+   |                | transactions,  |                  |communications|
+   |                | RPC            |                  |              |
+   +----------------+----------------+------------------+--------------+
+   |*Real-World     | Very widely    | Dominant in IoT  |Gaining       |
+   |Usage*          | used via       | ecosystems;      |traction in   |
+   |                | RabbitMQ (top  | supported by     |cloud-native  |
+   |                | open-source    | many device/     |(CNCF         |
+   |                | broker) in     | broker vendors   |project), used|
+   |                | enterprises of |                  |by major tech |
+   |                | all sizes      |                  |companies     |
+   +----------------+----------------+------------------+--------------+
+
+                                  Table 1
+
+4.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,

@@ -1192,10 +1192,13 @@ end-to-end encryption and zero-trust support), and real-world adoption.<a href="
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-comparison" class="internal xref">Comparison</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1219,10 +1222,143 @@ appear in all capitals, as shown here.<a href="#section-1-1" class="pilcrow">¶<
     </h2>
 </section>
 </div>
-<div id="sec-normative-references">
+<div id="comparison">
 <section id="section-3">
+      <h2 id="name-comparison">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-comparison" class="section-name selfRef">Comparison</a>
+      </h2>
+<p id="section-3-1">Table 1 provides a detailed comparison of three popular messaging protocols commonly considered for agent communication systems:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Feature</th>
+            <th class="text-left" rowspan="1" colspan="1">AMQP (e.g. RabbitMQ)</th>
+            <th class="text-left" rowspan="1" colspan="1">MQTT</th>
+            <th class="text-left" rowspan="1" colspan="1">NATS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Protocol Type</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Message queueing (queues/exchanges)</td>
+            <td class="text-left" rowspan="1" colspan="1">Lightweight pub/sub for IoT</td>
+            <td class="text-left" rowspan="1" colspan="1">Lightweight messaging (pub/sub, req/reply, queue groups)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Transport</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">TCP (optionally TLS)</td>
+            <td class="text-left" rowspan="1" colspan="1">TCP (optionally TLS)</td>
+            <td class="text-left" rowspan="1" colspan="1">TCP (optionally TLS)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Message Model</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Queues, exchanges, routing keys</td>
+            <td class="text-left" rowspan="1" colspan="1">Topic-based</td>
+            <td class="text-left" rowspan="1" colspan="1">Subjects (pub/sub), queue groups, request/reply</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>QoS / Delivery</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">At-least-once, exactly-once (AMQP 1.0)</td>
+            <td class="text-left" rowspan="1" colspan="1">QoS 0 (at-most-once), 1, 2 (exactly-once)</td>
+            <td class="text-left" rowspan="1" colspan="1">At-most-once (core), at-least-once with JetStream</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Streaming</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Via extensions/plugins (e.g. RabbitMQ Streams)</td>
+            <td class="text-left" rowspan="1" colspan="1">Not native (requires broker extensions)</td>
+            <td class="text-left" rowspan="1" colspan="1">Native with JetStream</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Persistence</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes (durable queues)</td>
+            <td class="text-left" rowspan="1" colspan="1">Broker-dependent</td>
+            <td class="text-left" rowspan="1" colspan="1">Optional via JetStream</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Protocol Overhead</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Higher (rich feature set)</td>
+            <td class="text-left" rowspan="1" colspan="1">Very low</td>
+            <td class="text-left" rowspan="1" colspan="1">Very low</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Broker Required</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes</td>
+            <td class="text-left" rowspan="1" colspan="1">Optional (but common)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Authentication</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">User/password, SASL (e.g., LDAP, Kerberos)</td>
+            <td class="text-left" rowspan="1" colspan="1">Username/password or custom tokens</td>
+            <td class="text-left" rowspan="1" colspan="1">NKey, JWT, token, user/password</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Transport Security</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">TLS</td>
+            <td class="text-left" rowspan="1" colspan="1">TLS</td>
+            <td class="text-left" rowspan="1" colspan="1">TLS</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Message Security</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Typically broker-level or plugin-based encryption</td>
+            <td class="text-left" rowspan="1" colspan="1">Usually none at message level; rely on TLS</td>
+            <td class="text-left" rowspan="1" colspan="1">None in core (TLS in transit), JetStream can encrypt at rest</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Binary or Text</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Binary framing</td>
+            <td class="text-left" rowspan="1" colspan="1">Binary framing</td>
+            <td class="text-left" rowspan="1" colspan="1">Text-based protocol (core), binary clients available</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Use Cases</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Enterprise messaging, financial transactions, RPC</td>
+            <td class="text-left" rowspan="1" colspan="1">IoT, mobile, sensor networks</td>
+            <td class="text-left" rowspan="1" colspan="1">Cloud-native microservices, real-time communications</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <strong>Real-World Usage</strong>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Very widely used via RabbitMQ (top open-source broker) in enterprises of all sizes</td>
+            <td class="text-left" rowspan="1" colspan="1">Dominant in IoT ecosystems; supported by many device/broker vendors</td>
+            <td class="text-left" rowspan="1" colspan="1">Gaining traction in cloud-native (CNCF project), used by major tech companies</td>
+          </tr>
+        </tbody>
+      </table>
+</section>
+</div>
+<div id="sec-normative-references">
+<section id="section-4">
       <h2 id="name-normative-references">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
