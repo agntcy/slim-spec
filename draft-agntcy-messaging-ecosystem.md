@@ -73,10 +73,6 @@ Messaging )—across dimensions that matter for GenAI agent systems: streaming
 performance, delivery guarantees, flexible pub/sub patterns, agent coordination,
 security (including end-to-end encryption and zero-trust support), and
 real-world adoption.
-# Comparison
-
-
-
 # Protocol Analysis for Agentic AI Systems
 
 The following sections provide detailed analysis of each messaging protocol in
@@ -352,6 +348,8 @@ total cost of ownership and operational complexity of agentic AI systems.
 *while the end-to-end encryption provides compliance with data protection
 *regulations.
 
+# Comparison
+
 Table 1 provides a detailed comparison of three popular messaging protocols
 commonly considered for agent communication systems:
 
@@ -422,3 +420,4 @@ communications, streaming | | **Real-World Usage** | Less common, mainly for
 browser/firewall scenarios using RabbitMQ or similar | Extremely widespread
 across industries; de facto standard for large-scale event streaming | New
 Entrant, low |
+
