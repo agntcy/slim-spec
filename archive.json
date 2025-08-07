@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-05T00:34:24.404555+00:00",
+  "timestamp": "2025-08-07T00:34:31.089377+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -49,7 +49,26 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 7,
+      "id": "I_kwDON1QDo87Ee4Ns",
+      "title": "Description of messaging systems and SLIM differentiation",
+      "url": "https://github.com/agntcy/slim-spec/issues/7",
+      "state": "CLOSED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "muscariello"
+      ],
+      "labels": [],
+      "body": "We want to describe the available messaging systems and describe what SLIM brings that does not exist in other systems and also why other systems cannot be modified to accommodate SLIM key features.",
+      "createdAt": "2025-08-06T12:02:09Z",
+      "updatedAt": "2025-08-06T15:11:20Z",
+      "closedAt": "2025-08-06T15:11:20Z",
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
@@ -379,6 +398,48 @@
           "body": "",
           "createdAt": "2025-07-30T17:15:07Z",
           "updatedAt": "2025-07-30T17:15:07Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDON1QDo86iX3jv",
+      "title": "feat: init messaging report",
+      "url": "https://github.com/agntcy/slim-spec/pull/8",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Signed-off-by: Luca Muscariello <muscariello@ieee.org>\n",
+      "createdAt": "2025-08-06T12:07:50Z",
+      "updatedAt": "2025-08-06T15:11:19Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "20176a2eb97c2754ec32aced283ec22964f86a79",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "7-description-of-messaging-systems-and-slim-differentiation",
+      "headRefOid": "68f995dc20c341a71b3596795e5b941a7a2d4d36",
+      "closedAt": "2025-08-06T15:11:19Z",
+      "mergedAt": "2025-08-06T15:11:19Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "d7685493fa04bb57e4676dcffdccc335362f2439"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo864XWYs",
+          "commit": {
+            "abbreviatedOid": "68f995d"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-06T15:09:26Z",
+          "updatedAt": "2025-08-06T15:09:26Z",
           "comments": []
         }
       ]
