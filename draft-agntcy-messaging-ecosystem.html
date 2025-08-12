@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Muscariello</td>
-<td class="center">Expires 7 February 2026</td>
+<td class="center">Expires 13 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-agntcy-messaging-ecosystem-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-06" class="published">6 August 2025</time>
+<time datetime="2025-08-12" class="published">12 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-02-07">7 February 2026</time></dd>
+<dd class="expires"><time datetime="2026-02-13">13 February 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1121,7 +1121,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1233,7 +1233,7 @@ forward secrecy are vital when compromised credentials must not enable an
 attacker to decrypt future communications.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">Below, we compare six popular messaging protocols—AMQP, MQTT, NATS, AMQP over
 WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure Low-Latency Interactive
-Messaging )—across
+Messaging)—across
 dimensions that matter for GenAI agent systems: streaming performance, delivery
 guarantees, flexible pub/sub patterns, agent coordination, security (including
 end-to-end encryption and zero-trust support), and real-world adoption.<a href="#section-2-3" class="pilcrow">¶</a></p>
@@ -1411,11 +1411,16 @@ several important properties:<a href="#section-3.6-5" class="pilcrow">¶</a></p>
 <li class="normal" id="section-3.6-6.1">
             <p id="section-3.6-6.1.1"><strong>Interoperability</strong>: Leverages standard HTTP/2 and OAuth libraries, reducing
 implementation complexity and improving compatibility with existing
-infrastructure - <strong>Scalability</strong>: Single persistent HTTP/2 connections
-efficiently carry many MLS-secured messages between agents - <strong>Immediate
-revocation</strong>: Malicious or compromised agents can be immediately ejected by
-revoking their OAuth tokens without requiring complex ratchet tree rebalancing
-operations<a href="#section-3.6-6.1.1" class="pilcrow">¶</a></p>
+infrastructure<a href="#section-3.6-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-6.2">
+            <p id="section-3.6-6.2.1"><strong>Scalability</strong>: Single persistent HTTP/2 connections efficiently carry many
+MLS-secured messages between agents<a href="#section-3.6-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-6.3">
+            <p id="section-3.6-6.3.1"><strong>Immediate revocation</strong>: Malicious or compromised agents can be immediately
+ejected by revoking their OAuth tokens without requiring complex ratchet
+tree rebalancing operations<a href="#section-3.6-6.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.6-7">SLIM's topic organization based on organizational hierarchies, namespaces, and
@@ -1439,29 +1444,29 @@ provided by traditional messaging protocols. The autonomous nature of AI agents,
 combined with their access to sensitive data and computational resources,
 creates unique threat models that messaging infrastructure must address.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
 <p id="section-3.7-2"><strong>Post-Compromise Security</strong>: In traditional systems, credential compromise
-*typically requires immediate revocation and re-authentication. However, AI
-*agents may operate for extended periods with limited human oversight. SLIM's
-*MLS implementation provides forward secrecy, ensuring that compromise of
-*current credentials cannot decrypt past communications, and post-compromise
-*security, guaranteeing that future communications remain secure even after
-*credential compromise.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+typically requires immediate revocation and re-authentication. However, AI
+agents may operate for extended periods with limited human oversight. SLIM's
+MLS implementation provides forward secrecy, ensuring that compromise of
+current credentials cannot decrypt past communications, and post-compromise
+security, guaranteeing that future communications remain secure even after
+credential compromise.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
 <p id="section-3.7-3"><strong>Quantum-Safe Cryptography</strong>: As quantum computing advances threaten current
-*cryptographic standards, AI systems—which may operate for years with the same
-*cryptographic keys—need protection against future quantum attacks. SLIM's
-*quantum-safe MLS implementation provides this protection, while traditional
-*protocols rely on classical cryptographic assumptions that may become
-*vulnerable.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
+cryptographic standards, AI systems—which may operate for years with the same
+cryptographic keys—need protection against future quantum attacks. SLIM's
+quantum-safe MLS implementation provides this protection, while traditional
+protocols rely on classical cryptographic assumptions that may become
+vulnerable.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
 <p id="section-3.7-4"><strong>Multi-Domain Operations</strong>: Agentic AI systems often span multiple
-*organizational and security domains, with agents from different organizations
-*collaborating on shared tasks. Traditional protocols typically assume trust in
-*messaging infrastructure, but SLIM's end-to-end encryption ensures secure
-*communication even when messages transit through potentially untrusted
-*intermediaries.<a href="#section-3.7-4" class="pilcrow">¶</a></p>
+organizational and security domains, with agents from different organizations
+collaborating on shared tasks. Traditional protocols typically assume trust in
+messaging infrastructure, but SLIM's end-to-end encryption ensures secure
+communication even when messages transit through potentially untrusted
+intermediaries.<a href="#section-3.7-4" class="pilcrow">¶</a></p>
 <p id="section-3.7-5"><strong>Dynamic Group Membership</strong>: AI agent groups frequently change as agents join
-*collaborations, complete tasks, or become unavailable. MLS's efficient group
-*key management handles these membership changes while maintaining security
-*properties, unlike approaches that require complete cryptographic context
-*regeneration.<a href="#section-3.7-5" class="pilcrow">¶</a></p>
+collaborations, complete tasks, or become unavailable. MLS's efficient group
+key management handles these membership changes while maintaining security
+properties, unlike approaches that require complete cryptographic context
+regeneration.<a href="#section-3.7-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="performance-implications">
@@ -1473,24 +1478,24 @@ creates unique threat models that messaging infrastructure must address.<a href=
 behavior and capabilities of agentic AI systems, particularly as the number of
 agents and frequency of interactions scale.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
 <p id="section-3.8-2"><strong>Latency Sensitivity</strong>: Many AI agent interactions are latency-sensitive,
-*particularly in real-time decision-making scenarios or when agents are
-*coordinating time-critical tasks. SLIM's HTTP/2 foundation provides header
-*compression and multiplexing that reduce per-message overhead, while the binary
-*protocol buffer encoding minimizes serialization costs.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+particularly in real-time decision-making scenarios or when agents are
+coordinating time-critical tasks. SLIM's HTTP/2 foundation provides header
+compression and multiplexing that reduce per-message overhead, while the binary
+protocol buffer encoding minimizes serialization costs.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
 <p id="section-3.8-3"><strong>Throughput Requirements</strong>: Large-scale agentic AI systems may involve
-*thousands of agents generating substantial message volumes. While protocols
-*like Kafka excel at raw throughput, they may introduce latency through their
-*log-based architecture. SLIM balances throughput and latency through efficient
-*connection reuse and optional reliability levels.<a href="#section-3.8-3" class="pilcrow">¶</a></p>
+thousands of agents generating substantial message volumes. While protocols
+like Kafka excel at raw throughput, they may introduce latency through their
+log-based architecture. SLIM balances throughput and latency through efficient
+connection reuse and optional reliability levels.<a href="#section-3.8-3" class="pilcrow">¶</a></p>
 <p id="section-3.8-4"><strong>Connection Efficiency</strong>: Traditional protocols often require separate
-*connections for each communication pattern or security context. SLIM's
-*connection multiplexing allows a single HTTP/2 connection to handle diverse
-*communication patterns between agents, reducing resource consumption and
-*connection establishment overhead.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
+connections for each communication pattern or security context. SLIM's
+connection multiplexing allows a single HTTP/2 connection to handle diverse
+communication patterns between agents, reducing resource consumption and
+connection establishment overhead.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
 <p id="section-3.8-5"><strong>Streaming Performance</strong>: AI agents frequently exchange streaming data—such as
-*token-by-token language model outputs or real-time sensor data. SLIM's native
-*gRPC streaming support over HTTP/2 provides efficient bidirectional streaming
-*without the overhead of connection-per-stream approaches.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
+token-by-token language model outputs or real-time sensor data. SLIM's native
+gRPC streaming support over HTTP/2 provides efficient bidirectional streaming
+without the overhead of connection-per-stream approaches.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="deployment-and-operational-considerations">
@@ -1501,25 +1506,25 @@ agents and frequency of interactions scale.<a href="#section-3.8-1" class="pilcr
 <p id="section-3.9-1">The operational characteristics of messaging protocols significantly impact the
 total cost of ownership and operational complexity of agentic AI systems.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
 <p id="section-3.9-2"><strong>Infrastructure Requirements</strong>: Traditional enterprise protocols like AMQP
-*require dedicated message broker infrastructure with high availability and
-*clustering capabilities. Kafka requires even more complex distributed
-*infrastructure. SLIM's optional broker architecture allows deployments to scale
-*infrastructure complexity with system requirements.<a href="#section-3.9-2" class="pilcrow">¶</a></p>
+require dedicated message broker infrastructure with high availability and
+clustering capabilities. Kafka requires even more complex distributed
+infrastructure. SLIM's optional broker architecture allows deployments to scale
+infrastructure complexity with system requirements.<a href="#section-3.9-2" class="pilcrow">¶</a></p>
 <p id="section-3.9-3"><strong>Monitoring and Observability</strong>: Debugging distributed agentic AI systems
-*requires comprehensive visibility into agent communications. SLIM's foundation
-*on standard HTTP/2 infrastructure enables use of existing observability tools
-*and practices, while proprietary protocols may require specialized monitoring
-*solutions.<a href="#section-3.9-3" class="pilcrow">¶</a></p>
+requires comprehensive visibility into agent communications. SLIM's foundation
+on standard HTTP/2 infrastructure enables use of existing observability tools
+and practices, while proprietary protocols may require specialized monitoring
+solutions.<a href="#section-3.9-3" class="pilcrow">¶</a></p>
 <p id="section-3.9-4"><strong>Integration with Cloud Services</strong>: Modern AI deployments increasingly rely on
-*cloud services for scalability and managed operations. SLIM's HTTP/2 foundation
-*integrates naturally with cloud load balancers, API gateways, and observability
-*services, while specialized messaging protocols may require additional
-*integration layers.<a href="#section-3.9-4" class="pilcrow">¶</a></p>
+cloud services for scalability and managed operations. SLIM's HTTP/2 foundation
+integrates naturally with cloud load balancers, API gateways, and observability
+services, while specialized messaging protocols may require additional
+integration layers.<a href="#section-3.9-4" class="pilcrow">¶</a></p>
 <p id="section-3.9-5"><strong>Compliance and Auditing</strong>: AI systems in regulated industries require
-*comprehensive audit trails and compliance capabilities. SLIM's structured topic
-*hierarchy and optional message persistence support regulatory requirements,
-*while the end-to-end encryption provides compliance with data protection
-*regulations.<a href="#section-3.9-5" class="pilcrow">¶</a></p>
+comprehensive audit trails and compliance capabilities. SLIM's structured topic
+hierarchy and optional message persistence support regulatory requirements,
+while the end-to-end encryption provides compliance with data protection
+regulations.<a href="#section-3.9-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
