@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-07T00:34:31.089377+00:00",
+  "timestamp": "2025-08-14T00:31:30.196374+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -440,6 +440,56 @@
           "body": "",
           "createdAt": "2025-08-06T15:09:26Z",
           "updatedAt": "2025-08-06T15:09:26Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDON1QDo86jWjeq",
+      "title": "fix(draft-ecosystem): minor formatting issues",
+      "url": "https://github.com/agntcy/slim-spec/pull/9",
+      "state": "MERGED",
+      "author": "tiswanso",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address some minor formatting issues in the original draft.  Might have been due to some rfc authoring tool conversion to `.md` format.  ",
+      "createdAt": "2025-08-12T20:54:45Z",
+      "updatedAt": "2025-08-12T21:27:28Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "d7685493fa04bb57e4676dcffdccc335362f2439",
+      "headRepository": "tiswanso/slim-spec",
+      "headRefName": "fix-msg-ecosystem-format",
+      "headRefOid": "c519a512a3c657b7cac4d9c1448f82098d9dae68",
+      "closedAt": "2025-08-12T21:27:28Z",
+      "mergedAt": "2025-08-12T21:27:28Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "f404f25ed6c5c62e0756e894842098696f6f7a06"
+      },
+      "comments": [
+        {
+          "author": "muscariello",
+          "authorAssociation": "MEMBER",
+          "body": "It was my 80 column formatter in vim which has automatically applied those additional characters by mistake.",
+          "createdAt": "2025-08-12T21:25:41Z",
+          "updatedAt": "2025-08-12T21:25:41Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo865iyL-",
+          "commit": {
+            "abbreviatedOid": "c519a51"
+          },
+          "author": "muscariello",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2025-08-12T21:23:42Z",
+          "updatedAt": "2025-08-12T21:23:42Z",
           "comments": []
         }
       ]
