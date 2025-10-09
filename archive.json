@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-14T00:31:30.196374+00:00",
+  "timestamp": "2025-10-09T00:28:42.895118+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -493,6 +493,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDON1QDo86shEoV",
+      "title": "docs(spec): add RPC vs messaging, SLIM SRPC, and A2A advantages",
+      "url": "https://github.com/agntcy/slim-spec/pull/10",
+      "state": "OPEN",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR updates the messaging ecosystem draft with:\n\n- RPC vs messaging section (A2A/MCP context)\n- SLIM RPC (SRPC) subsection and link to SRPC README\n- Advantages of SLIM for A2A APIs (broadcast/scatter-gather RPC, streaming, idempotency, QoS/backpressure, MLS E2E, observability)\n\nThese changes clarify how RPC-oriented agent protocols interoperate with asynchronous messaging and how SLIM enables interactive real-time and multi-agent RPC patterns.",
+      "createdAt": "2025-10-07T15:07:55Z",
+      "updatedAt": "2025-10-07T15:13:21Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "f404f25ed6c5c62e0756e894842098696f6f7a06",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "791-update-draft-agntcy-messaging-ecosystem",
+      "headRefOid": "b4c158ded1a0454ebf3ae1428bd28e2b729cb665",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
