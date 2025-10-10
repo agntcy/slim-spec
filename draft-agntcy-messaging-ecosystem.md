@@ -38,7 +38,7 @@ informative:
     title: "OASIS Advanced Message Queuing Protocol (AMQP) 1.0 Specification"
     author:
         - name: OASIS
-      target: https://www.oasis-open.org/standards#amqp
+    target: https://www.oasis-open.org/standards#amqp
   MQTT:
     title: "OASIS MQTT Version 5.0 Specification"
     author:
@@ -64,9 +64,6 @@ informative:
     author:
       - name: AGNTCY
     target: https://spec.slim.agntcy.org
-
-
-
 
 --- abstract
 
