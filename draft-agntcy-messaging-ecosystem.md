@@ -577,20 +577,3 @@ Table 2 extends the comparison to include additional protocols relevant to moder
 | **Binary or Text** | Binary AMQP frames over WebSockets | Binary protocol (common payloads: Avro, JSON, Protobuf) | Binary or Text |
 | **Use Cases** | Browser-based apps needing AMQP behind firewalls | High-throughput data pipelines, streaming analytics, event sourcing | Group messaging, one-to-many, many-to-many, Cloud-native microservices, real-time communications, streaming |
 | **Real-World Usage** | Less common, mainly for browser/firewall scenarios using RabbitMQ or similar | Extremely widespread across industries; de facto standard for large-scale event streaming | New Entrant, low |
-
-
-# References
-
-- **AMQP**: [OASIS Advanced Message Queuing Protocol (AMQP) 1.0 Specification](https://www.oasis-open.org/standards#amqp)
-- **RabbitMQ**: [RabbitMQ Documentation](https://www.rabbitmq.com/documentation.html)
-- **MQTT**: [OASIS MQTT Version 5.0 Specification](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html)
-- **NATS**: [NATS Documentation](https://docs.nats.io/)
-- **Kafka**: [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
-- **AMQP over WebSockets**: [AMQP WebSockets Transport](https://www.rabbitmq.com/web-mqtt.html)
-- **WebSockets**: [RFC 6455: The WebSocket Protocol](https://datatracker.ietf.org/doc/html/rfc6455)
-- **gRPC**: [gRPC Documentation](https://grpc.io/docs/)
-- **HTTP/2**: [RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)](https://datatracker.ietf.org/doc/html/rfc7540)
-- **HTTP/3**: [RFC 9114: HTTP/3](https://datatracker.ietf.org/doc/html/rfc9114)
-- **MLS**: [RFC 9420: The Messaging Layer Security (MLS) Protocol](https://datatracker.ietf.org/doc/html/rfc9420)
-- **OAuth 2.0**: [RFC 6749: The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749)
-- **SLIM**: [AGNTCY SLIM Specification](https://spec.slim.agntcy.org)
