@@ -26,45 +26,45 @@ venue:
   github: agntcy/slim
   latest: https://spec.slim.agntcy.org
 
-  infnormative:
-    AMQP:
-      title: "OASIS Advanced Message Queuing Protocol (AMQP) 1.0 Specification"
-      author:
-        - name: OASIS
-      target: https://www.oasis-open.org/standards#amqp
-    MQTT:
-      title: "OASIS MQTT Version 5.0 Specification"
-      author:
-        - name: OASIS
-      target: https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html
-    NATS:
-      title: "NATS Documentation"
-      author:
-        - name: Synadia Communications
-      target: https://docs.nats.io/
-    Kafka:
-      title: "Apache Kafka Documentation"
-      author:
-        - name: Apache Software Foundation
-      target: https://kafka.apache.org/documentation/
-   gRPC:
-      title: "gRPC Documentation"
-      author:
-        - name: CNCF
-      target: https://grpc.io/docs/
-     target: https://datatracker.ietf.org/doc/html/rfc9114
-  SLIM:
-      title: "AGNTCY SLIM Specification"
-      author:
-        - name: AGNTCY
-      target: https://spec.slim.agntcy.org
-
 author:
 
 -
     fullname: Luca Muscariello
     organization: Cisco
     email: lumuscar@cisco.com
+
+informative:
+  AMQP:
+    title: "OASIS Advanced Message Queuing Protocol (AMQP) 1.0 Specification"
+    author:
+        - name: OASIS
+      target: https://www.oasis-open.org/standards#amqp
+  MQTT:
+    title: "OASIS MQTT Version 5.0 Specification"
+    author:
+      - name: OASIS
+    target: https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html
+  NATS:
+    title: "NATS Documentation"
+    author:
+      - name: Synadia Communications
+    target: https://docs.nats.io/
+  Kafka:
+    title: "Apache Kafka Documentation"
+    author:
+      - name: Apache Software Foundation
+    target: https://kafka.apache.org/documentation/
+  gRPC:
+    title: "gRPC Documentation"
+    author:
+      - name: CNCF
+    target: https://grpc.io/docs/
+  SLIM:
+    title: "AGNTCY SLIM Specification"
+    author:
+      - name: AGNTCY
+    target: https://spec.slim.agntcy.org
+
 
 
 
