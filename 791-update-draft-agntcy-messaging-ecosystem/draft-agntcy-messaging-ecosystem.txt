@@ -4,8 +4,8 @@
 
 Independent Submission                                    L. Muscariello
 Internet-Draft                                                     Cisco
-Intended status: Informational                            7 October 2025
-Expires: 10 April 2026
+Intended status: Informational                           10 October 2025
+Expires: 13 April 2026
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
@@ -17,9 +17,9 @@ Abstract
    real-time collaboration, high-volume streaming, and dynamic group
    coordination across distributed networks.  Traditional protocols like
    AMQP, MQTT, and NATS address some requirements but fall short on
-   security, particularly regarding post-compromise protection and
-   quantum-safe encryption essential for autonomous agents handling
-   sensitive data.
+   security, particularly regarding [AMQP] [MQTT] [NATS] post-compromise
+   protection and quantum-safe encryption essential for autonomous
+   agents handling sensitive data.
 
    This document analyzes six messaging protocols—AMQP, MQTT, NATS, AMQP
    over WebSockets, Kafka, and AGNTCY SLIM—across dimensions critical
@@ -30,12 +30,13 @@ Abstract
    organizational collaborations.
 
    AGNTCY SLIM emerges as a purpose-built solution, integrating Message
-   Layer Security (MLS) with gRPC over HTTP/2 to provide quantum-safe
-   end-to-end encryption, efficient streaming, and OAuth-based
-   authentication.  Unlike transport-layer security approaches, SLIM's
-   MLS implementation ensures secure communication even through
-   untrusted intermediaries while supporting dynamic group membership
-   changes essential for collaborative AI agents.
+   Layer Security (MLS) [RFC9420] with gRPC [gRPC] over HTTP/2 [RFC7540]
+   to provide quantum-safe end-to-end encryption, efficient streaming,
+   and OAuth-based authentication [RFC6749].  Unlike transport-layer
+   security approaches, SLIM's MLS implementation ensures secure
+   communication even through untrusted intermediaries while supporting
+   dynamic group membership changes essential for collaborative AI
+   agents.
 
 About This Document
 
@@ -67,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 April 2026.
+   This Internet-Draft will expire on 13 April 2026.
 
 Copyright Notice
 
@@ -103,7 +104,9 @@ Table of Contents
      4.6.  Advantages of SLIM for A2A APIs
      4.7.  Security Implications
    5.  Comparison
-   6.  Normative References
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Author's Address
 
 1.  Conventions and Definitions
@@ -796,16 +799,53 @@ Table of Contents
 
                                   Table 2
 
-6.  Normative References
+6.  References
+
+6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
+   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
+              RFC 6749, DOI 10.17487/RFC6749, October 2012,
+              <https://www.rfc-editor.org/rfc/rfc6749>.
+
+   [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
+              Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
+              DOI 10.17487/RFC7540, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7540>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9420]  Barnes, R., Beurdouche, B., Robert, R., Millican, J.,
+              Omara, E., and K. Cohn-Gordon, "The Messaging Layer
+              Security (MLS) Protocol", RFC 9420, DOI 10.17487/RFC9420,
+              July 2023, <https://www.rfc-editor.org/rfc/rfc9420>.
+
+6.2.  Informative References
+
+   [AMQP]     OASIS, "OASIS Advanced Message Queuing Protocol (AMQP) 1.0
+              Specification", n.d.,
+              <https://www.oasis-open.org/standards#amqp>.
+
+   [gRPC]     CNCF, "gRPC Documentation", n.d., <https://grpc.io/docs/>.
+
+   [Kafka]    Foundation, A. S., "Apache Kafka Documentation", n.d.,
+              <https://kafka.apache.org/documentation/>.
+
+   [MQTT]     OASIS, "OASIS MQTT Version 5.0 Specification", n.d.,
+              <https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-
+              v5.0.html>.
+
+   [NATS]     Communications, S., "NATS Documentation", n.d.,
+              <https://docs.nats.io/>.
+
+   [SLIM]     AGNTCY, "AGNTCY SLIM Specification", n.d.,
+              <https://spec.slim.agntcy.org>.
 
 Author's Address
 
