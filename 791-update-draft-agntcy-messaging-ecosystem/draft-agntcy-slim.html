@@ -8,6 +8,7 @@
 <meta content="Luca Muscariello" name="author">
 <meta content="Michele Papalini" name="author">
 <meta content="Mauro Sardara" name="author">
+<meta content="Sam Betts" name="author">
 <meta content="
        This document specifies the Secure Low-Latency Interactive Real-Time Messaging
 (SLIM), a protocol designed to support real-time interactive AI applications at
@@ -1059,7 +1060,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Muscariello, et al.</td>
-<td class="center">Expires 15 April 2026</td>
+<td class="center">Expires 16 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1073,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-agntcy-slim-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-12" class="published">12 October 2025</time>
+<time datetime="2025-10-13" class="published">13 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-15">15 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-16">16 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1090,6 +1091,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </div>
 <div class="author">
       <div class="author-name">M. Sardara</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Betts</div>
 <div class="org">Cisco</div>
 </div>
 </dd>
@@ -1139,7 +1144,7 @@ compatibility with existing gRPC deployments.<a href="#section-abstract-1" class
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1197,35 +1202,7 @@ compatibility with existing gRPC deployments.<a href="#section-abstract-1" class
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-naming-considerations" class="internal xref">Naming Considerations</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-rpc-in-agentic-protocols-an" class="internal xref">RPC in Agentic Protocols and Relationship to Messaging</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
-                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-rpc-vs-messaging-synchronou" class="internal xref">RPC vs. Messaging: Synchronous vs. Asynchronous</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
-                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-challenges-of-rpc-over-mess" class="internal xref">Challenges of RPC over Messaging</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-remote-procedure-calls-over" class="internal xref">Remote Procedure Calls over SLIM (SRPC)</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.1">
-                    <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="auto internal xref">3.4.1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.2">
-                    <p id="section-toc.1-1.3.2.4.2.2.1"><a href="#section-3.4.2" class="auto internal xref">3.4.2</a>.  <a href="#name-key-features" class="internal xref">Key Features</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.3">
-                    <p id="section-toc.1-1.3.2.4.2.3.1"><a href="#section-3.4.3" class="auto internal xref">3.4.3</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.4">
-                    <p id="section-toc.1-1.3.2.4.2.4.1"><a href="#section-3.4.4" class="auto internal xref">3.4.4</a>.  <a href="#name-benefits-for-agentic-applic" class="internal xref">Benefits for Agentic Applications</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-deployment-considerations" class="internal xref">Deployment Considerations</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-deployment-considerations" class="internal xref">Deployment Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1238,18 +1215,49 @@ compatibility with existing gRPC deployments.<a href="#section-abstract-1" class
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-rpc-in-agentic-protocols-an" class="internal xref">RPC in Agentic Protocols and Relationship to Messaging</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-rpc-vs-messaging-synchronou" class="internal xref">RPC vs. Messaging: Synchronous vs. Asynchronous</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-challenges-of-rpc-over-mess" class="internal xref">Challenges of RPC over Messaging</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-remote-procedure-calls-over" class="internal xref">Remote Procedure Calls over SLIM (SRPC)</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.1">
+                    <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="auto internal xref">5.3.1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
+                    <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-key-features" class="internal xref">Key Features</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
+                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.4">
+                    <p id="section-toc.1-1.5.2.3.2.4.1"><a href="#section-5.3.4" class="auto internal xref">5.3.4</a>.  <a href="#name-benefits-for-agentic-applic" class="internal xref">Benefits for Agentic Applications</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.5">
+                    <p id="section-toc.1-1.5.2.3.2.5.1"><a href="#section-5.3.5" class="auto internal xref">5.3.5</a>.  <a href="#name-slim-naming-in-srpc" class="internal xref">SLIM Naming in SRPC</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1636,225 +1644,54 @@ MLS group membership state, channel subscriptions, and pending message queues.<a
         </h3>
 <p id="section-3.2-1">SLIM requires several types of identifiers: node names, channel names,
 and client locators.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="rpc-in-agentic-protocols-and-relationship-to-messaging">
-<section id="section-3.3">
-        <h3 id="name-rpc-in-agentic-protocols-an">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-rpc-in-agentic-protocols-an" class="section-name selfRef">RPC in Agentic Protocols and Relationship to Messaging</a>
-        </h3>
-<p id="section-3.3-1">Most agent-facing interfaces in use today—such as A2A and the Model Context
-Protocol (MCP)—are Remote Procedure Call (RPC) oriented. They expose synchronous
-request/response semantics for tool invocation, resource listing, and capability
-execution. This section clarifies how RPC relates to asynchronous messaging and
-how the two paradigms interoperate in agentic systems.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<div id="rpc-vs-messaging-synchronous-vs-asynchronous">
-<section id="section-3.3.1">
-          <h4 id="name-rpc-vs-messaging-synchronou">
-<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-rpc-vs-messaging-synchronou" class="section-name selfRef">RPC vs. Messaging: Synchronous vs. Asynchronous</a>
-          </h4>
-<ul class="normal">
-<li class="normal" id="section-3.3.1-1.1">
-              <p id="section-3.3.1-1.1.1"><strong>RPC (A2A, MCP)</strong>: The caller issues a request and blocks or awaits a timely
-response. Semantics emphasize tightly scoped operations (for example, “call tool
-X with parameters Y”) with bounded latency and explicit error contracts.<a href="#section-3.3.1-1.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.1-1.2">
-              <p id="section-3.3.1-1.2.1"><strong>Messaging (AMQP, MQTT, NATS, Kafka, SLIM)</strong>: Decoupled producers and
-consumers communicate via topics, subjects, or queues. Delivery can be
-one-to-one, one-to-many, or many-to-many, with loose coupling, buffering, and
-retries. Producers are not inherently blocked by consumers.<a href="#section-3.3.1-1.2.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.3.1-2">In practice, agentic applications need both: synchronous tool invocations for
-interactivity and asynchronous channels for streaming output, progress,
-coordination, and fan-out/fan-in patterns.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="challenges-of-rpc-over-messaging">
-<section id="section-3.3.2">
-          <h4 id="name-challenges-of-rpc-over-mess">
-<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-challenges-of-rpc-over-mess" class="section-name selfRef">Challenges of RPC over Messaging</a>
-          </h4>
-<p id="section-3.3.2-1">Bridging synchronous RPC semantics with asynchronous messaging infrastructure
-introduces several challenges:<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.2-2.1">
-              <p id="section-3.3.2-2.1.1"><strong>Request/Response Correlation</strong>: Messaging systems are inherently decoupled
-and do not guarantee a direct response path. Implementing RPC requires
-correlating requests and responses, often using unique identifiers and temporary
-reply channels.<a href="#section-3.3.2-2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-2.2">
-              <p id="section-3.3.2-2.2.1"><strong>Latency and Ordering</strong>: Messaging layers may introduce variable delivery
-latency and do not guarantee strict ordering, which can complicate synchronous
-RPC expectations.<a href="#section-3.3.2-2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-2.3">
-              <p id="section-3.3.2-2.3.1"><strong>Error Handling</strong>: Messaging systems may buffer, retry, or drop messages,
-making it difficult to propagate errors and timeouts in a way that matches RPC
-contracts.<a href="#section-3.3.2-2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-2.4">
-              <p id="section-3.3.2-2.4.1"><strong>Streaming and Multiplexing</strong>: Supporting streaming RPC (e.g., bidirectional
-or server/client streaming) over messaging requires careful management of stream
-lifecycles, backpressure, and multiplexing multiple logical RPCs over shared
-channels.<a href="#section-3.3.2-2.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-2.5">
-              <p id="section-3.3.2-2.5.1"><strong>Security and Authorization</strong>: Ensuring that only authorized parties can
-invoke or respond to RPCs, and that all messages are authenticated and
-encrypted, is more complex in a distributed, group-based messaging environment.<a href="#section-3.3.2-2.5.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.3.2-3">The SRPC capability in SLIM addresses these challenges by providing a native,
-secure, and streaming RPC abstraction directly over the SLIM messaging layer, as
-described in the following section.<a href="#section-3.3.2-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-</section>
-</div>
-<div id="remote-procedure-calls-over-slim-srpc">
-<section id="section-3.4">
-        <h3 id="name-remote-procedure-calls-over">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-remote-procedure-calls-over" class="section-name selfRef">Remote Procedure Calls over SLIM (SRPC)</a>
-        </h3>
-<p id="section-3.4-1">SLIM natively supports Remote Procedure Calls (RPC) through its SRPC (SLIM RPC)
-capability, enabling efficient, secure, and flexible communication patterns for
-distributed and agentic applications. SRPC is designed to provide gRPC-like
-streaming RPC semantics directly over the SLIM transport, leveraging SLIM's
-secure, multiplexed, and group-oriented messaging infrastructure.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<div id="overview">
-<section id="section-3.4.1">
-          <h4 id="name-overview">
-<a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
-          </h4>
-<p id="section-3.4.1-1">SRPC allows applications to define and invoke remote procedures using familiar
-gRPC patterns, including unary calls, client streaming, server streaming, and
-bidirectional streaming. This enables developers to build complex, stateful, and
-interactive workflows between distributed agents, services, and tools, all while
-benefiting from SLIM's end-to-end security and group membership features.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="key-features">
-<section id="section-3.4.2">
-          <h4 id="name-key-features">
-<a href="#section-3.4.2" class="section-number selfRef">3.4.2. </a><a href="#name-key-features" class="section-name selfRef">Key Features</a>
-          </h4>
-<ul class="normal">
-<li class="normal" id="section-3.4.2-1.1">
-              <p id="section-3.4.2-1.1.1"><strong>Streaming RPC Support</strong>: SRPC supports all gRPC streaming modes, allowing
-for flexible data exchange patterns such as real-time data feeds, interactive
-sessions, and collaborative workflows.<a href="#section-3.4.2-1.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.4.2-1.2">
-              <p id="section-3.4.2-1.2.1"><strong>Multiplexed Transport</strong>: Multiple concurrent RPC streams can be established
-over a single SLIM connection, reducing overhead and improving resource
-efficiency.<a href="#section-3.4.2-1.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.4.2-1.3">
-              <p id="section-3.4.2-1.3.1"><strong>Secure Group Communication</strong>: SRPC leverages SLIM's MLS-based security
-model, ensuring that all RPC calls and responses are encrypted and authenticated
-within the context of secure groups.<a href="#section-3.4.2-1.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.4.2-1.4">
-              <p id="section-3.4.2-1.4.1"><strong>Protocol Buffers Integration</strong>: Service definitions and message schemas are
-specified using Protocol Buffers, enabling strong typing and interoperability
-across languages and platforms.<a href="#section-3.4.2-1.4.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-</section>
-</div>
-<div id="architecture">
-<section id="section-3.4.3">
-          <h4 id="name-architecture">
-<a href="#section-3.4.3" class="section-number selfRef">3.4.3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
-          </h4>
-<p id="section-3.4.3-1">SRPC is implemented as a protocol extension and a set of client/server libraries
-that integrate with the SLIM session layer. Developers define service interfaces
-using Protocol Buffers, and code generation tools produce client and server
-stubs that handle message serialization, stream management, and invocation logic
-over SLIM channels.<a href="#section-3.4.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.4.3-2">The SRPC protocol manages the lifecycle of RPC streams, including initiation,
-message exchange, error handling, and stream termination. It ensures that all
-communication adheres to SLIM's security and routing policies, and that group
-membership and authorization are enforced for each RPC interaction.<a href="#section-3.4.3-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="benefits-for-agentic-applications">
-<section id="section-3.4.4">
-          <h4 id="name-benefits-for-agentic-applic">
-<a href="#section-3.4.4" class="section-number selfRef">3.4.4. </a><a href="#name-benefits-for-agentic-applic" class="section-name selfRef">Benefits for Agentic Applications</a>
-          </h4>
-<p id="section-3.4.4-1">By providing native, streaming RPC capabilities, SRPC enables agentic AI
-applications and distributed systems to:<a href="#section-3.4.4-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.4.4-2.1">
-              <p id="section-3.4.4-2.1.1">Orchestrate complex, multi-step workflows across multiple agents and services.<a href="#section-3.4.4-2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.4.4-2.2">
-              <p id="section-3.4.4-2.2.1">Exchange large or continuous data streams efficiently and securely.<a href="#section-3.4.4-2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.4.4-2.3">
-              <p id="section-3.4.4-2.3.1">Implement interactive, real-time collaboration between distributed components.<a href="#section-3.4.4-2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.4.4-2.4">
-              <p id="section-3.4.4-2.4.1">Simplify integration with existing gRPC-based tools and ecosystems.<a href="#section-3.4.4-2.4.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.4.4-3">SRPC makes it possible to build robust, scalable, and secure agentic
-applications that fully leverage the power of SLIM's messaging and group
-communication model.<a href="#section-3.4.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-4">Node names are used for secure onboarding and authentication. Node names do not
-have aggregation requirements and therefore use decentralized identifiers:<a href="#section-3.4.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-5"><code>
+<p id="section-3.2-2">Node names are used for secure onboarding and authentication. Node names do not
+have aggregation requirements and therefore use decentralized identifiers:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3"><code>
 node name A: did:key(node_A)
-</code><a href="#section-3.4.4-5" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-6">A channel name identifies a messaging group and must be routable; that is, it
+</code><a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">A channel name identifies a messaging group and must be routable; that is, it
 must include a globally unique network prefix that can be aggregated for
-scalable lookups and message forwarding.<a href="#section-3.4.4-6" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-7">A group in SLIM is an MLS group with a moderator client responsible for adding
+scalable lookups and message forwarding.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">A group in SLIM is an MLS group with a moderator client responsible for adding
 and removing group members. The moderator is identified by a cryptographic
 public key as defined in MLS <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>, and in SLIM, also by a decentralized
-identifier derived as the hash of the public key <span>[<a href="#DID-W3C" class="cite xref">DID-W3C</a>]</span>.<a href="#section-3.4.4-7" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-8">By naming entities with hashes <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span>, SLIM achieves secure and globally
+identifier derived as the hash of the public key <span>[<a href="#DID-W3C" class="cite xref">DID-W3C</a>]</span>.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">By naming entities with hashes <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span>, SLIM achieves secure and globally
 unique naming, enabling the creation of permissionless systems where channel
 names and client names can be distributed across administrative boundaries. W3C
 DIDs are optional but can be used when hash links are employed and conform to
 the Named Information <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span> standard, referencing the IANA registry
-<span>[<a href="#NI-Registry" class="cite xref">NI-Registry</a>]</span>.<a href="#section-3.4.4-8" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-9">SLIM routable name prefixes and client names can use different DID methods
+<span>[<a href="#NI-Registry" class="cite xref">NI-Registry</a>]</span>.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2-7">SLIM routable name prefixes and client names can use different DID methods
 which have different resolution systems such as did:web <span>[<a href="#DID-Web" class="cite xref">DID-Web</a>]</span>, did:key
 <span>[<a href="#DID-Key" class="cite xref">DID-Key</a>]</span> or did:plc <span>[<a href="#DID-ATProto" class="cite xref">DID-ATProto</a>]</span>. See <span>[<a href="#DID-Methods" class="cite xref">DID-Methods</a>]</span> for well-known DID
-methods.<a href="#section-3.4.4-9" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-10">The naming structure follows these patterns:<a href="#section-3.4.4-10" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-11"><code>
+methods.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.2-8">The naming structure follows these patterns:<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-9"><code>
 client locator: did:key(org)/namespace(org)/service/did:key(client)
 channel name: did:key(org)/namespace(org)/service/did:key(moderator)
-</code><a href="#section-3.4.4-11" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-12">Where the moderator is the special client that has the role to create a channel,
+</code><a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.2-10">Where the moderator is the special client that has the role to create a channel,
 add actual application clients and remove them from the group.
 As mentioned above the moderator is a data plane client which is a decentralized
-instance of the MLS delivery service as described in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>.<a href="#section-3.4.4-12" class="pilcrow">¶</a></p>
-<p id="section-3.4.4-13">The hierarchical structure is required to maximize aggregation in subscription
+instance of the MLS delivery service as described in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>.<a href="#section-3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.2-11">The hierarchical structure is required to maximize aggregation in subscription
 tables, which can aggregate multiple names under name prefixes such as
-organization identifiers, organization namespaces, and services.<a href="#section-3.4.4-13" class="pilcrow">¶</a></p>
-</section>
-</div>
+organization identifiers, organization namespaces, and services.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="deployment-considerations">
-<section id="section-3.5">
+<section id="section-3.3">
         <h3 id="name-deployment-considerations">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-deployment-considerations" class="section-name selfRef">Deployment Considerations</a>
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-deployment-considerations" class="section-name selfRef">Deployment Considerations</a>
         </h3>
-<p id="section-3.5-1">SLIM helps the deployment of agentic AI applications where a combination of
+<p id="section-3.3-1">SLIM helps the deployment of agentic AI applications where a combination of
 data streams, tools and LLMs are combined to create a distributed multi-agent
-systems that can solve problems via AI.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.5-2">These applications work as SLIM clients and <span class="bcp14">MAY</span> expose a service to the secure
+systems that can solve problems via AI.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">These applications work as SLIM clients and <span class="bcp14">MAY</span> expose a service to the secure
 group. The channel and client naming structure combined allows for service
 discovery capabilities by binding the application a specific application
-namespace and service name.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
+namespace and service name.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1886,15 +1723,258 @@ channels.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="sec-combined-references">
+<div id="rpc-in-agentic-protocols-and-relationship-to-messaging">
 <section id="section-5">
+      <h2 id="name-rpc-in-agentic-protocols-an">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-rpc-in-agentic-protocols-an" class="section-name selfRef">RPC in Agentic Protocols and Relationship to Messaging</a>
+      </h2>
+<p id="section-5-1">Most agent-facing interfaces in use today—such as A2A and the Model Context
+Protocol (MCP)—are Remote Procedure Call (RPC) oriented. They expose synchronous
+request/response semantics for tool invocation, resource listing, and capability
+execution. This section clarifies how RPC relates to asynchronous messaging and
+how the two paradigms interoperate in agentic systems.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="rpc-vs-messaging-synchronous-vs-asynchronous">
+<section id="section-5.1">
+        <h3 id="name-rpc-vs-messaging-synchronou">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-rpc-vs-messaging-synchronou" class="section-name selfRef">RPC vs. Messaging: Synchronous vs. Asynchronous</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-5.1-1.1">
+            <p id="section-5.1-1.1.1"><strong>RPC (A2A, MCP)</strong>: The caller issues a request and blocks or awaits a timely
+response. Semantics emphasize tightly scoped operations (for example, “call tool
+X with parameters Y”) with bounded latency and explicit error contracts.<a href="#section-5.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-1.2">
+            <p id="section-5.1-1.2.1"><strong>Messaging (AMQP, MQTT, NATS, Kafka, SLIM)</strong>: Decoupled producers and
+consumers communicate via topics, subjects, or queues. Delivery can be
+one-to-one, one-to-many, or many-to-many, with loose coupling, buffering, and
+retries. Producers are not inherently blocked by consumers.<a href="#section-5.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.1-2">In practice, agentic applications need both: synchronous tool invocations for
+interactivity and asynchronous channels for streaming output, progress,
+coordination, and fan-out/fan-in patterns.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="challenges-of-rpc-over-messaging">
+<section id="section-5.2">
+        <h3 id="name-challenges-of-rpc-over-mess">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-challenges-of-rpc-over-mess" class="section-name selfRef">Challenges of RPC over Messaging</a>
+        </h3>
+<p id="section-5.2-1">Bridging synchronous RPC semantics with asynchronous messaging infrastructure
+introduces several challenges:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-2.1">
+            <p id="section-5.2-2.1.1"><strong>Request/Response Correlation</strong>: Messaging systems are inherently decoupled
+and do not guarantee a direct response path. Implementing RPC requires
+correlating requests and responses, often using unique identifiers and temporary
+reply channels.<a href="#section-5.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.2">
+            <p id="section-5.2-2.2.1"><strong>Latency and Ordering</strong>: Messaging layers may introduce variable delivery
+latency and do not guarantee strict ordering, which can complicate synchronous
+RPC expectations.<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.3">
+            <p id="section-5.2-2.3.1"><strong>Error Handling</strong>: Messaging systems may buffer, retry, or drop messages,
+making it difficult to propagate errors and timeouts in a way that matches RPC
+contracts.<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.4">
+            <p id="section-5.2-2.4.1"><strong>Streaming and Multiplexing</strong>: Supporting streaming RPC (e.g., bidirectional
+or server/client streaming) over messaging requires careful management of stream
+lifecycles, backpressure, and multiplexing multiple logical RPCs over shared
+channels.<a href="#section-5.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.5">
+            <p id="section-5.2-2.5.1"><strong>Security and Authorization</strong>: Ensuring that only authorized parties can
+invoke or respond to RPCs, and that all messages are authenticated and
+encrypted, is more complex in a distributed, group-based messaging environment.<a href="#section-5.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.2-3">The SRPC capability in SLIM addresses these challenges by providing a native,
+secure, and streaming RPC abstraction directly over the SLIM messaging layer, as
+described in the following section.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="remote-procedure-calls-over-slim-srpc">
+<section id="section-5.3">
+        <h3 id="name-remote-procedure-calls-over">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-remote-procedure-calls-over" class="section-name selfRef">Remote Procedure Calls over SLIM (SRPC)</a>
+        </h3>
+<p id="section-5.3-1">SLIM natively supports Remote Procedure Calls (RPC) through its SRPC (SLIM RPC)
+capability, enabling efficient, secure, and flexible communication patterns for
+distributed and agentic applications. SRPC is designed to provide gRPC-like
+streaming RPC semantics directly over the SLIM transport, leveraging SLIM's
+secure, multiplexed, and group-oriented messaging infrastructure.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<div id="overview">
+<section id="section-5.3.1">
+          <h4 id="name-overview">
+<a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
+          </h4>
+<p id="section-5.3.1-1">SRPC allows applications to define and invoke remote procedures using familiar
+gRPC patterns, including unary calls, client streaming, server streaming, and
+bidirectional streaming. This enables developers to build complex, stateful, and
+interactive workflows between distributed agents, services, and tools, all while
+benefiting from SLIM's end-to-end security and group membership features.<a href="#section-5.3.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="key-features">
+<section id="section-5.3.2">
+          <h4 id="name-key-features">
+<a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-key-features" class="section-name selfRef">Key Features</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-5.3.2-1.1">
+              <p id="section-5.3.2-1.1.1"><strong>Streaming RPC Support</strong>: SRPC supports all gRPC streaming modes, allowing
+for flexible data exchange patterns such as real-time data feeds, interactive
+sessions, and collaborative workflows.<a href="#section-5.3.2-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.2-1.2">
+              <p id="section-5.3.2-1.2.1"><strong>Multiplexed Transport</strong>: Multiple concurrent RPC streams can be established
+over a single SLIM connection, reducing overhead and improving resource
+efficiency.<a href="#section-5.3.2-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.2-1.3">
+              <p id="section-5.3.2-1.3.1"><strong>Secure Group Communication</strong>: SRPC leverages SLIM's MLS-based security
+model, ensuring that all RPC calls and responses are encrypted and authenticated
+within the context of secure groups.<a href="#section-5.3.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.2-1.4">
+              <p id="section-5.3.2-1.4.1"><strong>Protocol Buffers Integration</strong>: Service definitions and message schemas are
+specified using Protocol Buffers, enabling strong typing and interoperability
+across languages and platforms.<a href="#section-5.3.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="architecture">
+<section id="section-5.3.3">
+          <h4 id="name-architecture">
+<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
+          </h4>
+<p id="section-5.3.3-1">SRPC is implemented as a protocol extension and a set of client/server libraries
+that integrate with the SLIM session layer. Developers define service interfaces
+using Protocol Buffers, and code generation tools produce client and server
+stubs that handle message serialization, stream management, and invocation logic
+over SLIM channels.<a href="#section-5.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3.3-2">The SRPC protocol manages the lifecycle of RPC streams, including initiation,
+message exchange, error handling, and stream termination. It ensures that all
+communication adheres to SLIM's security and routing policies, and that group
+membership and authorization are enforced for each RPC interaction.<a href="#section-5.3.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="benefits-for-agentic-applications">
+<section id="section-5.3.4">
+          <h4 id="name-benefits-for-agentic-applic">
+<a href="#section-5.3.4" class="section-number selfRef">5.3.4. </a><a href="#name-benefits-for-agentic-applic" class="section-name selfRef">Benefits for Agentic Applications</a>
+          </h4>
+<p id="section-5.3.4-1">By providing native, streaming RPC capabilities, SRPC enables agentic AI
+applications and distributed systems to:<a href="#section-5.3.4-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.3.4-2.1">
+              <p id="section-5.3.4-2.1.1">Orchestrate complex, multi-step workflows across multiple agents and services.<a href="#section-5.3.4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.4-2.2">
+              <p id="section-5.3.4-2.2.1">Exchange large or continuous data streams efficiently and securely.<a href="#section-5.3.4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.4-2.3">
+              <p id="section-5.3.4-2.3.1">Implement interactive, real-time collaboration between distributed components.<a href="#section-5.3.4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.4-2.4">
+              <p id="section-5.3.4-2.4.1">Simplify integration with existing gRPC-based tools and ecosystems.<a href="#section-5.3.4-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-5.3.4-3">SRPC makes it possible to build robust, scalable, and secure agentic
+applications that fully leverage the power of SLIM's messaging and group
+communication model.<a href="#section-5.3.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="slim-naming-in-srpc">
+<section id="section-5.3.5">
+          <h4 id="name-slim-naming-in-srpc">
+<a href="#section-5.3.5" class="section-number selfRef">5.3.5. </a><a href="#name-slim-naming-in-srpc" class="section-name selfRef">SLIM Naming in SRPC</a>
+          </h4>
+<p id="section-5.3.5-1">SRPC derives per-service and per-handler routing names directly from the
+structured SLIM naming scheme to enable efficient subscription and message
+dispatch without requiring application developers to manually manage channel
+names.<a href="#section-5.3.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-2">Each application participating in a secure SLIM group already has a hierarchical
+SLIM name composed of multiple components (organization identifier, namespace,
+service, and client/moderator key). SRPC appends a handler-qualified suffix to
+the service component to form unique, routable identifiers for RPC methods.<a href="#section-5.3.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-3">Service interface definitions (e.g., Protocol Buffers) describe one or more RPC
+handlers supporting the four common gRPC communication patterns:<a href="#section-5.3.5-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.3.5-4.1">
+              <p id="section-5.3.5-4.1.1">Unary → Unary<a href="#section-5.3.5-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.5-4.2">
+              <p id="section-5.3.5-4.2.1">Unary → Stream<a href="#section-5.3.5-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.5-4.3">
+              <p id="section-5.3.5-4.3.1">Stream → Unary<a href="#section-5.3.5-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.5-4.4">
+              <p id="section-5.3.5-4.4.1">Stream → Stream (bidirectional)<a href="#section-5.3.5-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-5.3.5-5">For every handler declared inside a service, SRPC generates a method routing
+token using the pattern:<a href="#section-5.3.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-6"><code>
+{package}.{service}-{handler}
+</code><a href="#section-5.3.5-6" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-7">Example: Given a protobuf package <code>example_service</code> and service <code>Test</code> with
+handlers <code>ExampleUnaryUnary</code>, <code>ExampleUnaryStream</code>, <code>ExampleStreamUnary</code>,
+<code>ExampleStreamStream</code>, the generated handler tokens are:<a href="#section-5.3.5-7" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-8"><code>
+example_service.Test-ExampleUnaryUnary
+example_service.Test-ExampleUnaryStream
+example_service.Test-ExampleStreamUnary
+example_service.Test-ExampleStreamStream
+</code><a href="#section-5.3.5-8" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-9">SRPC then embeds the handler token into the second component (service segment)
+of the full SLIM name for routing. If the original SLIM application name
+components are:<a href="#section-5.3.5-9" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-10"><code>
+component[0]/component[1]/component[2]/component[3]
+</code><a href="#section-5.3.5-10" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-11">The subscribed name for a specific handler becomes:<a href="#section-5.3.5-11" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-12"><code>
+component[0]/component[1]/component[2]-example_service.Test-ExampleUnaryUnary/component[3]
+</code><a href="#section-5.3.5-12" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-13">This transformation yields a distinct, hierarchical, and aggregatable name per
+RPC method while preserving the organizational and namespace prefix structure
+needed for subscription table aggregation. Applications exposing SRPC services
+automatically subscribe to all derived handler names; the SRPC library manages
+these subscriptions and maps incoming messages to the corresponding generated
+server stub functions. Developers implement only the handler logic exactly as
+with conventional gRPC, without manual SLIM channel management.<a href="#section-5.3.5-13" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-14">Benefits of this naming approach:
+- Deterministic and collision-resistant per-method naming.
+- Preserves hierarchical aggregation for routing efficiency.
+- Avoids separate discovery round-trips for method endpoints.
+- Enables capability advertisement to reference method names directly.
+- Simplifies multi-service deployments—adding a new handler produces a single
+new routable token.<a href="#section-5.3.5-14" class="pilcrow">¶</a></p>
+<p id="section-5.3.5-15">This integration of SRPC handler naming with SLIM's hierarchical naming model
+ensures consistent, secure, and scalable routing semantics for RPC traffic
+within agentic groups.<a href="#section-5.3.5-15" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-6">
       <h2 id="name-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-5.1">
+<section id="section-6.1">
         <h3 id="name-normative-references">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="DID-Methods">[DID-Methods]</dt>
@@ -1933,9 +2013,9 @@ channels.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-5.2">
+<section id="section-6.2">
         <h3 id="name-informative-references">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="CID-Spec">[CID-Spec]</dt>
@@ -1990,6 +2070,14 @@ channels.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:msardara@cisco.com" class="email">msardara@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Sam Betts</span></div>
+<div dir="auto" class="left"><span class="org">Cisco</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:sambetts@cisco.com" class="email">sambetts@cisco.com</a>
 </div>
 </address>
 </section>
