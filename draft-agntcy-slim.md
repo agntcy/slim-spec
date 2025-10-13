@@ -41,6 +41,11 @@ author:
     organization: Cisco
     email: msardara@cisco.com
 
+-
+    fullname: Sam Betts
+    organization: Cisco
+    email: sambetts@cisco.com
+
 normative:
   DID-W3C:
     title: "Decentralized Identifiers (DIDs) v1.0"
@@ -429,7 +434,84 @@ MLS group membership state, channel subscriptions, and pending message queues.
 SLIM requires several types of identifiers: node names, channel names,
 and client locators.
 
-## RPC in Agentic Protocols and Relationship to Messaging
+
+
+Node names are used for secure onboarding and authentication. Node names do not
+have aggregation requirements and therefore use decentralized identifiers:
+
+```
+node name A: did:key(node_A)
+```
+
+A channel name identifies a messaging group and must be routable; that is, it
+must include a globally unique network prefix that can be aggregated for
+scalable lookups and message forwarding.
+
+A group in SLIM is an MLS group with a moderator client responsible for adding
+and removing group members. The moderator is identified by a cryptographic
+public key as defined in MLS {{!RFC9750}}, and in SLIM, also by a decentralized
+identifier derived as the hash of the public key {{DID-W3C}}.
+
+By naming entities with hashes {{!RFC6920}}, SLIM achieves secure and globally
+unique naming, enabling the creation of permissionless systems where channel
+names and client names can be distributed across administrative boundaries. W3C
+DIDs are optional but can be used when hash links are employed and conform to
+the Named Information {{!RFC6920}} standard, referencing the IANA registry
+{{NI-Registry}}.
+
+SLIM routable name prefixes and client names can use different DID methods
+which have different resolution systems such as did:web {{DID-Web}}, did:key
+{{DID-Key}} or did:plc {{DID-ATProto}}. See {{DID-Methods}} for well-known DID
+methods.
+
+The naming structure follows these patterns:
+
+```
+client locator: did:key(org)/namespace(org)/service/did:key(client)
+channel name: did:key(org)/namespace(org)/service/did:key(moderator)
+```
+
+Where the moderator is the special client that has the role to create a channel,
+add actual application clients and remove them from the group.
+As mentioned above the moderator is a data plane client which is a decentralized
+instance of the MLS delivery service as described in {{!RFC9420}}.
+
+The hierarchical structure is required to maximize aggregation in subscription
+tables, which can aggregate multiple names under name prefixes such as
+organization identifiers, organization namespaces, and services.
+
+
+## Deployment Considerations
+SLIM helps the deployment of agentic AI applications where a combination of
+data streams, tools and LLMs are combined to create a distributed multi-agent
+systems that can solve problems via AI.
+
+These applications work as SLIM clients and MAY expose a service to the secure
+group. The channel and client naming structure combined allows for service
+discovery capabilities by binding the application a specific application
+namespace and service name.
+
+# Security Considerations
+
+Security is a paramount concern for SLIM, given the sensitive nature of
+the data being transmitted and the need for reliable access control.
+SLIM inherits security features from MLS, gRPC, and TLS, but also
+introduces new mechanisms to address its unique requirements.
+
+## Authentication and Authorization
+
+Authentication and authorization in SLIM are handled at the application
+level, leveraging the capabilities of the underlying MLS groups. Clients
+must authenticate themselves to the MLS Authentication Service, which
+issues credentials that are used to sign messages. These credentials
+are then used by other clients to verify the authenticity of the
+messages and the identity of the sender.
+
+Authorization policies determine what actions an authenticated client
+is allowed to perform, such as publishing or subscribing to specific
+channels.
+
+# RPC in Agentic Protocols and Relationship to Messaging
 
 Most agent-facing interfaces in use today—such as A2A and the Model Context
 Protocol (MCP)—are Remote Procedure Call (RPC) oriented. They expose synchronous
@@ -437,7 +519,7 @@ request/response semantics for tool invocation, resource listing, and capability
 execution. This section clarifies how RPC relates to asynchronous messaging and
 how the two paradigms interoperate in agentic systems.
 
-### RPC vs. Messaging: Synchronous vs. Asynchronous
+## RPC vs. Messaging: Synchronous vs. Asynchronous
 
 - **RPC (A2A, MCP)**: The caller issues a request and blocks or awaits a timely
 response. Semantics emphasize tightly scoped operations (for example, “call tool
@@ -451,7 +533,7 @@ In practice, agentic applications need both: synchronous tool invocations for
 interactivity and asynchronous channels for streaming output, progress,
 coordination, and fan-out/fan-in patterns.
 
-### Challenges of RPC over Messaging
+## Challenges of RPC over Messaging
 
 Bridging synchronous RPC semantics with asynchronous messaging infrastructure
 introduces several challenges:
@@ -536,78 +618,74 @@ SRPC makes it possible to build robust, scalable, and secure agentic
 applications that fully leverage the power of SLIM's messaging and group
 communication model.
 
-Node names are used for secure onboarding and authentication. Node names do not
-have aggregation requirements and therefore use decentralized identifiers:
+### SLIM Naming in SRPC
+
+SRPC derives per-service and per-handler routing names directly from the
+structured SLIM naming scheme to enable efficient subscription and message
+dispatch without requiring application developers to manually manage channel
+names.
+
+Each application participating in a secure SLIM group already has a hierarchical
+SLIM name composed of multiple components (organization identifier, namespace,
+service, and client/moderator key). SRPC appends a handler-qualified suffix to
+the service component to form unique, routable identifiers for RPC methods.
+
+Service interface definitions (e.g., Protocol Buffers) describe one or more RPC
+handlers supporting the four common gRPC communication patterns:
+
+- Unary → Unary
+- Unary → Stream
+- Stream → Unary
+- Stream → Stream (bidirectional)
+
+For every handler declared inside a service, SRPC generates a method routing
+token using the pattern:
 
 ```
-node name A: did:key(node_A)
+{package}.{service}-{handler}
 ```
 
-A channel name identifies a messaging group and must be routable; that is, it
-must include a globally unique network prefix that can be aggregated for
-scalable lookups and message forwarding.
-
-A group in SLIM is an MLS group with a moderator client responsible for adding
-and removing group members. The moderator is identified by a cryptographic
-public key as defined in MLS {{!RFC9750}}, and in SLIM, also by a decentralized
-identifier derived as the hash of the public key {{DID-W3C}}.
-
-By naming entities with hashes {{!RFC6920}}, SLIM achieves secure and globally
-unique naming, enabling the creation of permissionless systems where channel
-names and client names can be distributed across administrative boundaries. W3C
-DIDs are optional but can be used when hash links are employed and conform to
-the Named Information {{!RFC6920}} standard, referencing the IANA registry
-{{NI-Registry}}.
-
-SLIM routable name prefixes and client names can use different DID methods
-which have different resolution systems such as did:web {{DID-Web}}, did:key
-{{DID-Key}} or did:plc {{DID-ATProto}}. See {{DID-Methods}} for well-known DID
-methods.
-
-The naming structure follows these patterns:
+Example: Given a protobuf package `example_service` and service `Test` with
+handlers `ExampleUnaryUnary`, `ExampleUnaryStream`, `ExampleStreamUnary`,
+`ExampleStreamStream`, the generated handler tokens are:
 
 ```
-client locator: did:key(org)/namespace(org)/service/did:key(client)
-channel name: did:key(org)/namespace(org)/service/did:key(moderator)
+example_service.Test-ExampleUnaryUnary
+example_service.Test-ExampleUnaryStream
+example_service.Test-ExampleStreamUnary
+example_service.Test-ExampleStreamStream
 ```
 
+SRPC then embeds the handler token into the second component (service segment)
+of the full SLIM name for routing. If the original SLIM application name
+components are:
 
-Where the moderator is the special client that has the role to create a channel,
-add actual application clients and remove them from the group.
-As mentioned above the moderator is a data plane client which is a decentralized
-instance of the MLS delivery service as described in {{!RFC9420}}.
+```
+component[0]/component[1]/component[2]/component[3]
+```
 
-The hierarchical structure is required to maximize aggregation in subscription
-tables, which can aggregate multiple names under name prefixes such as
-organization identifiers, organization namespaces, and services.
+The subscribed name for a specific handler becomes:
 
+```
+component[0]/component[1]/component[2]-example_service.Test-ExampleUnaryUnary/component[3]
+```
 
-## Deployment Considerations
-SLIM helps the deployment of agentic AI applications where a combination of
-data streams, tools and LLMs are combined to create a distributed multi-agent
-systems that can solve problems via AI.
+This transformation yields a distinct, hierarchical, and aggregatable name per
+RPC method while preserving the organizational and namespace prefix structure
+needed for subscription table aggregation. Applications exposing SRPC services
+automatically subscribe to all derived handler names; the SRPC library manages
+these subscriptions and maps incoming messages to the corresponding generated
+server stub functions. Developers implement only the handler logic exactly as
+with conventional gRPC, without manual SLIM channel management.
 
-These applications work as SLIM clients and MAY expose a service to the secure
-group. The channel and client naming structure combined allows for service
-discovery capabilities by binding the application a specific application
-namespace and service name.
+Benefits of this naming approach:
+- Deterministic and collision-resistant per-method naming.
+- Preserves hierarchical aggregation for routing efficiency.
+- Avoids separate discovery round-trips for method endpoints.
+- Enables capability advertisement to reference method names directly.
+- Simplifies multi-service deployments—adding a new handler produces a single
+new routable token.
 
-# Security Considerations
-
-Security is a paramount concern for SLIM, given the sensitive nature of
-the data being transmitted and the need for reliable access control.
-SLIM inherits security features from MLS, gRPC, and TLS, but also
-introduces new mechanisms to address its unique requirements.
-
-## Authentication and Authorization
-
-Authentication and authorization in SLIM are handled at the application
-level, leveraging the capabilities of the underlying MLS groups. Clients
-must authenticate themselves to the MLS Authentication Service, which
-issues credentials that are used to sign messages. These credentials
-are then used by other clients to verify the authenticity of the
-messages and the identity of the sender.
-
-Authorization policies determine what actions an authenticated client
-is allowed to perform, such as publishing or subscribing to specific
-channels.
+This integration of SRPC handler naming with SLIM's hierarchical naming model
+ensures consistent, secure, and scalable routing semantics for RPC traffic
+within agentic groups.
