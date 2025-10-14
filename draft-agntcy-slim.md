@@ -491,26 +491,6 @@ group. The channel and client naming structure combined allows for service
 discovery capabilities by binding the application a specific application
 namespace and service name.
 
-# Security Considerations
-
-Security is a paramount concern for SLIM, given the sensitive nature of
-the data being transmitted and the need for reliable access control.
-SLIM inherits security features from MLS, gRPC, and TLS, but also
-introduces new mechanisms to address its unique requirements.
-
-## Authentication and Authorization
-
-Authentication and authorization in SLIM are handled at the application
-level, leveraging the capabilities of the underlying MLS groups. Clients
-must authenticate themselves to the MLS Authentication Service, which
-issues credentials that are used to sign messages. These credentials
-are then used by other clients to verify the authenticity of the
-messages and the identity of the sender.
-
-Authorization policies determine what actions an authenticated client
-is allowed to perform, such as publishing or subscribing to specific
-channels.
-
 # RPC in Agentic Protocols and Relationship to Messaging
 
 Most agent-facing interfaces in use today—such as A2A and the Model Context
@@ -687,3 +667,23 @@ new routable token.
 This integration of SRPC handler naming with SLIM's hierarchical naming model
 ensures consistent, secure, and scalable routing semantics for RPC traffic
 within agentic groups.
+
+# Security Considerations
+
+Security is a paramount concern for SLIM, given the sensitive nature of
+the data being transmitted and the need for reliable access control.
+SLIM inherits security features from MLS, gRPC, and TLS, but also
+introduces new mechanisms to address its unique requirements.
+
+## Authentication and Authorization
+
+Authentication and authorization in SLIM are handled at the application
+level, leveraging the capabilities of the underlying MLS groups. Clients
+must authenticate themselves to the MLS Authentication Service, which
+issues credentials that are used to sign messages. These credentials
+are then used by other clients to verify the authenticity of the
+messages and the identity of the sender.
+
+Authorization policies determine what actions an authenticated client
+is allowed to perform, such as publishing or subscribing to specific
+channels.
