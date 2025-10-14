@@ -41,6 +41,11 @@ author:
     organization: Cisco
     email: msardara@cisco.com
 
+-
+    fullname: Sam Betts
+    organization: Cisco
+    email: sambetts@cisco.com
+
 normative:
   DID-W3C:
     title: "Decentralized Identifiers (DIDs) v1.0"
@@ -63,6 +68,11 @@ normative:
 
 
 informative:
+  SRPC:
+    title: "SLIM RPC (SRPC) Reference"
+    author:
+      - name: AGNTCY
+    target: https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md
   CID-Spec:
     title: "CID (Content IDentifier) Specification"
     author:
@@ -134,9 +144,12 @@ maintaining security and interoperability.
 
 The protocol includes a session layer that abstracts the complexity of MLS
 operations and messaging infrastructure from applications, providing simple
-publish-subscribe APIs while handling authentication, encryption, connection
-management, and fault recovery automatically. This design enables developers
-to focus on application logic rather than the underlying messaging complexities.
+publish-subscribe APIs and native Remote Procedure Call (RPC) semantics via SRPC
+(SLIM RPC). SRPC enables request/response and streaming RPC directly over SLIM's
+secure messaging fabric (see {{SRPC}}), while handling authentication,
+encryption, connection management, and fault recovery automatically. This design
+enables developers to focus on application logic rather than the underlying
+messaging complexities.
 
 Security is fundamental to SLIM's design, with authentication and authorization
 handled through MLS groups, cryptographic client identities, and configurable
@@ -152,9 +165,9 @@ guaranteeing end-to-end security and low-latency communication. SLIM leverages
 HTTP/2 end to end as a thin waist of the communication stack and avoids the need
 to create message transcoding along the path. By leveraging message encryption
 via MLS {{!RFC9420}} {{!RFC9750}}, TLS connection termination along the path
-does not negatively affect
-confidentiality. Authentication and authorization are handled at the application
-level and can be managed in a decentralized or federated way or a mix of both.
+does not negatively affect confidentiality. Authentication and authorization are
+handled at the application level and can be managed in a decentralized or
+federated way or a mix of both.
 
 In SLIM there are three main communication elements: intermediate nodes equipped
 with message queues, message producers and message consumers.
@@ -421,6 +434,8 @@ MLS group membership state, channel subscriptions, and pending message queues.
 SLIM requires several types of identifiers: node names, channel names,
 and client locators.
 
+
+
 Node names are used for secure onboarding and authentication. Node names do not
 have aggregation requirements and therefore use decentralized identifiers:
 
@@ -456,7 +471,6 @@ client locator: did:key(org)/namespace(org)/service/did:key(client)
 channel name: did:key(org)/namespace(org)/service/did:key(moderator)
 ```
 
-
 Where the moderator is the special client that has the role to create a channel,
 add actual application clients and remove them from the group.
 As mentioned above the moderator is a data plane client which is a decentralized
@@ -476,6 +490,183 @@ These applications work as SLIM clients and MAY expose a service to the secure
 group. The channel and client naming structure combined allows for service
 discovery capabilities by binding the application a specific application
 namespace and service name.
+
+# RPC in Agentic Protocols and Relationship to Messaging
+
+Most agent-facing interfaces in use today—such as A2A and the Model Context
+Protocol (MCP)—are Remote Procedure Call (RPC) oriented. They expose synchronous
+request/response semantics for tool invocation, resource listing, and capability
+execution. This section clarifies how RPC relates to asynchronous messaging and
+how the two paradigms interoperate in agentic systems.
+
+## RPC vs. Messaging: Synchronous vs. Asynchronous
+
+- **RPC (A2A, MCP)**: The caller issues a request and blocks or awaits a timely
+response. Semantics emphasize tightly scoped operations (for example, “call tool
+X with parameters Y”) with bounded latency and explicit error contracts.
+- **Messaging (AMQP, MQTT, NATS, Kafka, SLIM)**: Decoupled producers and
+consumers communicate via topics, subjects, or queues. Delivery can be
+one-to-one, one-to-many, or many-to-many, with loose coupling, buffering, and
+retries. Producers are not inherently blocked by consumers.
+
+In practice, agentic applications need both: synchronous tool invocations for
+interactivity and asynchronous channels for streaming output, progress,
+coordination, and fan-out/fan-in patterns.
+
+## Challenges of RPC over Messaging
+
+Bridging synchronous RPC semantics with asynchronous messaging infrastructure
+introduces several challenges:
+
+- **Request/Response Correlation**: Messaging systems are inherently decoupled
+and do not guarantee a direct response path. Implementing RPC requires
+correlating requests and responses, often using unique identifiers and temporary
+reply channels.
+- **Latency and Ordering**: Messaging layers may introduce variable delivery
+latency and do not guarantee strict ordering, which can complicate synchronous
+RPC expectations.
+- **Error Handling**: Messaging systems may buffer, retry, or drop messages,
+making it difficult to propagate errors and timeouts in a way that matches RPC
+contracts.
+- **Streaming and Multiplexing**: Supporting streaming RPC (e.g., bidirectional
+or server/client streaming) over messaging requires careful management of stream
+lifecycles, backpressure, and multiplexing multiple logical RPCs over shared
+channels.
+- **Security and Authorization**: Ensuring that only authorized parties can
+invoke or respond to RPCs, and that all messages are authenticated and
+encrypted, is more complex in a distributed, group-based messaging environment.
+
+The SRPC capability in SLIM addresses these challenges by providing a native,
+secure, and streaming RPC abstraction directly over the SLIM messaging layer, as
+described in the following section.
+
+## Remote Procedure Calls over SLIM (SRPC)
+
+SLIM natively supports Remote Procedure Calls (RPC) through its SRPC (SLIM RPC)
+capability, enabling efficient, secure, and flexible communication patterns for
+distributed and agentic applications. SRPC is designed to provide gRPC-like
+streaming RPC semantics directly over the SLIM transport, leveraging SLIM's
+secure, multiplexed, and group-oriented messaging infrastructure.
+
+### Overview
+
+SRPC allows applications to define and invoke remote procedures using familiar
+gRPC patterns, including unary calls, client streaming, server streaming, and
+bidirectional streaming. This enables developers to build complex, stateful, and
+interactive workflows between distributed agents, services, and tools, all while
+benefiting from SLIM's end-to-end security and group membership features.
+
+### Key Features
+
+- **Streaming RPC Support**: SRPC supports all gRPC streaming modes, allowing
+for flexible data exchange patterns such as real-time data feeds, interactive
+sessions, and collaborative workflows.
+- **Multiplexed Transport**: Multiple concurrent RPC streams can be established
+over a single SLIM connection, reducing overhead and improving resource
+efficiency.
+- **Secure Group Communication**: SRPC leverages SLIM's MLS-based security
+model, ensuring that all RPC calls and responses are encrypted and authenticated
+within the context of secure groups.
+- **Protocol Buffers Integration**: Service definitions and message schemas are
+specified using Protocol Buffers, enabling strong typing and interoperability
+across languages and platforms.
+
+### Architecture
+
+SRPC is implemented as a protocol extension and a set of client/server libraries
+that integrate with the SLIM session layer. Developers define service interfaces
+using Protocol Buffers, and code generation tools produce client and server
+stubs that handle message serialization, stream management, and invocation logic
+over SLIM channels.
+
+The SRPC protocol manages the lifecycle of RPC streams, including initiation,
+message exchange, error handling, and stream termination. It ensures that all
+communication adheres to SLIM's security and routing policies, and that group
+membership and authorization are enforced for each RPC interaction.
+
+### Benefits for Agentic Applications
+
+By providing native, streaming RPC capabilities, SRPC enables agentic AI
+applications and distributed systems to:
+
+- Orchestrate complex, multi-step workflows across multiple agents and services.
+- Exchange large or continuous data streams efficiently and securely.
+- Implement interactive, real-time collaboration between distributed components.
+- Simplify integration with existing gRPC-based tools and ecosystems.
+
+SRPC makes it possible to build robust, scalable, and secure agentic
+applications that fully leverage the power of SLIM's messaging and group
+communication model.
+
+### SLIM Naming in SRPC
+
+SRPC derives per-service and per-handler routing names directly from the
+structured SLIM naming scheme to enable efficient subscription and message
+dispatch without requiring application developers to manually manage channel
+names.
+
+Each application participating in a secure SLIM group already has a hierarchical
+SLIM name composed of multiple components (organization identifier, namespace,
+service, and client/moderator key). SRPC appends a handler-qualified suffix to
+the service component to form unique, routable identifiers for RPC methods.
+
+Service interface definitions (e.g., Protocol Buffers) describe one or more RPC
+handlers supporting the four common gRPC communication patterns:
+
+- Unary → Unary
+- Unary → Stream
+- Stream → Unary
+- Stream → Stream (bidirectional)
+
+For every handler declared inside a service, SRPC generates a method routing
+token using the pattern:
+
+```
+{package}.{service}-{handler}
+```
+
+Example: Given a protobuf package `example_service` and service `Test` with
+handlers `ExampleUnaryUnary`, `ExampleUnaryStream`, `ExampleStreamUnary`,
+`ExampleStreamStream`, the generated handler tokens are:
+
+- example_service.Test-ExampleUnaryUnary
+- example_service.Test-ExampleUnaryStream
+- example_service.Test-ExampleStreamUnary
+- example_service.Test-ExampleStreamStream
+
+SRPC then embeds the handler token into the second component (service segment)
+of the full SLIM name for routing. If the original SLIM application name
+components c[i] are:
+
+```
+c[0]/c[1]/c[2]/c[3]
+```
+
+The subscribed name for a specific handler becomes:
+
+```
+c[0]/c[1]/c[2]-example_service.Test-ExampleUnaryUnary/c[3]
+```
+
+This transformation yields a distinct, hierarchical, and aggregatable name per
+RPC method while preserving the organizational and namespace prefix structure
+needed for subscription table aggregation. Applications exposing SRPC services
+automatically subscribe to all derived handler names; the SRPC library manages
+these subscriptions and maps incoming messages to the corresponding generated
+server stub functions. Developers implement only the handler logic exactly as
+with conventional gRPC, without manual SLIM channel management.
+
+Benefits of this naming approach:
+- Deterministic and collision-resistant per-method naming.
+- Preserves hierarchical aggregation for routing efficiency.
+- Avoids separate discovery round-trips for method endpoints.
+- Enables capability advertisement to reference method names directly.
+- Simplifies multi-service deployments—adding a new handler produces a single
+new routable token.
+
+This integration of SRPC handler naming with SLIM's hierarchical naming model
+ensures consistent, secure, and scalable routing semantics for RPC traffic
+within agentic groups.
 
 # Security Considerations
 

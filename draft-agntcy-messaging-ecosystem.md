@@ -33,14 +33,44 @@ author:
     organization: Cisco
     email: lumuscar@cisco.com
 
-
+informative:
+  AMQP:
+    title: "OASIS Advanced Message Queuing Protocol (AMQP) 1.0 Specification"
+    author:
+        - name: OASIS
+    target: https://www.oasis-open.org/standards#amqp
+  MQTT:
+    title: "OASIS MQTT Version 5.0 Specification"
+    author:
+      - name: OASIS
+    target: https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html
+  NATS:
+    title: "NATS Documentation"
+    author:
+      - name: Synadia Communications
+    target: https://docs.nats.io/
+  Kafka:
+    title: "Apache Kafka Documentation"
+    author:
+      - name: Apache Software Foundation
+    target: https://kafka.apache.org/documentation/
+  gRPC:
+    title: "gRPC Documentation"
+    author:
+      - name: CNCF
+    target: https://grpc.io/docs/
+  SLIM:
+    title: "AGNTCY SLIM Specification"
+    author:
+      - name: AGNTCY
+    target: https://spec.slim.agntcy.org
 
 --- abstract
 
 Agentic AI systems require messaging infrastructure that supports real-time
 collaboration, high-volume streaming, and dynamic group coordination across
 distributed networks. Traditional protocols like AMQP, MQTT, and NATS address
-some requirements but fall short on security, particularly regarding
+some requirements but fall short on security, particularly regarding {{AMQP}} {{MQTT}} {{NATS}}
 post-compromise protection and quantum-safe encryption essential for autonomous
 agents handling sensitive data.
 
@@ -52,10 +82,11 @@ agentic AI deployments, from lightweight edge computing scenarios to large-scale
 multi-organizational collaborations.
 
 AGNTCY SLIM emerges as a purpose-built solution, integrating Message Layer
-Security (MLS) with gRPC over HTTP/2 to provide quantum-safe end-to-end
-encryption, efficient streaming, and OAuth-based authentication. Unlike
-transport-layer security approaches, SLIM's MLS implementation ensures secure
-communication even through untrusted intermediaries while supporting dynamic
+Security (MLS) {{!RFC9420}} with gRPC {{gRPC}} over HTTP/2 {{!RFC7540}} to
+provide quantum-safe end-to-end encryption, efficient streaming, and OAuth-based
+authentication {{!RFC6749}}. Unlike transport-layer security approaches, SLIM's
+MLS implementation ensures secure communication even through untrusted
+intermediaries while supporting dynamic
 group membership changes essential for collaborative AI agents.
 
 --- middle
