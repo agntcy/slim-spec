@@ -5,9 +5,9 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 16 April 2026                                          S. Betts
+Expires: 17 April 2026                                          S. Betts
                                                                    Cisco
-                                                         13 October 2025
+                                                         14 October 2025
 
 
             Secure Low-Latency Interactive Messaging (SLIM)
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 April 2026.
+   This Internet-Draft will expire on 17 April 2026.
 
 Copyright Notice
 
@@ -682,20 +682,19 @@ Table of Contents
    ExampleStreamUnary, ExampleStreamStream, the generated handler tokens
    are:
 
-   example_service.Test-ExampleUnaryUnary example_service.Test-
-   ExampleUnaryStream example_service.Test-ExampleStreamUnary
+   - example_service.Test-ExampleUnaryUnary - example_service.Test-
+   ExampleUnaryStream - example_service.Test-ExampleStreamUnary -
    example_service.Test-ExampleStreamStream
 
    SRPC then embeds the handler token into the second component (service
    segment) of the full SLIM name for routing.  If the original SLIM
-   application name components are:
+   application name components c[i] are:
 
-   component[0]/component[1]/component[2]/component[3]
+   c[0]/c[1]/c[2]/c[3]
 
    The subscribed name for a specific handler becomes:
 
-   component[0]/component[1]/component[2]-example_service.Test-
-   ExampleUnaryUnary/component[3]
+   c[0]/c[1]/c[2]-example_service.Test-ExampleUnaryUnary/c[3]
 
    This transformation yields a distinct, hierarchical, and aggregatable
    name per RPC method while preserving the organizational and namespace
