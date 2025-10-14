@@ -649,12 +649,10 @@ Example: Given a protobuf package `example_service` and service `Test` with
 handlers `ExampleUnaryUnary`, `ExampleUnaryStream`, `ExampleStreamUnary`,
 `ExampleStreamStream`, the generated handler tokens are:
 
-```
 - example_service.Test-ExampleUnaryUnary
 - example_service.Test-ExampleUnaryStream
 - example_service.Test-ExampleStreamUnary
 - example_service.Test-ExampleStreamStream
-```
 
 SRPC then embeds the handler token into the second component (service segment)
 of the full SLIM name for routing. If the original SLIM application name
