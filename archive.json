@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-12T00:30:37.841374+00:00",
+  "timestamp": "2025-10-14T00:28:23.371051+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -561,19 +561,72 @@
       "labels": [],
       "body": "- **docs(spec): add RPC vs messaging section, SLIM SRPC, and A2A advantages (broadcast RPC, streaming, idempotency, MLS E2E)**\n- **docs: add references**\n",
       "createdAt": "2025-10-10T16:57:32Z",
-      "updatedAt": "2025-10-10T18:14:27Z",
+      "updatedAt": "2025-10-13T17:51:19Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "955828c4f2ed4ffdf3cae2458a24265ad9c42b78",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "791-update-draft-agntcy-messaging-ecosystem",
-      "headRefOid": "0e0f06fcf364a6f3aa91702f73d6abce914dfa70",
+      "headRefOid": "1f634b67b4263113000b86a5e7791d39989cd323",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo87Gh8hz",
+          "commit": {
+            "abbreviatedOid": "6627d34"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "I like the description of SRPC and how it works. The only think that we may want to add is the way names are created for the different RCP services (see https://docs.agntcy.org/messaging/slim-rpc/#slim-naming-in-slimrpc), but I am not sure if this is the right document. ",
+          "createdAt": "2025-10-13T10:04:17Z",
+          "updatedAt": "2025-10-13T10:04:17Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON1QDo87Gnzrh",
+          "commit": {
+            "abbreviatedOid": "6627d34"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-13T16:48:09Z",
+          "updatedAt": "2025-10-13T16:48:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON1QDo87Gn2pv",
+          "commit": {
+            "abbreviatedOid": "6627d34"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-13T16:52:30Z",
+          "updatedAt": "2025-10-13T16:52:30Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON1QDo87Gon0k",
+          "commit": {
+            "abbreviatedOid": "6627d34"
+          },
+          "author": "lgecse",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-13T17:49:41Z",
+          "updatedAt": "2025-10-13T17:49:41Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
