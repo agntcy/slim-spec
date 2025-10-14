@@ -650,24 +650,24 @@ handlers `ExampleUnaryUnary`, `ExampleUnaryStream`, `ExampleStreamUnary`,
 `ExampleStreamStream`, the generated handler tokens are:
 
 ```
-example_service.Test-ExampleUnaryUnary
-example_service.Test-ExampleUnaryStream
-example_service.Test-ExampleStreamUnary
-example_service.Test-ExampleStreamStream
+- example_service.Test-ExampleUnaryUnary
+- example_service.Test-ExampleUnaryStream
+- example_service.Test-ExampleStreamUnary
+- example_service.Test-ExampleStreamStream
 ```
 
 SRPC then embeds the handler token into the second component (service segment)
 of the full SLIM name for routing. If the original SLIM application name
-components are:
+components c[i] are:
 
 ```
-component[0]/component[1]/component[2]/component[3]
+c[0]/c[1]/c[2]/c[3]
 ```
 
 The subscribed name for a specific handler becomes:
 
 ```
-component[0]/component[1]/component[2]-example_service.Test-ExampleUnaryUnary/component[3]
+c[0]/c[1]/c[2]-example_service.Test-ExampleUnaryUnary/c[3]
 ```
 
 This transformation yields a distinct, hierarchical, and aggregatable name per
