@@ -1927,12 +1927,20 @@ token using the pattern:<a href="#section-5.3.5-5" class="pilcrow">¶</a></p>
 <p id="section-5.3.5-7">Example: Given a protobuf package <code>example_service</code> and service <code>Test</code> with
 handlers <code>ExampleUnaryUnary</code>, <code>ExampleUnaryStream</code>, <code>ExampleStreamUnary</code>,
 <code>ExampleStreamStream</code>, the generated handler tokens are:<a href="#section-5.3.5-7" class="pilcrow">¶</a></p>
-<p id="section-5.3.5-8"><code>
-- example_service.Test-ExampleUnaryUnary
-- example_service.Test-ExampleUnaryStream
-- example_service.Test-ExampleStreamUnary
-- example_service.Test-ExampleStreamStream
-</code><a href="#section-5.3.5-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.3.5-8.1">
+              <p id="section-5.3.5-8.1.1">example_service.Test-ExampleUnaryUnary<a href="#section-5.3.5-8.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.5-8.2">
+              <p id="section-5.3.5-8.2.1">example_service.Test-ExampleUnaryStream<a href="#section-5.3.5-8.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.5-8.3">
+              <p id="section-5.3.5-8.3.1">example_service.Test-ExampleStreamUnary<a href="#section-5.3.5-8.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.3.5-8.4">
+              <p id="section-5.3.5-8.4.1">example_service.Test-ExampleStreamStream<a href="#section-5.3.5-8.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 <p id="section-5.3.5-9">SRPC then embeds the handler token into the second component (service segment)
 of the full SLIM name for routing. If the original SLIM application name
 components c[i] are:<a href="#section-5.3.5-9" class="pilcrow">¶</a></p>
