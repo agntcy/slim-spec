@@ -6,25 +6,19 @@ title: "Secure Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
 category: info
 
-docname: draft-agntcy-slim-latest
+docname: draft-agntcy-slim-00
 submissiontype: independent
 number:
 date:
 consensus: false
 v: 3
-area: Applications
+area:
 workgroup: Independent Submission
 keyword:
  - AI
  - Agentic AI
  - Communications
  - Realtime
-venue:
-  group: WG
-  type: Working Group
-  mail: discussion@agntcy.org
-  github: agntcy/slim
-  latest: https://spec.slim.agntcy.org
 
 author:
 
@@ -73,11 +67,6 @@ informative:
     author:
       - name: AGNTCY
     target: https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md
-  CID-Spec:
-    title: "CID (Content IDentifier) Specification"
-    author:
-      - name: Multiformats Community
-    target: https://github.com/multiformats/cid
   DID-Key:
     title: "The did:key Method v0.7: A DID Method for Static Cryptographic Keys"
     date: 2025-03-26
@@ -668,22 +657,3 @@ This integration of SRPC handler naming with SLIM's hierarchical naming model
 ensures consistent, secure, and scalable routing semantics for RPC traffic
 within agentic groups.
 
-# Security Considerations
-
-Security is a paramount concern for SLIM, given the sensitive nature of
-the data being transmitted and the need for reliable access control.
-SLIM inherits security features from MLS, gRPC, and TLS, but also
-introduces new mechanisms to address its unique requirements.
-
-## Authentication and Authorization
-
-Authentication and authorization in SLIM are handled at the application
-level, leveraging the capabilities of the underlying MLS groups. Clients
-must authenticate themselves to the MLS Authentication Service, which
-issues credentials that are used to sign messages. These credentials
-are then used by other clients to verify the authenticity of the
-messages and the identity of the sender.
-
-Authorization policies determine what actions an authenticated client
-is allowed to perform, such as publishing or subscribing to specific
-channels.
