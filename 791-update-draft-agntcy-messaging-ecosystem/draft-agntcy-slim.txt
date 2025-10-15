@@ -5,13 +5,13 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 17 April 2026                                          S. Betts
+Expires: 18 April 2026                                          S. Betts
                                                                    Cisco
-                                                         14 October 2025
+                                                         15 October 2025
 
 
             Secure Low-Latency Interactive Messaging (SLIM)
-                        draft-agntcy-slim-latest
+                          draft-agntcy-slim-00
 
 Abstract
 
@@ -23,20 +23,6 @@ Abstract
    tools and data).  The protocol provides mechanisms for connection
    management, stream multiplexing, and flow control while maintaining
    compatibility with existing gRPC deployments.
-
-About This Document
-
-   This note is to be removed before publishing as an RFC.
-
-   The latest revision of this draft can be found at
-   https://spec.slim.agntcy.org.  Status information for this document
-   may be found at https://datatracker.ietf.org/doc/draft-agntcy-slim/.
-
-   Discussion of this document takes place on the WG Working Group
-   mailing list (mailto:discussion@agntcy.org).
-
-   Source for this draft and an issue tracker can be found at
-   https://github.com/agntcy/slim.
 
 Status of This Memo
 
@@ -53,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 April 2026.
+   This Internet-Draft will expire on 18 April 2026.
 
 Copyright Notice
 
@@ -87,11 +73,9 @@ Table of Contents
        4.3.3.  Architecture
        4.3.4.  Benefits for Agentic Applications
        4.3.5.  SLIM Naming in SRPC
-   5.  Security Considerations
-     5.1.  Authentication and Authorization
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Authors' Addresses
 
 1.  Conventions and Definitions
@@ -698,31 +682,9 @@ Table of Contents
    naming model ensures consistent, secure, and scalable routing
    semantics for RPC traffic within agentic groups.
 
-5.  Security Considerations
+5.  References
 
-   Security is a paramount concern for SLIM, given the sensitive nature
-   of the data being transmitted and the need for reliable access
-   control.  SLIM inherits security features from MLS, gRPC, and TLS,
-   but also introduces new mechanisms to address its unique
-   requirements.
-
-5.1.  Authentication and Authorization
-
-   Authentication and authorization in SLIM are handled at the
-   application level, leveraging the capabilities of the underlying MLS
-   groups.  Clients must authenticate themselves to the MLS
-   Authentication Service, which issues credentials that are used to
-   sign messages.  These credentials are then used by other clients to
-   verify the authenticity of the messages and the identity of the
-   sender.
-
-   Authorization policies determine what actions an authenticated client
-   is allowed to perform, such as publishing or subscribing to specific
-   channels.
-
-6.  References
-
-6.1.  Normative References
+5.1.  Normative References
 
    [DID-Methods]
               Group, W. C. C., "Known DID Methods in the Decentralized
@@ -761,10 +723,7 @@ Table of Contents
               Architecture", RFC 9750, DOI 10.17487/RFC9750, April 2025,
               <https://www.rfc-editor.org/rfc/rfc9750>.
 
-6.2.  Informative References
-
-   [CID-Spec] Community, M., "CID (Content IDentifier) Specification",
-              n.d., <https://github.com/multiformats/cid>.
+5.2.  Informative References
 
    [DID-ATProto]
               Community, B. P., "Decentralized Identifiers (DIDs) in the
