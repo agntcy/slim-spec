@@ -3,13 +3,15 @@
 
 
 Independent Submission                                    L. Muscariello
-Internet-Draft                                                     Cisco
-Intended status: Informational                           15 October 2025
-Expires: 18 April 2026
+Internet-Draft                                               M. Papalini
+Intended status: Informational                                M. Sardara
+Expires: 19 April 2026                                          S. Betts
+                                                                   Cisco
+                                                         16 October 2025
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
-                draft-agntcy-messaging-ecosystem-latest
+                     draft-mpsb-agntcy-messaging-00
 
 Abstract
 
@@ -38,21 +40,6 @@ Abstract
    dynamic group membership changes essential for collaborative AI
    agents.
 
-About This Document
-
-   This note is to be removed before publishing as an RFC.
-
-   The latest revision of this draft can be found at
-   https://spec.slim.agntcy.org.  Status information for this document
-   may be found at https://datatracker.ietf.org/doc/draft-agntcy-
-   messaging-ecosystem/.
-
-   Discussion of this document takes place on the WG Working Group
-   mailing list (mailto:discussion@agntcy.org).
-
-   Source for this draft and an issue tracker can be found at
-   https://github.com/agntcy/slim.
-
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -68,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2026.
+   This Internet-Draft will expire on 19 April 2026.
 
 Copyright Notice
 
@@ -107,7 +94,7 @@ Table of Contents
    6.  References
      6.1.  Normative References
      6.2.  Informative References
-   Author's Address
+   Authors' Addresses
 
 1.  Conventions and Definitions
 
@@ -847,8 +834,23 @@ Table of Contents
    [SLIM]     AGNTCY, "AGNTCY SLIM Specification", n.d.,
               <https://spec.slim.agntcy.org>.
 
-Author's Address
+Authors' Addresses
 
    Luca Muscariello
    Cisco
    Email: lumuscar@cisco.com
+
+
+   Michele Papalini
+   Cisco
+   Email: micpapal@cisco.com
+
+
+   Mauro Sardara
+   Cisco
+   Email: msardara@cisco.com
+
+
+   Sam Betts
+   Cisco
+   Email: sambetts@cisco.com

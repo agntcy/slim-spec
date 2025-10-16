@@ -5,13 +5,13 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 18 April 2026                                          S. Betts
+Expires: 19 April 2026                                          S. Betts
                                                                    Cisco
-                                                         15 October 2025
+                                                         16 October 2025
 
 
             Secure Low-Latency Interactive Messaging (SLIM)
-                          draft-agntcy-slim-00
+                       draft-mpsb-agntcy-slim-00
 
 Abstract
 
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2026.
+   This Internet-Draft will expire on 19 April 2026.
 
 Copyright Notice
 
