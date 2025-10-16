@@ -6,7 +6,7 @@ title: "An Overview of Messaging Systems and Their Applicability to Agentic AI"
 abbrev: "agncty-messaging-eco"
 category: info
 
-docname: draft-agntcy-messaging-ecosystem-latest
+docname: draft-mpsb-agntcy-messaging-00
 submissiontype: independent
 number:
 date:
@@ -19,12 +19,6 @@ keyword:
  - Agentic AI
  - Communications
  - Realtime
-venue:
-  group: WG
-  type: Working Group
-  mail: discussion@agntcy.org
-  github: agntcy/slim
-  latest: https://spec.slim.agntcy.org
 
 author:
 
@@ -32,6 +26,18 @@ author:
     fullname: Luca Muscariello
     organization: Cisco
     email: lumuscar@cisco.com
+-
+    fullname: Michele Papalini
+    organization: Cisco
+    email: micpapal@cisco.com
+-
+    fullname: Mauro Sardara
+    organization: Cisco
+    email: msardara@cisco.com
+-
+    fullname: Sam Betts
+    organization: Cisco
+    email: sambetts@cisco.com
 
 informative:
   AMQP:
