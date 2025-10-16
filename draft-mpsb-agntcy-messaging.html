@@ -6,6 +6,9 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>An Overview of Messaging Systems and Their Applicability to Agentic AI</title>
 <meta content="Luca Muscariello" name="author">
+<meta content="Michele Papalini" name="author">
+<meta content="Mauro Sardara" name="author">
+<meta content="Sam Betts" name="author">
 <meta content="
        Agentic AI systems require messaging infrastructure that supports real-time
 collaboration, high-volume streaming, and dynamic group coordination across
@@ -32,7 +35,7 @@ group membership changes essential for collaborative AI agents.
 <meta content="Agentic AI" name="keyword">
 <meta content="Communications" name="keyword">
 <meta content="Realtime" name="keyword">
-<meta content="draft-agntcy-messaging-ecosystem-latest" name="ietf.draft">
+<meta content="draft-mpsb-agntcy-messaging-00" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.30.2
     Python 3.12.11
@@ -48,7 +51,7 @@ group membership changes essential for collaborative AI agents.
     setuptools 80.9.0
     wcwidth 0.2.14
 -->
-<link href="draft-agntcy-messaging-ecosystem.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-mpsb-agntcy-messaging.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1068,8 +1071,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Muscariello</td>
-<td class="center">Expires 17 April 2026</td>
+<td class="left">Muscariello, et al.</td>
+<td class="center">Expires 19 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1079,19 +1082,31 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Independent Submission</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-agntcy-messaging-ecosystem-latest</dd>
+<dd class="internet-draft">draft-mpsb-agntcy-messaging-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-14" class="published">14 October 2025</time>
+<time datetime="2025-10-16" class="published">16 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-17">17 April 2026</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2026-04-19">19 April 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">L. Muscariello</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Papalini</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Sardara</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Betts</div>
 <div class="org">Cisco</div>
 </div>
 </dd>
@@ -1120,20 +1135,6 @@ MLS implementation ensures secure communication even through untrusted
 intermediaries while supporting dynamic
 group membership changes essential for collaborative AI agents.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
-<section class="note rfcEditorRemove" id="section-note.1">
-      <h2 id="name-about-this-document">
-<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
-      </h2>
-<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
-<p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://spec.slim.agntcy.org">https://spec.slim.agntcy.org</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-agntcy-messaging-ecosystem/">https://datatracker.ietf.org/doc/draft-agntcy-messaging-ecosystem/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
-<p id="section-note.1-3">
-        Discussion of this document takes place on the
-        WG Working Group mailing list (<span><a href="mailto:discussion@agntcy.org">mailto:discussion@agntcy.org</a></span>).<a href="#section-note.1-3" class="pilcrow">¶</a></p>
-<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/agntcy/slim">https://github.com/agntcy/slim</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
-</section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
         <h2 id="name-status-of-this-memo">
@@ -1153,7 +1154,7 @@ group membership changes essential for collaborative AI agents.<a href="#section
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 17 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1258,7 +1259,7 @@ group membership changes essential for collaborative AI agents.<a href="#section
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -2119,8 +2120,8 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </div>
 <div id="authors-addresses">
 <section id="appendix-A">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Luca Muscariello</span></div>
@@ -2128,6 +2129,30 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 <div class="email">
 <span>Email:</span>
 <a href="mailto:lumuscar@cisco.com" class="email">lumuscar@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michele Papalini</span></div>
+<div dir="auto" class="left"><span class="org">Cisco</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:micpapal@cisco.com" class="email">micpapal@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Mauro Sardara</span></div>
+<div dir="auto" class="left"><span class="org">Cisco</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:msardara@cisco.com" class="email">msardara@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Sam Betts</span></div>
+<div dir="auto" class="left"><span class="org">Cisco</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:sambetts@cisco.com" class="email">sambetts@cisco.com</a>
 </div>
 </address>
 </section>
