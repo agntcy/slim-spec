@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-14T00:28:23.371051+00:00",
+  "timestamp": "2025-10-16T00:30:13.716889+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -554,24 +554,26 @@
       "id": "PR_kwDON1QDo86tIxqa",
       "title": "791 update draft agntcy messaging ecosystem",
       "url": "https://github.com/agntcy/slim-spec/pull/11",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "- **docs(spec): add RPC vs messaging section, SLIM SRPC, and A2A advantages (broadcast RPC, streaming, idempotency, MLS E2E)**\n- **docs: add references**\n",
       "createdAt": "2025-10-10T16:57:32Z",
-      "updatedAt": "2025-10-13T17:51:19Z",
+      "updatedAt": "2025-10-14T10:01:42Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "955828c4f2ed4ffdf3cae2458a24265ad9c42b78",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "791-update-draft-agntcy-messaging-ecosystem",
-      "headRefOid": "1f634b67b4263113000b86a5e7791d39989cd323",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "684acc5668bbad036170bae28052d3a3c07b39c3",
+      "closedAt": "2025-10-14T10:01:42Z",
+      "mergedAt": "2025-10-14T10:01:42Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "2fcc0c70ca693900ac100b4e3d358af6d66126bc"
+      },
       "comments": [],
       "reviews": [
         {
@@ -627,6 +629,74 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDON1QDo86toW6C",
+      "title": "791 update draft agntcy messaging ecosystem",
+      "url": "https://github.com/agntcy/slim-spec/pull/12",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- **docs(spec): add RPC vs messaging section, SLIM SRPC, and A2A advantages (broadcast RPC, streaming, idempotency, MLS E2E)**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: clarify RPC vs messaging and challenges of RPC over messaging in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: fix README**\n",
+      "createdAt": "2025-10-14T10:03:36Z",
+      "updatedAt": "2025-10-14T10:04:26Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "2fcc0c70ca693900ac100b4e3d358af6d66126bc",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "791-update-draft-agntcy-messaging-ecosystem",
+      "headRefOid": "d597ca16805aaad49b46955572ead7a1cc3f81da",
+      "closedAt": "2025-10-14T10:04:26Z",
+      "mergedAt": "2025-10-14T10:04:26Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "ac5b18a44a9404a819a0ffc43797700c040e5072"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo87GxXgT",
+          "commit": {
+            "abbreviatedOid": "d597ca1"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-14T10:04:03Z",
+          "updatedAt": "2025-10-14T10:04:03Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDON1QDo86t48TX",
+      "title": "791 update draft agntcy messaging ecosystem",
+      "url": "https://github.com/agntcy/slim-spec/pull/13",
+      "state": "OPEN",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- **docs(spec): add RPC vs messaging section, SLIM SRPC, and A2A advantages (broadcast RPC, streaming, idempotency, MLS E2E)**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: clarify RPC vs messaging and challenges of RPC over messaging in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: fix README**\n- **docs: ready to publish**\n",
+      "createdAt": "2025-10-15T13:42:37Z",
+      "updatedAt": "2025-10-15T13:42:38Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "ac5b18a44a9404a819a0ffc43797700c040e5072",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "791-update-draft-agntcy-messaging-ecosystem",
+      "headRefOid": "63556d477f1bb36c0f31ae848be7706535a251d2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
