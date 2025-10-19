@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-16T00:30:13.716889+00:00",
+  "timestamp": "2025-10-19T00:33:28.537578+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -677,26 +677,42 @@
       "id": "PR_kwDON1QDo86t48TX",
       "title": "791 update draft agntcy messaging ecosystem",
       "url": "https://github.com/agntcy/slim-spec/pull/13",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "- **docs(spec): add RPC vs messaging section, SLIM SRPC, and A2A advantages (broadcast RPC, streaming, idempotency, MLS E2E)**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: add references**\n- **docs: clarify RPC vs messaging and challenges of RPC over messaging in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: add SRPC naming subsection in SLIM draft**\n- **docs: fix README**\n- **docs: ready to publish**\n",
       "createdAt": "2025-10-15T13:42:37Z",
-      "updatedAt": "2025-10-15T13:42:38Z",
+      "updatedAt": "2025-10-16T13:22:21Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "ac5b18a44a9404a819a0ffc43797700c040e5072",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "791-update-draft-agntcy-messaging-ecosystem",
-      "headRefOid": "63556d477f1bb36c0f31ae848be7706535a251d2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "b897512552e67f1fc935cd70c3eedb2943dbc96f",
+      "closedAt": "2025-10-16T13:22:21Z",
+      "mergedAt": "2025-10-16T13:22:21Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "da697845ba1685bb1d40c12862d0634d2498ec7c"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo87HXgD1",
+          "commit": {
+            "abbreviatedOid": "b897512"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-16T13:21:48Z",
+          "updatedAt": "2025-10-16T13:21:48Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
