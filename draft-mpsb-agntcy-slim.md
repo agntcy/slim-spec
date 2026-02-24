@@ -88,11 +88,12 @@ informative:
 
 This document specifies the Secure Low-Latency Interactive Real-Time Messaging
 (SLIM), a protocol designed to support real-time interactive AI applications at
-scale. SLIM leverages gRPC and adds publish-subscribe capabilities to enable
-efficient many-to-many communication patterns between AI agentic applications
-(AI models, tools and data). The protocol provides mechanisms for connection
-management, stream multiplexing, and flow control while maintaining
-compatibility with existing gRPC deployments.
+scale. SLIM provides the transport layer for agent protocols (for example, A2A
+and MCP), combining gRPC over HTTP/2 and HTTP/3 with secure messaging, group
+communication, and native RPC semantics. The protocol provides mechanisms for
+connection management, stream multiplexing, and flow control while maintaining
+compatibility with existing gRPC deployments and supporting end-to-end
+encryption via MLS.
 
 --- middle
 
@@ -107,38 +108,41 @@ compatibility with existing gRPC deployments.
 The Secure Low-Latency Interactive Messaging (SLIM) protocol addresses the
 unique communication requirements of modern AI agentic applications by providing
 a secure, scalable, and efficient messaging infrastructure. SLIM combines the
-reliability and performance of gRPC with publish-subscribe messaging
-capabilities, creating a comprehensive solution for interactive AI application
+reliability and performance of gRPC with secure messaging and group
+communication, creating a comprehensive solution for interactive AI application
 communication.
 
-At its core, SLIM consists of three primary components: messaging nodes that
-serve as intelligent message queues, message producers that publish encrypted
-content, and message consumers that subscribe to and receive messages. The
-protocol leverages Message Layer Security (MLS) for end-to-end encryption,
-ensuring that messages remain confidential even when passing through
-intermediate nodes or experiencing TLS termination along the communication path.
+At its core, SLIM consists of three primary components: data plane routing
+nodes that forward messages based on metadata, session-layer clients that manage
+secure group state and reliability, and application endpoints that publish and
+receive encrypted content. The protocol leverages Message Layer Security (MLS)
+for end-to-end encryption, ensuring that messages remain confidential even when
+passing through intermediate nodes or experiencing TLS termination along the
+communication path.
 
-The architecture is built around a distributed network of messaging nodes, each
+The architecture is built around a distributed network of routing nodes, each
 maintaining connection and subscription tables to enable efficient message
-routing.  A centralized control plane orchestrates the entire system, handling
-node discovery, configuration management, security policies, and system
-monitoring. This separation of control and data planes allows for scalable
-deployment while maintaining centralized administrative control.
+routing. A control plane orchestrates the system, handling node discovery,
+configuration management, and administrative operations. This separation of
+control, session, and data planes allows for scalable deployment while keeping
+routing nodes lightweight.
 
 SLIM employs a hierarchical naming system based on Decentralized Identifiers
-(DIDs) to ensure globally unique, secure, and routable channel names. This
-naming scheme supports both decentralized and federated authentication models,
-enabling flexible deployment across different organizational boundaries while
-maintaining security and interoperability.
+(DIDs) to ensure globally unique, secure, and routable names. The name structure
+follows a `organization/namespace/service/instance` pattern, supporting anycast
+and unicast routing as well as service discovery. This naming scheme supports
+both decentralized and federated authentication models, enabling flexible
+deployment across different organizational boundaries while maintaining
+security and interoperability.
 
 The protocol includes a session layer that abstracts the complexity of MLS
-operations and messaging infrastructure from applications, providing simple
-publish-subscribe APIs and native Remote Procedure Call (RPC) semantics via SRPC
-(SLIM RPC). SRPC enables request/response and streaming RPC directly over SLIM's
-secure messaging fabric (see {{SRPC}}), while handling authentication,
-encryption, connection management, and fault recovery automatically. This design
-enables developers to focus on application logic rather than the underlying
-messaging complexities.
+operations and messaging infrastructure from applications, providing secure
+point-to-point and group sessions plus native Remote Procedure Call (RPC)
+semantics via SRPC (SLIM RPC). SRPC enables request/response and streaming RPC
+directly over SLIM's secure messaging fabric (see {{SRPC}}), while handling
+authentication, encryption, connection management, and fault recovery
+automatically. This design enables developers to focus on application logic
+rather than the underlying messaging complexities.
 
 Security is fundamental to SLIM's design, with authentication and authorization
 handled through MLS groups, cryptographic client identities, and configurable
@@ -151,15 +155,16 @@ consistent security guarantees and low-latency performance characteristics.
 SLIM is designed to work as a messaging layer for applications running as
 workloads in a data center, but also running in a browser or mobile device while
 guaranteeing end-to-end security and low-latency communication. SLIM leverages
-HTTP/2 end to end as a thin waist of the communication stack and avoids the need
-to create message transcoding along the path. By leveraging message encryption
-via MLS {{!RFC9420}} {{!RFC9750}}, TLS connection termination along the path
-does not negatively affect confidentiality. Authentication and authorization are
-handled at the application level and can be managed in a decentralized or
-federated way or a mix of both.
+HTTP/2 and HTTP/3 end to end as a thin waist of the communication stack and
+avoids the need to create message transcoding along the path. By leveraging
+message encryption via MLS {{!RFC9420}} {{!RFC9750}}, TLS connection termination
+along the path does not negatively affect confidentiality. Authentication and
+authorization are handled at the application level and can be managed in a
+decentralized or federated way or a mix of both.
 
-In SLIM there are three main communication elements: intermediate nodes equipped
-with message queues, message producers and message consumers.
+In SLIM there are three main communication elements: routing nodes (data plane),
+session-layer clients, and application endpoints that publish and receive
+messages.
 
 A producer (also called a "publisher") is an endpoint that encapsulates content
 in SLIM messages for transport within the SLIM message network of nodes. A
@@ -176,7 +181,7 @@ This enables requests to reach the producer and fetch a response, if one exists.
 ~~~
  +-------------+         +---------------------+         +-------------+
  | Producer 1  |         |                     |         | Consumer 1  |
- +-------------+         |   Messaging Node    |         +-------------+
+ +-------------+         |    Routing Node     |         +-------------+
                          |                     |<------->| Consumer 2  |
  +-------------+         |                     |         +-------------+
  | Producer 2  |-------->|                     |<------->| Consumer 3  |
@@ -193,8 +198,8 @@ This enables requests to reach the producer and fetch a response, if one exists.
  +------------------------+
 
  Legend:
- - Producers publish to topics at the Messaging Node.
- - Consumers subscribe to topics at the Messaging Node.
+ - Producers publish to topics via routing nodes.
+ - Consumers subscribe to topics via routing nodes.
  - MLS Authentication Service handles group authentication and key management.
  - Encryption group coincides with the topic identifier.
 ~~~
@@ -205,18 +210,18 @@ messages as producers or read messages as consumers. Most of the time, clients
 are able to read and write messages in the same secure group. Clients join
 secure groups as described in the MLS standard {{!RFC9750}} via an
 authentication service and by exchanging messages via the delivery service. In
-the SLIM architecture, the SLIM nodes constitute the infrastructure that is
-responsible for delivering messages in a secure group via a logical SLIM
-channel. MLS commit messages are exchanged directly using the SLIM messaging
+the SLIM architecture, the SLIM nodes constitute the data-plane infrastructure
+that is responsible for delivering messages in a secure group via a logical
+SLIM channel. MLS commit messages are exchanged directly using the SLIM routing
 nodes.
 
-### Messaging Nodes
+### Routing Nodes (Data Plane)
 
-Messaging nodes are fundamental components of the SLIM architecture that serve
-as specialized message queues. They fulfill several critical functions in the
-messaging infrastructure. At their core, nodes efficiently route messages
-between connected clients using intelligent routing algorithms while handling
-the distribution and delivery of messages across the network infrastructure.
+Routing nodes are fundamental components of the SLIM architecture that forward
+messages using metadata without inspecting payloads. They fulfill several
+critical functions in the messaging infrastructure. At their core, nodes
+efficiently route messages between connected clients while handling the
+distribution and delivery of messages across the network infrastructure.
 
 ~~~
     Producer A              Producer B              Producer C
@@ -241,7 +246,7 @@ Legend:
 - Producers and Consumers connect to their local nodes
 - Messages are routed through the node network based on subscriptions
 ~~~
-{: #fig-node-network title="SLIM messaging node network topology."}
+{: #fig-node-network title="SLIM routing node network topology."}
 
 The node architecture relies on two essential data structures that work in
 concert. The connection table forms the foundation for tracking all active
@@ -250,7 +255,7 @@ connected client. Alongside it, the subscription table manages topic
 subscriptions and implements message filtering rules, determining which messages
 should be delivered to which clients.
 
-Through this dual-table architecture, messaging nodes can effectively coordinate
+Through this dual-table architecture, routing nodes can effectively coordinate
 message delivery while maintaining optimal system performance. The connection
 and subscription mechanisms work together seamlessly to ensure reliable message
 routing, proper client tracking, and efficient subscription management across
@@ -262,7 +267,7 @@ the broader network, creating a resilient and scalable messaging infrastructure.
 #### Connection Table
 
 The connection table serves as a fundamental data structure within the
-SLIM messaging node architecture, maintaining a comprehensive registry of both
+SLIM routing node architecture, maintaining a comprehensive registry of both
 client-to-node and node-to-node connections. Each entry in the table contains
 essential metadata about connected endpoints, including their unique
 identifiers, connection timestamps, authentication status, and current state
@@ -283,7 +288,7 @@ protocol versions, and quality of service parameters that influence message
 handling.
 
 By maintaining this detailed connection state, the table enables efficient
-routing decisions across the entire network fabric. It provides each messaging
+routing decisions across the entire network fabric. It provides each routing
 node with immediate access to both client and node status information, allowing
 for rapid determination of message delivery paths and handling of
 connection-related events. The connection table also plays a vital role in

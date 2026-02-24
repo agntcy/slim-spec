@@ -269,12 +269,33 @@ purpose-built protocol for modern agentic AI systems, designed to address the
 specific security, performance, and coordination requirements that existing
 protocols cannot fully satisfy.
 
+SLIM is intended as a transport layer for agent protocols like A2A and MCP. It
+handles secure routing, group messaging, and end-to-end encryption so protocol
+implementations can focus on agent semantics. A registration-based model lets
+agents become reachable through the SLIM network without exposing server ports,
+while only routing nodes need to be publicly reachable. This simplifies
+deployment for agents behind NATs and firewalls.
+
 SLIM's foundation on gRPC over HTTP/2 and HTTP/3 provides several immediate
 advantages for AI agent communication. The binary protocol buffer wire format
 minimizes serialization overhead while supporting both binary and text data
 types essential for AI workloads. HTTP/2's multiplexing capabilities allow a
 single connection to carry multiple concurrent agent conversations, reducing
 connection overhead in systems with many interacting agents.
+
+SLIM is architected as a distributed system with a clear separation of
+concerns:
+
+- **Data plane**: Routes messages across SLIM nodes using only metadata for
+  efficient forwarding and topology management.
+- **Session layer**: Provides reliable delivery, MLS-based end-to-end
+  encryption, and secure group management (create, invite, join, remove).
+- **Control plane**: Orchestrates routing nodes, configuration, and
+  administrative operations.
+
+Routing nodes run only the data plane, keeping infrastructure lightweight,
+while language bindings include the data-plane client plus the session layer
+for full security and reliability.
 
 The protocol's quality of service model explicitly addresses the diverse
 communication patterns found in agentic AI systems. Fire-and-forget messaging
@@ -304,16 +325,23 @@ several important properties:
   ejected by revoking their OAuth tokens without requiring complex ratchet
   tree rebalancing operations
 
-SLIM's topic organization based on organizational hierarchies, namespaces, and
-agent types provides a natural mapping to real-world AI system deployments where
-different agent types operate within different security domains and
-organizational boundaries.
+SLIM's naming system is hierarchical and DID-inspired, for example:
+`organization/namespace/service/instance`. This supports anycast routing (to any
+available instance), unicast routing (to a specific instance), and service
+discovery without hardcoded endpoints or external registries. The structure maps
+cleanly to organizational boundaries and multi-tenant deployments.
 
 The protocol's support for both broker-based and peer-to-peer operation offers
 deployment flexibility. While broker-based operation provides efficiency for
 multi-party group communications typical in agent coordination scenarios,
 peer-to-peer capabilities enable direct agent-to-agent communication when
-appropriate.
+appropriate. SLIM exposes two session types that map to common agent patterns:
+point-to-point sessions for tool calls and group sessions for coordination and
+broadcast.
+
+SLIM provides multi-language bindings. Python and Go bindings are available
+today, with JavaScript/TypeScript, C#, and Kotlin in progress, enabling
+heterogeneous agent systems to interoperate on the same transport.
 
 ## Security Considerations for Agentic AI
 
@@ -475,6 +503,7 @@ SRPC addresses practical RPC concerns in distributed agent systems:
 - Idempotency keys and deduplication to make retries safe
 - Lightweight synchronization/ordering guarantees for request/response and streaming
 - Seamless fit for A2A/MCP-style tool calls while retaining SLIM's MLS security and multiplexing
+- Supports all four gRPC interaction patterns (unary, server streaming, client streaming, bidirectional streaming)
 
 See SRPC reference and examples: [SLIM RPC (SRPC) README](https://github.com/agntcy/slim/blob/main/data-plane/python/integrations/slimrpc/README.md).
 
@@ -543,9 +572,9 @@ Table 2 extends the comparison to include additional protocols relevant to moder
 
 | Feature | AMQP over WebSockets | Kafka | SLIM |
 |---------|---------------------|-------|-----|
-| **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | SLIM Spec |
+| **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | Secure low-latency interactive messaging |
 | **Transport** | WebSockets over TLS | TCP (optionally TLS) | gRPC (over HTTP/2-HTTP/3) |
-| **Message Model** | Same as AMQP (depends on the broker's AMQP model) | Topics with partitions, consumer groups, offset-based consumption | Topics based on organization, namespace, agent types etc. |
+| **Message Model** | Same as AMQP (depends on the broker's AMQP model) | Topics with partitions, consumer groups, offset-based consumption | Hierarchical names (`org/namespace/service/instance`), point-to-point and group sessions |
 | **QoS / Delivery** | Same as AMQP | At-least-once default; exactly-once possible via transactions | Fire&Forget unreliable (at-most-once), unreliable and reliable (exactly-once). This extends to request/reply and streaming as well. |
 | **Streaming** | Same as AMQP if broker supports streaming | Native log-based streaming (Kafka Streams, KSQL, etc.) | Native gRPC support via HTTP/2/3 client streaming, server streaming. Notice that Server Sent Events (SSE) with HTTP/1.1 cannot carry binary nor compressed data. |
 | **Persistence** | Same as AMQP | Built-in: messages persist on disk across clusters | Not supported |
