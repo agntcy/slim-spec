@@ -5,9 +5,9 @@
 Independent Submission                                    L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 19 April 2026                                          S. Betts
+Expires: 28 August 2026                                         S. Betts
                                                                    Cisco
-                                                         16 October 2025
+                                                        24 February 2026
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
@@ -55,11 +55,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 April 2026.
+   This Internet-Draft will expire on 28 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -288,6 +288,14 @@ Table of Contents
    address the specific security, performance, and coordination
    requirements that existing protocols cannot fully satisfy.
 
+   SLIM is intended as a transport layer for agent protocols like A2A
+   and MCP.  It handles secure routing, group messaging, and end-to-end
+   encryption so protocol implementations can focus on agent semantics.
+   A registration-based model lets agents become reachable through the
+   SLIM network without exposing server ports, while only routing nodes
+   need to be publicly reachable.  This simplifies deployment for agents
+   behind NATs and firewalls.
+
    SLIM's foundation on gRPC over HTTP/2 and HTTP/3 provides several
    immediate advantages for AI agent communication.  The binary protocol
    buffer wire format minimizes serialization overhead while supporting
@@ -295,6 +303,23 @@ Table of Contents
    multiplexing capabilities allow a single connection to carry multiple
    concurrent agent conversations, reducing connection overhead in
    systems with many interacting agents.
+
+   SLIM is architected as a distributed system with a clear separation
+   of concerns:
+
+   *  *Data plane*: Routes messages across SLIM nodes using only
+      metadata for efficient forwarding and topology management.
+
+   *  *Session layer*: Provides reliable delivery, MLS-based end-to-end
+      encryption, and secure group management (create, invite, join,
+      remove).
+
+   *  *Control plane*: Orchestrates routing nodes, configuration, and
+      administrative operations.
+
+   Routing nodes run only the data plane, keeping infrastructure
+   lightweight, while language bindings include the data-plane client
+   plus the session layer for full security and reliability.
 
    The protocol's quality of service model explicitly addresses the
    diverse communication patterns found in agentic AI systems.  Fire-
@@ -329,16 +354,26 @@ Table of Contents
       immediately ejected by revoking their OAuth tokens without
       requiring complex ratchet tree rebalancing operations
 
-   SLIM's topic organization based on organizational hierarchies,
-   namespaces, and agent types provides a natural mapping to real-world
-   AI system deployments where different agent types operate within
-   different security domains and organizational boundaries.
+   SLIM's naming system is hierarchical and DID-inspired, for example:
+   organization/namespace/service/instance.  This supports anycast
+   routing (to any available instance), unicast routing (to a specific
+   instance), and service discovery without hardcoded endpoints or
+   external registries.  The structure maps cleanly to organizational
+   boundaries and multi-tenant deployments.
 
    The protocol's support for both broker-based and peer-to-peer
    operation offers deployment flexibility.  While broker-based
    operation provides efficiency for multi-party group communications
    typical in agent coordination scenarios, peer-to-peer capabilities
-   enable direct agent-to-agent communication when appropriate.
+   enable direct agent-to-agent communication when appropriate.  SLIM
+   exposes two session types that map to common agent patterns: point-
+   to-point sessions for tool calls and group sessions for coordination
+   and broadcast.
+
+   SLIM provides multi-language bindings.  Python and Go bindings are
+   available today, with JavaScript/TypeScript, C#, and Kotlin in
+   progress, enabling heterogeneous agent systems to interoperate on the
+   same transport.
 
 3.7.  Security Considerations for Agentic AI
 
@@ -527,6 +562,9 @@ Table of Contents
    *  Seamless fit for A2A/MCP-style tool calls while retaining SLIM's
       MLS security and multiplexing
 
+   *  Supports all four gRPC interaction patterns (unary, server
+      streaming, client streaming, bidirectional streaming)
+
    See SRPC reference and examples: SLIM RPC (SRPC) README
    (https://github.com/agntcy/slim/blob/main/data-
    plane/python/integrations/slimrpc/README.md).
@@ -671,118 +709,124 @@ Table of Contents
    Table 2 extends the comparison to include additional protocols
    relevant to modern agentic AI systems:
 
-   +================+==============+===============+===================+
-   |Feature         |AMQP over     |Kafka          |SLIM               |
-   |                |WebSockets    |               |                   |
-   +================+==============+===============+===================+
-   |*Protocol Type* |AMQP tunneled |Distributed    |SLIM Spec          |
-   |                |through       |commit log,    |                   |
-   |                |WebSockets    |high-throughput|                   |
-   |                |              |pub/sub        |                   |
-   +----------------+--------------+---------------+-------------------+
-   |*Transport*     |WebSockets    |TCP (optionally|gRPC (over         |
-   |                |over TLS      |TLS)           |HTTP/2-HTTP/3)     |
-   +----------------+--------------+---------------+-------------------+
-   |*Message Model* |Same as AMQP  |Topics with    |Topics based on    |
-   |                |(depends on   |partitions,    |organization,      |
-   |                |the broker's  |consumer       |namespace, agent   |
-   |                |AMQP model)   |groups, offset-|types etc.         |
-   |                |              |based          |                   |
-   |                |              |consumption    |                   |
-   +----------------+--------------+---------------+-------------------+
-   |*QoS / Delivery*|Same as AMQP  |At-least-once  |Fire&Forget        |
-   |                |              |default;       |unreliable (at-    |
-   |                |              |exactly-once   |most-once),        |
-   |                |              |possible via   |unreliable and     |
-   |                |              |transactions   |reliable (exactly- |
-   |                |              |               |once).  This       |
-   |                |              |               |extends to         |
-   |                |              |               |request/reply and  |
-   |                |              |               |streaming as well. |
-   +----------------+--------------+---------------+-------------------+
-   |*Streaming*     |Same as AMQP  |Native log-    |Native gRPC        |
-   |                |if broker     |based streaming|support via        |
-   |                |supports      |(Kafka Streams,|HTTP/2/3 client    |
-   |                |streaming     |KSQL, etc.)    |streaming, server  |
-   |                |              |               |streaming.  Notice |
-   |                |              |               |that Server Sent   |
-   |                |              |               |Events (SSE) with  |
-   |                |              |               |HTTP/1.1 cannot    |
-   |                |              |               |carry binary nor   |
-   |                |              |               |compressed data.   |
-   +----------------+--------------+---------------+-------------------+
-   |*Persistence*   |Same as AMQP  |Built-in:      |Not supported      |
-   |                |              |messages       |                   |
-   |                |              |persist on disk|                   |
-   |                |              |across clusters|                   |
-   +----------------+--------------+---------------+-------------------+
-   |*Protocol       |Higher (AMQP +|Moderate       |Low: Wire format   |
-   |Overhead*       |WebSockets    |(custom binary |uses protocol      |
-   |                |handshake)    |protocol, but  |buffer.  Supports  |
-   |                |              |optimized for  |also binary (byte  |
-   |                |              |high           |type in protobuf)  |
-   |                |              |throughput)    |                   |
-   +----------------+--------------+---------------+-------------------+
-   |*Broker         |Yes           |Yes            |Yes for efficient  |
-   |Required*       |              |(distributed   |multi-party.  P2P  |
-   |                |              |cluster)       |is also possible.  |
-   +----------------+--------------+---------------+-------------------+
-   |*Authentication*|Same as AMQP  |SASL/PLAIN,    |Transports MLS     |
-   |                |(broker-based)|SASL/SCRAM,    |credentials and    |
-   |                |              |Kerberos, OAuth|proofs inside      |
-   |                |              |               |OAuth bearer       |
-   |                |              |               |tokens over        |
-   |                |              |               |HTTP/2.  This      |
-   |                |              |               |gives you:         |
-   |                |              |               |Interoperability:  |
-   |                |              |               |Leverage standard  |
-   |                |              |               |HTTP/2 and OAuth   |
-   |                |              |               |libraries.         |
-   |                |              |               |Scalability: One   |
-   |                |              |               |persistent HTTP/2  |
-   |                |              |               |connection carries |
-   |                |              |               |many MLS messages. |
-   |                |              |               |Immediate          |
-   |                |              |               |revocation: Eject  |
-   |                |              |               |bad actors by      |
-   |                |              |               |revoking their     |
-   |                |              |               |OAuth tokens—no    |
-   |                |              |               |need to rebalance  |
-   |                |              |               |the ratchet tree   |
-   |                |              |               |first.             |
-   +----------------+--------------+---------------+-------------------+
-   |*Transport      |WSS (WebSocket|TLS            |TLS                |
-   |Security*       |Secure)       |               |                   |
-   +----------------+--------------+---------------+-------------------+
-   |*Message        |Same as AMQP  |TLS in-flight  |MLS (Quantum safe, |
-   |Security*       |(depends on   |encryption,    |Secure end-to-end, |
-   |                |the broker's  |optional at-   |even across        |
-   |                |encryption at |rest encryption|insecure hops,     |
-   |                |rest/in-      |(broker config)|post-compromise    |
-   |                |transit)      |               |security)          |
-   +----------------+--------------+---------------+-------------------+
-   |*Binary or Text*|Binary AMQP   |Binary protocol|Binary or Text     |
-   |                |frames over   |(common        |                   |
-   |                |WebSockets    |payloads: Avro,|                   |
-   |                |              |JSON, Protobuf)|                   |
-   +----------------+--------------+---------------+-------------------+
-   |*Use Cases*     |Browser-based |High-throughput|Group messaging,   |
-   |                |apps needing  |data pipelines,|one-to-many, many- |
-   |                |AMQP behind   |streaming      |to-many, Cloud-    |
-   |                |firewalls     |analytics,     |native             |
-   |                |              |event sourcing |microservices,     |
-   |                |              |               |real-time          |
-   |                |              |               |communications,    |
-   |                |              |               |streaming          |
-   +----------------+--------------+---------------+-------------------+
-   |*Real-World     |Less common,  |Extremely      |New Entrant, low   |
-   |Usage*          |mainly for    |widespread     |                   |
-   |                |browser/      |across         |                   |
-   |                |firewall      |industries; de |                   |
-   |                |scenarios     |facto standard |                   |
-   |                |using RabbitMQ|for large-scale|                   |
-   |                |or similar    |event streaming|                   |
-   +----------------+--------------+---------------+-------------------+
+   +================+==========+============+==========================+
+   |Feature         |AMQP over |Kafka       | SLIM                     |
+   |                |WebSockets|            |                          |
+   +================+==========+============+==========================+
+   |*Protocol Type* |AMQP      |Distributed | Secure low-latency       |
+   |                |tunneled  |commit log, | interactive messaging    |
+   |                |through   |high-       |                          |
+   |                |WebSockets|throughput  |                          |
+   |                |          |pub/sub     |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Transport*     |WebSockets|TCP         | gRPC (over               |
+   |                |over TLS  |(optionally | HTTP/2-HTTP/3)           |
+   |                |          |TLS)        |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Message Model* |Same as   |Topics with | Hierarchical names       |
+   |                |AMQP      |partitions, | (org/namespace/service/  |
+   |                |(depends  |consumer    | instance), point-to-     |
+   |                |on the    |groups,     | point and group          |
+   |                |broker's  |offset-based| sessions                 |
+   |                |AMQP      |consumption |                          |
+   |                |model)    |            |                          |
+   +----------------+----------+------------+--------------------------+
+   |*QoS / Delivery*|Same as   |At-least-   | Fire&Forget unreliable   |
+   |                |AMQP      |once        | (at-most-once),          |
+   |                |          |default;    | unreliable and reliable  |
+   |                |          |exactly-once| (exactly-once).  This    |
+   |                |          |possible via| extends to request/      |
+   |                |          |transactions| reply and streaming as   |
+   |                |          |            | well.                    |
+   +----------------+----------+------------+--------------------------+
+   |*Streaming*     |Same as   |Native log- | Native gRPC support via  |
+   |                |AMQP if   |based       | HTTP/2/3 client          |
+   |                |broker    |streaming   | streaming, server        |
+   |                |supports  |(Kafka      | streaming.  Notice that  |
+   |                |streaming |Streams,    | Server Sent Events       |
+   |                |          |KSQL, etc.) | (SSE) with HTTP/1.1      |
+   |                |          |            | cannot carry binary nor  |
+   |                |          |            | compressed data.         |
+   +----------------+----------+------------+--------------------------+
+   |*Persistence*   |Same as   |Built-in:   | Not supported            |
+   |                |AMQP      |messages    |                          |
+   |                |          |persist on  |                          |
+   |                |          |disk across |                          |
+   |                |          |clusters    |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Protocol       |Higher    |Moderate    | Low: Wire format uses    |
+   |Overhead*       |(AMQP +   |(custom     | protocol buffer.         |
+   |                |WebSockets|binary      | Supports also binary     |
+   |                |handshake)|protocol,   | (byte type in protobuf)  |
+   |                |          |but         |                          |
+   |                |          |optimized   |                          |
+   |                |          |for high    |                          |
+   |                |          |throughput) |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Broker         |Yes       |Yes         | Yes for efficient        |
+   |Required*       |          |(distributed| multi-party.  P2P is     |
+   |                |          |cluster)    | also possible.           |
+   +----------------+----------+------------+--------------------------+
+   |*Authentication*|Same as   |SASL/PLAIN, | Transports MLS           |
+   |                |AMQP      |SASL/SCRAM, | credentials and proofs   |
+   |                |(broker-  |Kerberos,   | inside OAuth bearer      |
+   |                |based)    |OAuth       | tokens over HTTP/2.      |
+   |                |          |            | This gives you:          |
+   |                |          |            | Interoperability:        |
+   |                |          |            | Leverage standard        |
+   |                |          |            | HTTP/2 and OAuth         |
+   |                |          |            | libraries.               |
+   |                |          |            | Scalability: One         |
+   |                |          |            | persistent HTTP/2        |
+   |                |          |            | connection carries many  |
+   |                |          |            | MLS messages.            |
+   |                |          |            | Immediate revocation:    |
+   |                |          |            | Eject bad actors by      |
+   |                |          |            | revoking their OAuth     |
+   |                |          |            | tokens—no need to        |
+   |                |          |            | rebalance the ratchet    |
+   |                |          |            | tree first.              |
+   +----------------+----------+------------+--------------------------+
+   |*Transport      |WSS       |TLS         | TLS                      |
+   |Security*       |(WebSocket|            |                          |
+   |                |Secure)   |            |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Message        |Same as   |TLS in-     | MLS (Quantum safe,       |
+   |Security*       |AMQP      |flight      | Secure end-to-end, even  |
+   |                |(depends  |encryption, | across insecure hops,    |
+   |                |on the    |optional at-| post-compromise          |
+   |                |broker's  |rest        | security)                |
+   |                |encryption|encryption  |                          |
+   |                |at rest/  |(broker     |                          |
+   |                |in-       |config)     |                          |
+   |                |transit)  |            |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Binary or Text*|Binary    |Binary      | Binary or Text           |
+   |                |AMQP      |protocol    |                          |
+   |                |frames    |(common     |                          |
+   |                |over      |payloads:   |                          |
+   |                |WebSockets|Avro, JSON, |                          |
+   |                |          |Protobuf)   |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Use Cases*     |Browser-  |High-       | Group messaging, one-    |
+   |                |based apps|throughput  | to-many, many-to-many,   |
+   |                |needing   |data        | Cloud-native             |
+   |                |AMQP      |pipelines,  | microservices, real-     |
+   |                |behind    |streaming   | time communications,     |
+   |                |firewalls |analytics,  | streaming                |
+   |                |          |event       |                          |
+   |                |          |sourcing    |                          |
+   +----------------+----------+------------+--------------------------+
+   |*Real-World     |Less      |Extremely   | New Entrant, low         |
+   |Usage*          |common,   |widespread  |                          |
+   |                |mainly for|across      |                          |
+   |                |browser/  |industries; |                          |
+   |                |firewall  |de facto    |                          |
+   |                |scenarios |standard for|                          |
+   |                |using     |large-scale |                          |
+   |                |RabbitMQ  |event       |                          |
+   |                |or similar|streaming   |                          |
+   +----------------+----------+------------+--------------------------+
 
                                   Table 2
 
