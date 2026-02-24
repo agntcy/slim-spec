@@ -3,7 +3,7 @@ title: "Secure Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
 category: info
 
-docname: draft-mpsb-agntcy-slim-01
+docname: draft-mpsb-agntcy-slim-latest
 submissiontype: independent
 number:
 date:
@@ -212,7 +212,7 @@ that is responsible for delivering messages in a secure group via a logical
 SLIM channel. MLS commit messages are exchanged directly using the SLIM routing
 nodes.
 
-### Routing Nodes (Data Plane)
+## Routing Nodes (Data Plane)
 
 Routing nodes are fundamental components of the SLIM architecture that forward
 messages using metadata without inspecting payloads. They fulfill several
@@ -261,7 +261,7 @@ the broader network, creating a resilient and scalable messaging infrastructure.
 
 
 
-#### Connection Table
+### Connection Table
 
 The connection table serves as a fundamental data structure within the
 SLIM routing node architecture, maintaining a comprehensive registry of both
@@ -301,7 +301,7 @@ Channel names are encoded as human-readable hierarchical names for efficient
 table lookup operations.
 
 
-#### Subscription Table and Matching
+### Subscription Table and Matching
 
 The subscription table is used to map channel subscriptions to neighboring
 nodes. It manages the distribution of messages based on subscriptions and
@@ -330,7 +330,7 @@ Legend:
 {: #fig-message-structure title="SLIM message structure carrying channel name,
 address locator, and data."}
 
-### Control Plane
+## Control Plane
 
 The control plane is responsible for the management and orchestration of
 SLIM messaging nodes and their interconnections. It handles the configuration,
@@ -363,14 +363,14 @@ the overall reliability, security, and performance of the SLIM messaging
 infrastructure. It enables efficient scaling, dynamic reconfiguration,
 and proactive maintenance of the node network.
 
-### Session Layer
+## Session Layer
 
 The session layer serves as a critical abstraction component that bridges
 application frameworks with the underlying SLIM messaging infrastructure. It
 provides a unified interface that simplifies the complexity of secure messaging
 while handling the details of MLS client operations and message distribution.
 
-#### Core Responsibilities
+### Core Responsibilities
 
 The session layer encapsulates several key functionalities:
 
@@ -394,7 +394,7 @@ manage complex configuration details required to connect to SLIM nodes,
 automatically handling node discovery, connection establishment, and
 subscription management.
 
-#### API Design Principles
+### API Design Principles
 
 The session layer API is designed with the following principles:
 
@@ -412,7 +412,7 @@ The session layer API is designed with the following principles:
 - Error Handling: Comprehensive error reporting and recovery mechanisms
   help applications handle communication issues and authentication failures.
 
-#### Session Management
+### Session Management
 
 The session layer maintains persistent session state at the client across network
 disconnections and node failures. It implements automatic reconnection logic,
@@ -627,7 +627,7 @@ handlers `ExampleUnaryUnary`, `ExampleUnaryStream`, `ExampleStreamUnary`,
 
 SRPC then embeds the handler token into the second component (service segment)
 of the full SLIM name for routing. If the original SLIM application name
-components c[i] are:
+components `c[i]` are:
 
 ```
 c[0]/c[1]/c[2]/c[3]
