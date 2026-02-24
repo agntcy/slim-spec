@@ -9,8 +9,8 @@ number:
 date:
 consensus: false
 v: 3
-area:
-workgroup: Independent Submission
+# area:
+# workgroup: Independent Submission
 keyword:
  - AI
  - Agentic AI
