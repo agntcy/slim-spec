@@ -1,12 +1,9 @@
 ---
-###
-# Description of Messaging Ecosystem
-###
 title: "An Overview of Messaging Systems and Their Applicability to Agentic AI"
 abbrev: "agncty-messaging-eco"
 category: info
 
-docname: draft-mpsb-agntcy-messaging-00
+docname: draft-mpsb-agntcy-messaging-latest
 submissiontype: independent
 number:
 date:
