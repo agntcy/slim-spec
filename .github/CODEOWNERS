@@ -1,1 +1,4 @@
-**/ @agntcy/slim-maintainers
+# Automatically generated CODEOWNERS
+# Regenerate with `make update-codeowners`
+draft-mpsb-agntcy-messaging.md lumuscar@cisco.com micpapal@cisco.com msardara@cisco.com sambetts@cisco.com
+draft-mpsb-agntcy-slim.md lumuscar@cisco.com micpapal@cisco.com msardara@cisco.com sambetts@cisco.com

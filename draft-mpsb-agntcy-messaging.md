@@ -1,7 +1,4 @@
 ---
-###
-# Description of Messaging Ecosystem
-###
 title: "An Overview of Messaging Systems and Their Applicability to Agentic AI"
 abbrev: "agncty-messaging-eco"
 category: info
@@ -12,8 +9,8 @@ number:
 date:
 consensus: false
 v: 3
-area: Applications
-workgroup: Independent Submission
+# area: Applications
+# workgroup: Independent Submission
 keyword:
  - AI
  - Agentic AI
