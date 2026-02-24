@@ -11,7 +11,7 @@ Expires: 28 August 2026                                         S. Betts
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
-                     draft-mpsb-agntcy-messaging-00
+                     draft-mpsb-agntcy-messaging-01
 
 Abstract
 
