@@ -24,7 +24,7 @@ encryption via MLS.
 <meta content="Agentic AI" name="keyword">
 <meta content="Communications" name="keyword">
 <meta content="Realtime" name="keyword">
-<meta content="draft-mpsb-agntcy-slim-00" name="ietf.draft">
+<meta content="draft-mpsb-agntcy-slim-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.31.0
     Python 3.12.12
@@ -1070,9 +1070,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">Independent Submission</dd>
+<dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-mpsb-agntcy-slim-00</dd>
+<dd class="internet-draft">draft-mpsb-agntcy-slim-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2026-02-24" class="published">24 February 2026</time>
@@ -1113,6 +1113,14 @@ communication, and native RPC semantics. The protocol provides mechanisms for
 connection management, stream multiplexing, and flow control while maintaining
 compatibility with existing gRPC deployments and supporting end-to-end
 encryption via MLS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Source for this draft and an issue tracker can be found at
+    <span><a href="https://github.com/agntcy/slim-spec">https://github.com/agntcy/slim-spec</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1180,18 +1188,32 @@ encryption via MLS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
                     <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-connection-table" class="internal xref">Connection Table</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
-                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="auto internal xref">3.1.2</a>.  <a href="#name-control-plane" class="internal xref">Control Plane</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.3">
-                    <p id="section-toc.1-1.3.2.1.2.3.1"><a href="#section-3.1.3" class="auto internal xref">3.1.3</a>.  <a href="#name-session-layer" class="internal xref">Session Layer</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="auto internal xref">3.1.2</a>.  <a href="#name-subscription-table-and-matc" class="internal xref">Subscription Table and Matching</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-naming-considerations" class="internal xref">Naming Considerations</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-control-plane" class="internal xref">Control Plane</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-deployment-considerations" class="internal xref">Deployment Considerations</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-session-layer" class="internal xref">Session Layer</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-core-responsibilities" class="internal xref">Core Responsibilities</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-api-design-principles" class="internal xref">API Design Principles</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.3">
+                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-session-management" class="internal xref">Session Management</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-naming-considerations" class="internal xref">Naming Considerations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-deployment-considerations" class="internal xref">Deployment Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1466,21 +1488,23 @@ either route messages or consume them in case consumers are directly connected
 to the node.<a href="#section-3.1.1-5" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-6">Channel names are encoded as human-readable hierarchical names for efficient
 table lookup operations.<a href="#section-3.1.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="subscription-table-and-matching">
-<section id="section-3.1.1.1">
-            <h5 id="name-subscription-table-and-matc">
-<a href="#section-3.1.1.1" class="section-number selfRef">3.1.1.1. </a><a href="#name-subscription-table-and-matc" class="section-name selfRef">Subscription Table and Matching</a>
-            </h5>
-<p id="section-3.1.1.1-1">The subscription table is used to map channel subscriptions to neighboring
+<section id="section-3.1.2">
+          <h4 id="name-subscription-table-and-matc">
+<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-subscription-table-and-matc" class="section-name selfRef">Subscription Table and Matching</a>
+          </h4>
+<p id="section-3.1.2-1">The subscription table is used to map channel subscriptions to neighboring
 nodes. It manages the distribution of messages based on subscriptions and
 ensures efficient delivery of messages.
 A message carries the data to be delivered as well as the channel name and the
-address locator of the message producer.<a href="#section-3.1.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-2">The control plane manages the configuration and updates of the connection and
-subscription tables.<a href="#section-3.1.1.1-2" class="pilcrow">¶</a></p>
+address locator of the message producer.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-2">The control plane manages the configuration and updates of the connection and
+subscription tables.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
 <span id="name-slim-message-structure-carr"></span><div id="fig-message-structure">
 <figure id="figure-3">
-              <div class="alignLeft art-text artwork" id="section-3.1.1.1-3.1">
+            <div class="alignLeft art-text artwork" id="section-3.1.2-3.1">
 <pre>
 +-------------------------------------------------------------+
 |                    SLIM Message Structure                   |
@@ -1499,184 +1523,182 @@ Legend:
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-slim-message-structure-carr" class="selfRef">SLIM message structure carrying channel name, address locator, and data.</a>
-              </figcaption></figure>
+            </figcaption></figure>
 </div>
 </section>
 </div>
 </section>
 </div>
 <div id="control-plane">
-<section id="section-3.1.2">
-          <h4 id="name-control-plane">
-<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-control-plane" class="section-name selfRef">Control Plane</a>
-          </h4>
-<p id="section-3.1.2-1">The control plane is responsible for the management and orchestration of
+<section id="section-3.2">
+        <h3 id="name-control-plane">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-control-plane" class="section-name selfRef">Control Plane</a>
+        </h3>
+<p id="section-3.2-1">The control plane is responsible for the management and orchestration of
 SLIM messaging nodes and their interconnections. It handles the configuration,
 provisioning, and monitoring of nodes, ensuring that the messaging
-infrastructure operates smoothly and efficiently.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">Key functions of the control plane include:<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
+infrastructure operates smoothly and efficiently.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Key functions of the control plane include:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.2-3.1">
-              <p id="section-3.1.2-3.1.1"><strong>Node Discovery and Registration</strong>: New messaging nodes discover
+<li class="normal" id="section-3.2-3.1">
+            <p id="section-3.2-3.1.1"><strong>Node Discovery and Registration</strong>: New messaging nodes discover
 each other and register their presence with the control plane. This
 enables the control plane to maintain an up-to-date view of the
-messaging infrastructure.<a href="#section-3.1.2-3.1.1" class="pilcrow">¶</a></p>
+messaging infrastructure.<a href="#section-3.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.2-3.2">
-              <p id="section-3.1.2-3.2.1"><strong>Configuration Management</strong>: The control plane distributes
+          <li class="normal" id="section-3.2-3.2">
+            <p id="section-3.2-3.2.1"><strong>Configuration Management</strong>: The control plane distributes
 configuration updates to messaging nodes, including connection and
 subscription table updates. This ensures consistent and correct
-routing behavior across the node network.<a href="#section-3.1.2-3.2.1" class="pilcrow">¶</a></p>
+routing behavior across the node network.<a href="#section-3.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.2-3.3">
-              <p id="section-3.1.2-3.3.1"><strong>Monitoring and Analytics</strong>: The control plane collects and
+          <li class="normal" id="section-3.2-3.3">
+            <p id="section-3.2-3.3.1"><strong>Monitoring and Analytics</strong>: The control plane collects and
 analyzes telemetry data from messaging nodes, providing insights
-into system performance, message flow, and potential issues.<a href="#section-3.1.2-3.3.1" class="pilcrow">¶</a></p>
+into system performance, message flow, and potential issues.<a href="#section-3.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.2-3.4">
-              <p id="section-3.1.2-3.4.1"><strong>Security and Access Control</strong>: The control plane manages
+          <li class="normal" id="section-3.2-3.4">
+            <p id="section-3.2-3.4.1"><strong>Security and Access Control</strong>: The control plane manages
 security policies, authentication, and authorization of nodes and
-clients, ensuring a secure messaging environment.<a href="#section-3.1.2-3.4.1" class="pilcrow">¶</a></p>
+clients, ensuring a secure messaging environment.<a href="#section-3.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-<p id="section-3.1.2-4">By centralizing these management functions, the control plane enhances
+        </ul>
+<p id="section-3.2-4">By centralizing these management functions, the control plane enhances
 the overall reliability, security, and performance of the SLIM messaging
 infrastructure. It enables efficient scaling, dynamic reconfiguration,
-and proactive maintenance of the node network.<a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
+and proactive maintenance of the node network.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="session-layer">
-<section id="section-3.1.3">
-          <h4 id="name-session-layer">
-<a href="#section-3.1.3" class="section-number selfRef">3.1.3. </a><a href="#name-session-layer" class="section-name selfRef">Session Layer</a>
-          </h4>
-<p id="section-3.1.3-1">The session layer serves as a critical abstraction component that bridges
+<section id="section-3.3">
+        <h3 id="name-session-layer">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-session-layer" class="section-name selfRef">Session Layer</a>
+        </h3>
+<p id="section-3.3-1">The session layer serves as a critical abstraction component that bridges
 application frameworks with the underlying SLIM messaging infrastructure. It
 provides a unified interface that simplifies the complexity of secure messaging
-while handling the details of MLS client operations and message distribution.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
+while handling the details of MLS client operations and message distribution.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <div id="core-responsibilities">
-<section id="section-3.1.3.1">
-            <h5 id="name-core-responsibilities">
-<a href="#section-3.1.3.1" class="section-number selfRef">3.1.3.1. </a><a href="#name-core-responsibilities" class="section-name selfRef">Core Responsibilities</a>
-            </h5>
-<p id="section-3.1.3.1-1">The session layer encapsulates several key functionalities:<a href="#section-3.1.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.3.1-2"><strong>MLS Client Operations</strong>: The layer implements comprehensive MLS client
+<section id="section-3.3.1">
+          <h4 id="name-core-responsibilities">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-core-responsibilities" class="section-name selfRef">Core Responsibilities</a>
+          </h4>
+<p id="section-3.3.1-1">The session layer encapsulates several key functionalities:<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2"><strong>MLS Client Operations</strong>: The layer implements comprehensive MLS client
 functionality including authentication procedures, message encryption and
 decryption, key management, and group membership operations. It handles the
-complex cryptographic operations transparently from the application perspective.<a href="#section-3.1.3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.3.1-3"><strong>Channel Management</strong>: It provides seamless channel subscription and
+complex cryptographic operations transparently from the application perspective.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-3"><strong>Channel Management</strong>: It provides seamless channel subscription and
 unsubscription capabilities, managing the lifecycle of channel memberships and
 maintaining subscription state across connection interruptions or node
-failures.<a href="#section-3.1.3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.3.1-4"><strong>Message Abstraction</strong>: The session layer abstracts message passing between
+failures.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-4"><strong>Message Abstraction</strong>: The session layer abstracts message passing between
 applications and the SLIM message distribution network, handling message
 formatting, routing, and delivery confirmation while providing simple send and
-receive primitives to applications.<a href="#section-3.1.3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1.3.1-5"><strong>Configuration Abstraction</strong>: It eliminates the need for applications to
+receive primitives to applications.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-5"><strong>Configuration Abstraction</strong>: It eliminates the need for applications to
 manage complex configuration details required to connect to SLIM nodes,
 automatically handling node discovery, connection establishment, and
-subscription management.<a href="#section-3.1.3.1-5" class="pilcrow">¶</a></p>
+subscription management.<a href="#section-3.3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="api-design-principles">
-<section id="section-3.1.3.2">
-            <h5 id="name-api-design-principles">
-<a href="#section-3.1.3.2" class="section-number selfRef">3.1.3.2. </a><a href="#name-api-design-principles" class="section-name selfRef">API Design Principles</a>
-            </h5>
-<p id="section-3.1.3.2-1">The session layer API is designed with the following principles:<a href="#section-3.1.3.2-1" class="pilcrow">¶</a></p>
+<section id="section-3.3.2">
+          <h4 id="name-api-design-principles">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-api-design-principles" class="section-name selfRef">API Design Principles</a>
+          </h4>
+<p id="section-3.3.2-1">The session layer API is designed with the following principles:<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.3.2-2.1">
-                <p id="section-3.1.3.2-2.1.1">Simplicity: Applications interact with the messaging system through
+<li class="normal" id="section-3.3.2-2.1">
+              <p id="section-3.3.2-2.1.1">Simplicity: Applications interact with the messaging system through
 intuitive publish/subscribe operations without needing to understand the
-underlying MLS or routing complexities.<a href="#section-3.1.3.2-2.1.1" class="pilcrow">¶</a></p>
+underlying MLS or routing complexities.<a href="#section-3.3.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.3.2-2.2">
-                <p id="section-3.1.3.2-2.2.1">Asynchronous Operations: All messaging operations are designed to be
-non-blocking, supporting high-performance applications.<a href="#section-3.1.3.2-2.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-2.2">
+              <p id="section-3.3.2-2.2.1">Asynchronous Operations: All messaging operations are designed to be
+non-blocking, supporting high-performance applications.<a href="#section-3.3.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.3.2-2.3">
-                <p id="section-3.1.3.2-2.3.1">Framework Agnostic: The API provides language bindings and framework
+            <li class="normal" id="section-3.3.2-2.3">
+              <p id="section-3.3.2-2.3.1">Framework Agnostic: The API provides language bindings and framework
 adapters for various application development environments, ensuring broad
-compatibility across different technology stacks.<a href="#section-3.1.3.2-2.3.1" class="pilcrow">¶</a></p>
+compatibility across different technology stacks.<a href="#section-3.3.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.3.2-2.4">
-                <p id="section-3.1.3.2-2.4.1">Error Handling: Comprehensive error reporting and recovery mechanisms
-help applications handle communication issues and authentication failures.<a href="#section-3.1.3.2-2.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-2.4">
+              <p id="section-3.3.2-2.4.1">Error Handling: Comprehensive error reporting and recovery mechanisms
+help applications handle communication issues and authentication failures.<a href="#section-3.3.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
-            </ul>
+          </ul>
 </section>
 </div>
 <div id="session-management">
-<section id="section-3.1.3.3">
-            <h5 id="name-session-management">
-<a href="#section-3.1.3.3" class="section-number selfRef">3.1.3.3. </a><a href="#name-session-management" class="section-name selfRef">Session Management</a>
-            </h5>
-<p id="section-3.1.3.3-1">The session layer maintains persistent session state at the client across network
+<section id="section-3.3.3">
+          <h4 id="name-session-management">
+<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-session-management" class="section-name selfRef">Session Management</a>
+          </h4>
+<p id="section-3.3.3-1">The session layer maintains persistent session state at the client across network
 disconnections and node failures. It implements automatic reconnection logic,
 subscription recovery, and message queuing to ensure reliable message delivery
 even in unstable network conditions. Session persistence includes maintaining
-MLS group membership state, channel subscriptions, and pending message queues.<a href="#section-3.1.3.3-1" class="pilcrow">¶</a></p>
-</section>
-</div>
+MLS group membership state, channel subscriptions, and pending message queues.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="naming-considerations">
-<section id="section-3.2">
+<section id="section-3.4">
         <h3 id="name-naming-considerations">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-naming-considerations" class="section-name selfRef">Naming Considerations</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-naming-considerations" class="section-name selfRef">Naming Considerations</a>
         </h3>
-<p id="section-3.2-1">SLIM requires several types of identifiers: node names, channel names,
-and client locators.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">Node names are used for secure onboarding and authentication. Node names do not
-have aggregation requirements and therefore use decentralized identifiers:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3"><code>
+<p id="section-3.4-1">SLIM requires several types of identifiers: node names, channel names,
+and client locators.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">Node names are used for secure onboarding and authentication. Node names do not
+have aggregation requirements and therefore use decentralized identifiers:<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3"><code>
 node name A: did:key(node_A)
-</code><a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">A channel name identifies a messaging group and must be routable; that is, it
+</code><a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">A channel name identifies a messaging group and must be routable; that is, it
 must include a globally unique network prefix that can be aggregated for
-scalable lookups and message forwarding.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.2-5">A group in SLIM is an MLS group with a moderator client responsible for adding
+scalable lookups and message forwarding.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-5">A group in SLIM is an MLS group with a moderator client responsible for adding
 and removing group members. The moderator is identified by a cryptographic
 public key as defined in MLS <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>, and in SLIM, also by a decentralized
-identifier derived as the hash of the public key <span>[<a href="#DID-W3C" class="cite xref">DID-W3C</a>]</span>.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
-<p id="section-3.2-6">By naming entities with hashes <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span>, SLIM achieves secure and globally
+identifier derived as the hash of the public key <span>[<a href="#DID-W3C" class="cite xref">DID-W3C</a>]</span>.<a href="#section-3.4-5" class="pilcrow">¶</a></p>
+<p id="section-3.4-6">By naming entities with hashes <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span>, SLIM achieves secure and globally
 unique naming, enabling the creation of permissionless systems where channel
 names and client names can be distributed across administrative boundaries. W3C
 DIDs are optional but can be used when hash links are employed and conform to
 the Named Information <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span> standard, referencing the IANA registry
-<span>[<a href="#NI-Registry" class="cite xref">NI-Registry</a>]</span>.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.2-7">SLIM routable name prefixes and client names can use different DID methods
+<span>[<a href="#NI-Registry" class="cite xref">NI-Registry</a>]</span>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
+<p id="section-3.4-7">SLIM routable name prefixes and client names can use different DID methods
 which have different resolution systems such as did:web <span>[<a href="#DID-Web" class="cite xref">DID-Web</a>]</span>, did:key
 <span>[<a href="#DID-Key" class="cite xref">DID-Key</a>]</span> or did:plc <span>[<a href="#DID-ATProto" class="cite xref">DID-ATProto</a>]</span>. See <span>[<a href="#DID-Methods" class="cite xref">DID-Methods</a>]</span> for well-known DID
-methods.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
-<p id="section-3.2-8">The naming structure follows these patterns:<a href="#section-3.2-8" class="pilcrow">¶</a></p>
-<p id="section-3.2-9"><code>
+methods.<a href="#section-3.4-7" class="pilcrow">¶</a></p>
+<p id="section-3.4-8">The naming structure follows these patterns:<a href="#section-3.4-8" class="pilcrow">¶</a></p>
+<p id="section-3.4-9"><code>
 client locator: did:key(org)/namespace(org)/service/did:key(client)
 channel name: did:key(org)/namespace(org)/service/did:key(moderator)
-</code><a href="#section-3.2-9" class="pilcrow">¶</a></p>
-<p id="section-3.2-10">Where the moderator is the special client that has the role to create a channel,
+</code><a href="#section-3.4-9" class="pilcrow">¶</a></p>
+<p id="section-3.4-10">Where the moderator is the special client that has the role to create a channel,
 add actual application clients and remove them from the group.
 As mentioned above the moderator is a data plane client which is a decentralized
-instance of the MLS delivery service as described in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>.<a href="#section-3.2-10" class="pilcrow">¶</a></p>
-<p id="section-3.2-11">The hierarchical structure is required to maximize aggregation in subscription
+instance of the MLS delivery service as described in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>.<a href="#section-3.4-10" class="pilcrow">¶</a></p>
+<p id="section-3.4-11">The hierarchical structure is required to maximize aggregation in subscription
 tables, which can aggregate multiple names under name prefixes such as
-organization identifiers, organization namespaces, and services.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
+organization identifiers, organization namespaces, and services.<a href="#section-3.4-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="deployment-considerations">
-<section id="section-3.3">
+<section id="section-3.5">
         <h3 id="name-deployment-considerations">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-deployment-considerations" class="section-name selfRef">Deployment Considerations</a>
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-deployment-considerations" class="section-name selfRef">Deployment Considerations</a>
         </h3>
-<p id="section-3.3-1">SLIM helps the deployment of agentic AI applications where a combination of
+<p id="section-3.5-1">SLIM helps the deployment of agentic AI applications where a combination of
 data streams, tools and LLMs are combined to create a distributed multi-agent
-systems that can solve problems via AI.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">These applications work as SLIM clients and <span class="bcp14">MAY</span> expose a service to the secure
+systems that can solve problems via AI.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-2">These applications work as SLIM clients and <span class="bcp14">MAY</span> expose a service to the secure
 group. The channel and client naming structure combined allows for service
 discovery capabilities by binding the application a specific application
-namespace and service name.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+namespace and service name.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1901,7 +1923,7 @@ handlers <code>ExampleUnaryUnary</code>, <code>ExampleUnaryStream</code>, <code>
           </ul>
 <p id="section-4.3.5-9">SRPC then embeds the handler token into the second component (service segment)
 of the full SLIM name for routing. If the original SLIM application name
-components c[i] are:<a href="#section-4.3.5-9" class="pilcrow">¶</a></p>
+components <code>c[i]</code> are:<a href="#section-4.3.5-9" class="pilcrow">¶</a></p>
 <p id="section-4.3.5-10"><code>
 c[0]/c[1]/c[2]/c[3]
 </code><a href="#section-4.3.5-10" class="pilcrow">¶</a></p>

@@ -2,7 +2,7 @@
 
 
 
-Independent Submission                                    L. Muscariello
+Network Working Group                                     L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
 Expires: 28 August 2026                                         S. Betts
@@ -11,7 +11,7 @@ Expires: 28 August 2026                                         S. Betts
 
 
             Secure Low-Latency Interactive Messaging (SLIM)
-                       draft-mpsb-agntcy-slim-00
+                     draft-mpsb-agntcy-slim-latest
 
 Abstract
 
@@ -24,6 +24,13 @@ Abstract
    connection management, stream multiplexing, and flow control while
    maintaining compatibility with existing gRPC deployments and
    supporting end-to-end encryption via MLS.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/agntcy/slim-spec.
 
 Status of This Memo
 
@@ -61,10 +68,14 @@ Table of Contents
    3.  Protocol Overview
      3.1.  Routing Nodes (Data Plane)
        3.1.1.  Connection Table
-       3.1.2.  Control Plane
-       3.1.3.  Session Layer
-     3.2.  Naming Considerations
-     3.3.  Deployment Considerations
+       3.1.2.  Subscription Table and Matching
+     3.2.  Control Plane
+     3.3.  Session Layer
+       3.3.1.  Core Responsibilities
+       3.3.2.  API Design Principles
+       3.3.3.  Session Management
+     3.4.  Naming Considerations
+     3.5.  Deployment Considerations
    4.  RPC in Agentic Protocols and Relationship to Messaging
      4.1.  RPC vs. Messaging: Synchronous vs. Asynchronous
      4.2.  Challenges of RPC over Messaging
@@ -301,7 +312,7 @@ Table of Contents
    Channel names are encoded as human-readable hierarchical names for
    efficient table lookup operations.
 
-3.1.1.1.  Subscription Table and Matching
+3.1.2.  Subscription Table and Matching
 
    The subscription table is used to map channel subscriptions to
    neighboring nodes.  It manages the distribution of messages based on
@@ -329,7 +340,7 @@ Table of Contents
       Figure 3: SLIM message structure carrying channel name, address
                              locator, and data.
 
-3.1.2.  Control Plane
+3.2.  Control Plane
 
    The control plane is responsible for the management and orchestration
    of SLIM messaging nodes and their interconnections.  It handles the
@@ -361,7 +372,7 @@ Table of Contents
    SLIM messaging infrastructure.  It enables efficient scaling, dynamic
    reconfiguration, and proactive maintenance of the node network.
 
-3.1.3.  Session Layer
+3.3.  Session Layer
 
    The session layer serves as a critical abstraction component that
    bridges application frameworks with the underlying SLIM messaging
@@ -369,7 +380,7 @@ Table of Contents
    complexity of secure messaging while handling the details of MLS
    client operations and message distribution.
 
-3.1.3.1.  Core Responsibilities
+3.3.1.  Core Responsibilities
 
    The session layer encapsulates several key functionalities:
 
@@ -394,7 +405,7 @@ Table of Contents
    nodes, automatically handling node discovery, connection
    establishment, and subscription management.
 
-3.1.3.2.  API Design Principles
+3.3.2.  API Design Principles
 
    The session layer API is designed with the following principles:
 
@@ -414,7 +425,7 @@ Table of Contents
       mechanisms help applications handle communication issues and
       authentication failures.
 
-3.1.3.3.  Session Management
+3.3.3.  Session Management
 
    The session layer maintains persistent session state at the client
    across network disconnections and node failures.  It implements
@@ -423,7 +434,7 @@ Table of Contents
    conditions.  Session persistence includes maintaining MLS group
    membership state, channel subscriptions, and pending message queues.
 
-3.2.  Naming Considerations
+3.4.  Naming Considerations
 
    SLIM requires several types of identifiers: node names, channel
    names, and client locators.
@@ -473,7 +484,7 @@ Table of Contents
    prefixes such as organization identifiers, organization namespaces,
    and services.
 
-3.3.  Deployment Considerations
+3.5.  Deployment Considerations
 
    SLIM helps the deployment of agentic AI applications where a
    combination of data streams, tools and LLMs are combined to create a

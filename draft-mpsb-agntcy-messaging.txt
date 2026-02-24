@@ -2,7 +2,7 @@
 
 
 
-Independent Submission                                    L. Muscariello
+Network Working Group                                     L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
 Expires: 28 August 2026                                         S. Betts
@@ -11,7 +11,7 @@ Expires: 28 August 2026                                         S. Betts
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
-                     draft-mpsb-agntcy-messaging-00
+                   draft-mpsb-agntcy-messaging-latest
 
 Abstract
 
@@ -39,6 +39,13 @@ Abstract
    communication even through untrusted intermediaries while supporting
    dynamic group membership changes essential for collaborative AI
    agents.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/agntcy/slim-spec.
 
 Status of This Memo
 
