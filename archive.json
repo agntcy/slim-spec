@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-19T00:42:26.144679+00:00",
+  "timestamp": "2026-02-26T00:38:56.704884+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -744,6 +744,62 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDON1QDo87GDg9e",
+      "title": "docs: update SLIM v1 messaging details",
+      "url": "https://github.com/agntcy/slim-spec/pull/15",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n- align SLIM section with v1 architecture, naming, and session model\n- expand SRPC interaction patterns\n- refresh SLIM comparison table entries\n\n## Testing\n- not run (doc-only changes)\n",
+      "createdAt": "2026-02-24T22:09:13Z",
+      "updatedAt": "2026-02-24T22:15:07Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "da697845ba1685bb1d40c12862d0634d2498ec7c",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "docs/slim-v1-update",
+      "headRefOid": "ef8337ad38df132d70de4605d3a61769045a122a",
+      "closedAt": "2026-02-24T22:15:07Z",
+      "mergedAt": "2026-02-24T22:15:06Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "1d72dda97e83831e1d55f0d37e2f79e24db069d3"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDON1QDo87GDn9R",
+      "title": "docs/slim v1 update",
+      "url": "https://github.com/agntcy/slim-spec/pull/16",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- **docs: update SLIM v1 messaging details**\n- **chore: update**\n- **chore: update**\n",
+      "createdAt": "2026-02-24T22:16:48Z",
+      "updatedAt": "2026-02-24T22:21:41Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "a6f3d9b355d2ca086ac83cde338dfb7cad797d00",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "docs/slim-v1-update",
+      "headRefOid": "75666de90751ff68358a8681c9e1a6b9038c109c",
+      "closedAt": "2026-02-24T22:21:41Z",
+      "mergedAt": "2026-02-24T22:21:41Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "9691007958f69fe7d6c63083d08f713e9f4101f9"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
