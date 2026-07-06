@@ -12,9 +12,9 @@
 <meta content="
        Agentic AI systems require messaging infrastructure that supports real-time
 collaboration, high-volume streaming, and dynamic group coordination across
-distributed networks. Traditional protocols like AMQP, MQTT, and NATS address
-some requirements but fall short on security, particularly regarding      
-post-compromise protection and quantum-safe encryption essential for autonomous
+distributed networks. Traditional protocols like AMQP  , MQTT  , and NATS   address
+some requirements but fall short on security, particularly regarding
+post-compromise protection and forward secrecy essential for autonomous
 agents handling sensitive data. 
        This document analyzes six messaging protocols—AMQP, MQTT, NATS, AMQP over
 WebSockets, Kafka, and AGNTCY SLIM—across dimensions critical for GenAI agent
@@ -24,32 +24,32 @@ agentic AI deployments, from lightweight edge computing scenarios to large-scale
 multi-organizational collaborations. 
        AGNTCY SLIM emerges as a purpose-built solution, integrating Message Layer
 Security (MLS)   with gRPC   over HTTP/2   to
-provide quantum-safe end-to-end encryption, efficient streaming, and OAuth-based
+provide end-to-end encryption with forward secrecy, efficient streaming, and OAuth-based
 authentication  . Unlike transport-layer security approaches, SLIM's
 MLS implementation ensures secure communication even through untrusted
 intermediaries while supporting dynamic
 group membership changes essential for collaborative AI agents. 
     " name="description">
-<meta content="xml2rfc 3.30.2" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="AI" name="keyword">
 <meta content="Agentic AI" name="keyword">
 <meta content="Communications" name="keyword">
 <meta content="Realtime" name="keyword">
-<meta content="draft-mpsb-agntcy-messaging-00" name="ietf.draft">
+<meta content="draft-mpsb-agntcy-messaging-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.2
-    Python 3.12.11
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.4.0
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
-    PyYAML 6.0.2
-    requests 2.32.5
-    setuptools 80.9.0
-    wcwidth 0.2.14
+    PyYAML 6.0.3
+    requests 2.33.1
+    wcwidth 0.8.2
 -->
 <link href="draft-mpsb-agntcy-messaging.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -190,7 +190,7 @@ group membership changes essential for collaborative AI agents.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -198,7 +198,8 @@ group membership changes essential for collaborative AI agents.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -315,16 +316,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -344,10 +348,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -358,59 +362,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -448,26 +452,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -483,20 +486,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -532,9 +537,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -544,17 +549,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -590,6 +597,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -603,25 +611,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -641,13 +641,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -658,18 +651,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -728,9 +719,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -820,23 +811,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -847,19 +842,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -880,54 +877,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -946,26 +943,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -981,12 +978,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1048,17 +1046,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">agncty-messaging-eco</td>
-<td class="right">October 2025</td>
+<td class="center">agntcy-messaging-eco</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Muscariello, et al.</td>
-<td class="center">Expires 19 April 2026</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1080,17 +1080,17 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">Independent Submission</dd>
+<dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-mpsb-agntcy-messaging-00</dd>
+<dd class="internet-draft">draft-mpsb-agntcy-messaging-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-16" class="published">16 October 2025</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-19">19 April 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,9 +1117,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">Agentic AI systems require messaging infrastructure that supports real-time
 collaboration, high-volume streaming, and dynamic group coordination across
-distributed networks. Traditional protocols like AMQP, MQTT, and NATS address
-some requirements but fall short on security, particularly regarding <span>[<a href="#AMQP" class="cite xref">AMQP</a>]</span> <span>[<a href="#MQTT" class="cite xref">MQTT</a>]</span> <span>[<a href="#NATS" class="cite xref">NATS</a>]</span>
-post-compromise protection and quantum-safe encryption essential for autonomous
+distributed networks. Traditional protocols like AMQP <span>[<a href="#AMQP" class="cite xref">AMQP</a>]</span>, MQTT <span>[<a href="#MQTT" class="cite xref">MQTT</a>]</span>, and NATS <span>[<a href="#NATS" class="cite xref">NATS</a>]</span> address
+some requirements but fall short on security, particularly regarding
+post-compromise protection and forward secrecy essential for autonomous
 agents handling sensitive data.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">This document analyzes six messaging protocols—AMQP, MQTT, NATS, AMQP over
 WebSockets, Kafka, and AGNTCY SLIM—across dimensions critical for GenAI agent
@@ -1128,12 +1128,20 @@ operational complexity. We examine how each protocol's design decisions impact
 agentic AI deployments, from lightweight edge computing scenarios to large-scale
 multi-organizational collaborations.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">AGNTCY SLIM emerges as a purpose-built solution, integrating Message Layer
-Security (MLS) <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> with gRPC <span>[<a href="#gRPC" class="cite xref">gRPC</a>]</span> over HTTP/2 <span>[<a href="#RFC7540" class="cite xref">RFC7540</a>]</span> to
-provide quantum-safe end-to-end encryption, efficient streaming, and OAuth-based
+Security (MLS) <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> with gRPC <span>[<a href="#gRPC" class="cite xref">gRPC</a>]</span> over HTTP/2 <span>[<a href="#RFC9113" class="cite xref">RFC9113</a>]</span> to
+provide end-to-end encryption with forward secrecy, efficient streaming, and OAuth-based
 authentication <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>. Unlike transport-layer security approaches, SLIM's
 MLS implementation ensures secure communication even through untrusted
 intermediaries while supporting dynamic
 group membership changes essential for collaborative AI agents.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Source for this draft and an issue tracker can be found at
+    <span><a href="https://github.com/agntcy/slim-spec">https://github.com/agntcy/slim-spec</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1154,7 +1162,7 @@ group membership changes essential for collaborative AI agents.<a href="#section
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1163,7 +1171,7 @@ group membership changes essential for collaborative AI agents.<a href="#section
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1207,59 +1215,71 @@ group membership changes essential for collaborative AI agents.<a href="#section
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
                 <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-next-generation-agent-messa" class="internal xref">Next-Generation Agent Messaging: SLIM</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
-                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-security-considerations-for" class="internal xref">Security Considerations for Agentic AI</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
-                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-performance-implications" class="internal xref">Performance Implications</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.9">
-                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="auto internal xref">3.9</a>.  <a href="#name-deployment-and-operational-" class="internal xref">Deployment and Operational Considerations</a></p>
-</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-rpc-in-agentic-protocols-an" class="internal xref">RPC in Agentic Protocols and Relationship to Messaging</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-rpc-vs-messaging-synchronou" class="internal xref">RPC vs. Messaging: Synchronous vs. Asynchronous</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-when-asynchronous-feels-syn" class="internal xref">When Asynchronous Feels Synchronous (Interactive Real-Time)</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-bridging-patterns-rpc-over-" class="internal xref">Bridging Patterns: RPC over Messaging and Streaming RPC</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-a2a-and-mcp-in-context" class="internal xref">A2A and MCP in Context</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-slim-rpc-srpc" class="internal xref">SLIM RPC (SRPC)</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-advantages-of-slim-for-a2a-" class="internal xref">Advantages of SLIM for A2A APIs</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-security-implications" class="internal xref">Security Implications</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-analysis" class="internal xref">Security Analysis</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-comparison" class="internal xref">Comparison</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-performance-characteristics" class="internal xref">Performance Characteristics</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-deployment-and-operational-" class="internal xref">Deployment and Operational Considerations</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-rpc-in-agentic-protocols-an" class="internal xref">RPC in Agentic Protocols and Relationship to Messaging</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-agentic-protocols-are-rpc-o" class="internal xref">Agentic Protocols Are RPC-Oriented</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-rpc-vs-messaging-synchronou" class="internal xref">RPC vs. Messaging: Synchronous vs. Asynchronous</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-challenges-of-running-rpc-o" class="internal xref">Challenges of Running RPC over Messaging</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-when-asynchronous-feels-syn" class="internal xref">When Asynchronous Feels Synchronous</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-bridging-patterns-rpc-over-" class="internal xref">Bridging Patterns: RPC over Messaging</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
+                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-slim-rpc-srpc" class="internal xref">SLIM RPC (SRPC)</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.7">
+                <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="auto internal xref">7.7</a>.  <a href="#name-advantages-of-slim-for-agen" class="internal xref">Advantages of SLIM for Agentic Protocols</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.8">
+                <p id="section-toc.1-1.7.2.8.1"><a href="#section-7.8" class="auto internal xref">7.8</a>.  <a href="#name-security-implications" class="internal xref">Security Implications</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.9">
+                <p id="section-toc.1-1.7.2.9.1"><a href="#section-7.9" class="auto internal xref">7.9</a>.  <a href="#name-guidance-when-to-choose-wha" class="internal xref">Guidance: When to Choose What</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-comparison" class="internal xref">Comparison</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
+                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1289,7 +1309,7 @@ coordinate complex tasks such as voting or consensus. Moreover, security
 requirements extend well beyond basic TLS; in scenarios where agents share
 sensitive models or partial computations, post-compromise security and robust
 end-to-end encryption are essential.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">In practice, you’ll want a protocol that efficiently handles one-to-many or
+<p id="section-2-2">In practice, a designer of such systems will require a protocol that efficiently handles one-to-many or
 many-to-many communication, supports dynamic membership (with agents joining or
 leaving on the fly), and scales to accommodate a “forest” of agents spread
 across global networks. Some protocols excel at ultra-low-latency,
@@ -1298,12 +1318,12 @@ embeddings—while others emphasize strong consistency and durability.
 Additionally, advanced cryptographic features such as automatic key rotation and
 forward secrecy are vital when compromised credentials must not enable an
 attacker to decrypt future communications.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">Below, we compare six popular messaging protocols—AMQP, MQTT, NATS, AMQP over
-WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure Low-Latency Interactive
-Messaging)—across
-dimensions that matter for GenAI agent systems: streaming performance, delivery
-guarantees, flexible pub/sub patterns, agent coordination, security (including
-end-to-end encryption and zero-trust support), and real-world adoption.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-3">Below, we compare six messaging protocols—AMQP, MQTT, NATS, AMQP over
+WebSockets, Kafka, and AGNTCY SLIM (Secure Low-Latency Interactive
+Messaging)—across dimensions that matter for GenAI agent systems: streaming
+performance, delivery guarantees, flexible pub/sub patterns, agent coordination,
+security (including end-to-end encryption and zero-trust support), and
+real-world adoption.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="protocol-analysis-for-agentic-ai-systems">
@@ -1424,7 +1444,7 @@ that align well with certain agentic AI use cases.<a href="#section-3.5-1" class
 <p id="section-3.5-2">Kafka's partition-based topic model enables massive horizontal scaling, making
 it suitable for AI systems that need to process large volumes of training data,
 model updates, or inference results across distributed agent networks. The
-platform's native streaming capabilities through Kafka Streams and KSQL provide
+platform's native streaming capabilities through Kafka Streams and ksqlDB provide
 powerful tools for real-time processing of agent-generated data.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 <p id="section-3.5-3">The protocol's built-in persistence across distributed clusters ensures that
 agent communication history is preserved and can be replayed, which is valuable
@@ -1452,338 +1472,470 @@ sensitive model data or proprietary algorithms.<a href="#section-3.5-5" class="p
 purpose-built protocol for modern agentic AI systems, designed to address the
 specific security, performance, and coordination requirements that existing
 protocols cannot fully satisfy.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">SLIM's foundation on gRPC over HTTP/2 and HTTP/3 provides several immediate
+<p id="section-3.6-2">SLIM is intended as a transport layer for agent protocols like A2A <span>[<a href="#A2A" class="cite xref">A2A</a>]</span>,
+MCP <span>[<a href="#MCP" class="cite xref">MCP</a>]</span>, and ACP <span>[<a href="#ACP" class="cite xref">ACP</a>]</span>. It handles secure routing, group messaging, and
+end-to-end encryption so protocol
+implementations can focus on agent semantics. A registration-based model lets
+agents become reachable through the SLIM network without exposing server ports,
+while only routing nodes need to be publicly reachable. This simplifies
+deployment for agents behind NATs and firewalls.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.6-3">SLIM's foundation on gRPC over HTTP/2 and HTTP/3 provides several immediate
 advantages for AI agent communication. The binary protocol buffer wire format
 minimizes serialization overhead while supporting both binary and text data
 types essential for AI workloads. HTTP/2's multiplexing capabilities allow a
 single connection to carry multiple concurrent agent conversations, reducing
-connection overhead in systems with many interacting agents.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
-<p id="section-3.6-3">The protocol's quality of service model explicitly addresses the diverse
+connection overhead in systems with many interacting agents.<a href="#section-3.6-3" class="pilcrow">¶</a></p>
+<p id="section-3.6-4">SLIM is architected as a distributed system with a clear separation of
+concerns:<a href="#section-3.6-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.6-5.1">
+            <p id="section-3.6-5.1.1"><strong>Data plane</strong>: Routes messages across SLIM nodes using only metadata for
+efficient forwarding and topology management.<a href="#section-3.6-5.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-5.2">
+            <p id="section-3.6-5.2.1"><strong>Session layer</strong>: Provides reliable delivery, MLS-based end-to-end
+encryption, and secure group management (create, invite, join, remove).<a href="#section-3.6-5.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-5.3">
+            <p id="section-3.6-5.3.1"><strong>Control plane</strong>: Orchestrates routing nodes, configuration, and
+administrative operations.<a href="#section-3.6-5.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.6-6">Routing nodes run only the data plane, keeping infrastructure lightweight,
+while language bindings include the data-plane client plus the session layer
+for full security and reliability.<a href="#section-3.6-6" class="pilcrow">¶</a></p>
+<p id="section-3.6-7">The protocol's quality of service model explicitly addresses the diverse
 communication patterns found in agentic AI systems. Fire-and-forget messaging
 supports high-frequency status updates and non-critical notifications, while
 reliable exactly-once delivery ensures critical coordination messages and
 expensive computational results are never lost. This extends consistently across
-request-reply patterns and streaming communications.<a href="#section-3.6-3" class="pilcrow">¶</a></p>
-<p id="section-3.6-4">Perhaps most significantly, SLIM's integration of Message Layer Security (MLS)
-provides quantum-safe, end-to-end encryption specifically designed for group
-communications. Unlike transport-layer security approaches used by other
-protocols, MLS ensures that messages remain secure even when transmitted through
-potentially compromised intermediaries—a critical requirement for AI systems
-operating across multiple trust domains.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
-<p id="section-3.6-5">The protocol's authentication model demonstrates particular innovation in
+request-reply patterns and streaming communications.<a href="#section-3.6-7" class="pilcrow">¶</a></p>
+<p id="section-3.6-8">SLIM's security model is intentionally two-tiered. At the network layer,
+HTTP/2 with TLS 1.3 provides hop-by-hop transport security, integrating
+naturally with existing infrastructure—load balancers, API gateways, and
+observability tools all operate on TLS-protected HTTP/2 connections without
+requiring access to message content. At the content layer, MLS provides an
+application-layer encryption envelope that protects message payloads
+end-to-end, independently of how many TLS connections are traversed along the
+path. Routing nodes see only the channel name and an encrypted blob; even after
+terminating a TLS session, an intermediate node cannot access agent data.<a href="#section-3.6-8" class="pilcrow">¶</a></p>
+<p id="section-3.6-9">This two-tier approach—HTTP/2 for network security, MLS for content
+security—gives SLIM a zero-trust intermediary property: routing nodes can
+forward messages through untrusted infrastructure while maintaining full payload
+confidentiality. Protocols that rely solely on transport-layer security require
+trust in all intermediaries, since each hop terminates TLS and has visibility
+into message content. For agentic AI deployments spanning multiple organizations
+or transiting third-party infrastructure, this distinction is critical.<a href="#section-3.6-9" class="pilcrow">¶</a></p>
+<p id="section-3.6-10">The protocol's authentication model demonstrates particular innovation in
 addressing agentic AI security requirements. By transporting MLS credentials and
 cryptographic proofs within OAuth bearer tokens over HTTP/2, SLIM achieves
-several important properties:<a href="#section-3.6-5" class="pilcrow">¶</a></p>
+several important properties:<a href="#section-3.6-10" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-6.1">
-            <p id="section-3.6-6.1.1"><strong>Interoperability</strong>: Leverages standard HTTP/2 and OAuth libraries, reducing
+<li class="normal" id="section-3.6-11.1">
+            <p id="section-3.6-11.1.1"><strong>Interoperability</strong>: Leverages standard HTTP/2 and OAuth libraries, reducing
 implementation complexity and improving compatibility with existing
-infrastructure<a href="#section-3.6-6.1.1" class="pilcrow">¶</a></p>
+infrastructure<a href="#section-3.6-11.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-6.2">
-            <p id="section-3.6-6.2.1"><strong>Scalability</strong>: Single persistent HTTP/2 connections efficiently carry many
-MLS-secured messages between agents<a href="#section-3.6-6.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.6-11.2">
+            <p id="section-3.6-11.2.1"><strong>Scalability</strong>: Single persistent HTTP/2 connections efficiently carry many
+MLS-secured messages between agents<a href="#section-3.6-11.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-6.3">
-            <p id="section-3.6-6.3.1"><strong>Immediate revocation</strong>: Malicious or compromised agents can be immediately
+          <li class="normal" id="section-3.6-11.3">
+            <p id="section-3.6-11.3.1"><strong>Immediate revocation</strong>: Malicious or compromised agents can be immediately
 ejected by revoking their OAuth tokens without requiring complex ratchet
-tree rebalancing operations<a href="#section-3.6-6.3.1" class="pilcrow">¶</a></p>
+tree rebalancing operations<a href="#section-3.6-11.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.6-7">SLIM's topic organization based on organizational hierarchies, namespaces, and
-agent types provides a natural mapping to real-world AI system deployments where
-different agent types operate within different security domains and
-organizational boundaries.<a href="#section-3.6-7" class="pilcrow">¶</a></p>
-<p id="section-3.6-8">The protocol's support for both broker-based and peer-to-peer operation offers
+<p id="section-3.6-12">SLIM's naming system is hierarchical and DID-inspired, for example:
+<code>organization/namespace/service/instance</code>. This supports anycast routing (to any
+available instance), unicast routing (to a specific instance), and service
+discovery without hardcoded endpoints or external registries. The structure maps
+cleanly to organizational boundaries and multi-tenant deployments.<a href="#section-3.6-12" class="pilcrow">¶</a></p>
+<p id="section-3.6-13">The protocol's support for both broker-based and peer-to-peer operation offers
 deployment flexibility. While broker-based operation provides efficiency for
 multi-party group communications typical in agent coordination scenarios,
 peer-to-peer capabilities enable direct agent-to-agent communication when
-appropriate.<a href="#section-3.6-8" class="pilcrow">¶</a></p>
+appropriate. SLIM exposes two session types that map to common agent patterns:
+point-to-point sessions for tool calls and group sessions for coordination and
+broadcast.<a href="#section-3.6-13" class="pilcrow">¶</a></p>
+<p id="section-3.6-14">SLIM provides multi-language bindings. Python and Go bindings are available
+today, with JavaScript/TypeScript, C#, and Kotlin in progress, enabling
+heterogeneous agent systems to interoperate on the same transport.<a href="#section-3.6-14" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="security-considerations-for-agentic-ai">
-<section id="section-3.7">
-        <h3 id="name-security-considerations-for">
-<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-security-considerations-for" class="section-name selfRef">Security Considerations for Agentic AI</a>
-        </h3>
-<p id="section-3.7-1">Security requirements for agentic AI systems extend well beyond the capabilities
+</section>
+</div>
+<div id="security-analysis">
+<section id="section-4">
+      <h2 id="name-security-analysis">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-analysis" class="section-name selfRef">Security Analysis</a>
+      </h2>
+<p id="section-4-1">Security requirements for agentic AI systems extend well beyond the capabilities
 provided by traditional messaging protocols. The autonomous nature of AI agents,
 combined with their access to sensitive data and computational resources,
-creates unique threat models that messaging infrastructure must address.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
-<p id="section-3.7-2"><strong>Post-Compromise Security</strong>: In traditional systems, credential compromise
+creates unique threat models that messaging infrastructure must address.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2"><strong>Post-Compromise Security</strong>: In traditional systems, credential compromise
 typically requires immediate revocation and re-authentication. However, AI
 agents may operate for extended periods with limited human oversight. SLIM's
 MLS implementation provides forward secrecy, ensuring that compromise of
 current credentials cannot decrypt past communications, and post-compromise
 security, guaranteeing that future communications remain secure even after
-credential compromise.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
-<p id="section-3.7-3"><strong>Quantum-Safe Cryptography</strong>: As quantum computing advances threaten current
+credential compromise.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3"><strong>Quantum-Safe Cryptography</strong>: As quantum computing advances threaten current
 cryptographic standards, AI systems—which may operate for years with the same
 cryptographic keys—need protection against future quantum attacks. SLIM's
-quantum-safe MLS implementation provides this protection, while traditional
-protocols rely on classical cryptographic assumptions that may become
-vulnerable.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
-<p id="section-3.7-4"><strong>Multi-Domain Operations</strong>: Agentic AI systems often span multiple
+SLIM's MLS implementation provides this protection and, when combined with
+post-quantum cipher suites, also defends against future quantum attacks; traditional
+protocols rely entirely on classical cryptographic assumptions that may become
+vulnerable.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4"><strong>Multi-Domain Operations</strong>: Agentic AI systems often span multiple
 organizational and security domains, with agents from different organizations
 collaborating on shared tasks. Traditional protocols typically assume trust in
 messaging infrastructure, but SLIM's end-to-end encryption ensures secure
 communication even when messages transit through potentially untrusted
-intermediaries.<a href="#section-3.7-4" class="pilcrow">¶</a></p>
-<p id="section-3.7-5"><strong>Dynamic Group Membership</strong>: AI agent groups frequently change as agents join
+intermediaries.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5"><strong>Dynamic Group Membership</strong>: AI agent groups frequently change as agents join
 collaborations, complete tasks, or become unavailable. MLS's efficient group
 key management handles these membership changes while maintaining security
 properties, unlike approaches that require complete cryptographic context
-regeneration.<a href="#section-3.7-5" class="pilcrow">¶</a></p>
+regeneration.<a href="#section-4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="performance-implications">
-<section id="section-3.8">
-        <h3 id="name-performance-implications">
-<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-performance-implications" class="section-name selfRef">Performance Implications</a>
-        </h3>
-<p id="section-3.8-1">The performance characteristics of messaging protocols significantly impact the
+<div id="performance-characteristics">
+<section id="section-5">
+      <h2 id="name-performance-characteristics">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-performance-characteristics" class="section-name selfRef">Performance Characteristics</a>
+      </h2>
+<p id="section-5-1">The performance characteristics of messaging protocols significantly impact the
 behavior and capabilities of agentic AI systems, particularly as the number of
-agents and frequency of interactions scale.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
-<p id="section-3.8-2"><strong>Latency Sensitivity</strong>: Many AI agent interactions are latency-sensitive,
+agents and frequency of interactions scale.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2"><strong>Latency Sensitivity</strong>: Many AI agent interactions are latency-sensitive,
 particularly in real-time decision-making scenarios or when agents are
 coordinating time-critical tasks. SLIM's HTTP/2 foundation provides header
 compression and multiplexing that reduce per-message overhead, while the binary
-protocol buffer encoding minimizes serialization costs.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
-<p id="section-3.8-3"><strong>Throughput Requirements</strong>: Large-scale agentic AI systems may involve
+protocol buffer encoding minimizes serialization costs.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3"><strong>Throughput Requirements</strong>: Large-scale agentic AI systems may involve
 thousands of agents generating substantial message volumes. While protocols
 like Kafka excel at raw throughput, they may introduce latency through their
 log-based architecture. SLIM balances throughput and latency through efficient
-connection reuse and optional reliability levels.<a href="#section-3.8-3" class="pilcrow">¶</a></p>
-<p id="section-3.8-4"><strong>Connection Efficiency</strong>: Traditional protocols often require separate
+connection reuse and optional reliability levels.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4"><strong>Connection Efficiency</strong>: Traditional protocols often require separate
 connections for each communication pattern or security context. SLIM's
 connection multiplexing allows a single HTTP/2 connection to handle diverse
 communication patterns between agents, reducing resource consumption and
-connection establishment overhead.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
-<p id="section-3.8-5"><strong>Streaming Performance</strong>: AI agents frequently exchange streaming data—such as
+connection establishment overhead.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5"><strong>Streaming Performance</strong>: AI agents frequently exchange streaming data—such as
 token-by-token language model outputs or real-time sensor data. SLIM's native
 gRPC streaming support over HTTP/2 provides efficient bidirectional streaming
-without the overhead of connection-per-stream approaches.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
+without the overhead of connection-per-stream approaches.<a href="#section-5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="deployment-and-operational-considerations">
-<section id="section-3.9">
-        <h3 id="name-deployment-and-operational-">
-<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-deployment-and-operational-" class="section-name selfRef">Deployment and Operational Considerations</a>
-        </h3>
-<p id="section-3.9-1">The operational characteristics of messaging protocols significantly impact the
-total cost of ownership and operational complexity of agentic AI systems.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
-<p id="section-3.9-2"><strong>Infrastructure Requirements</strong>: Traditional enterprise protocols like AMQP
+<section id="section-6">
+      <h2 id="name-deployment-and-operational-">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-deployment-and-operational-" class="section-name selfRef">Deployment and Operational Considerations</a>
+      </h2>
+<p id="section-6-1">The operational characteristics of messaging protocols significantly impact the
+total cost of ownership and operational complexity of agentic AI systems.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2"><strong>Infrastructure Requirements</strong>: Traditional enterprise protocols like AMQP
 require dedicated message broker infrastructure with high availability and
 clustering capabilities. Kafka requires even more complex distributed
 infrastructure. SLIM's optional broker architecture allows deployments to scale
-infrastructure complexity with system requirements.<a href="#section-3.9-2" class="pilcrow">¶</a></p>
-<p id="section-3.9-3"><strong>Monitoring and Observability</strong>: Debugging distributed agentic AI systems
+infrastructure complexity with system requirements.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3"><strong>Monitoring and Observability</strong>: Debugging distributed agentic AI systems
 requires comprehensive visibility into agent communications. SLIM's foundation
 on standard HTTP/2 infrastructure enables use of existing observability tools
 and practices, while proprietary protocols may require specialized monitoring
-solutions.<a href="#section-3.9-3" class="pilcrow">¶</a></p>
-<p id="section-3.9-4"><strong>Integration with Cloud Services</strong>: Modern AI deployments increasingly rely on
+solutions.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4"><strong>Integration with Cloud Services</strong>: Modern AI deployments increasingly rely on
 cloud services for scalability and managed operations. SLIM's HTTP/2 foundation
 integrates naturally with cloud load balancers, API gateways, and observability
 services, while specialized messaging protocols may require additional
-integration layers.<a href="#section-3.9-4" class="pilcrow">¶</a></p>
-<p id="section-3.9-5"><strong>Compliance and Auditing</strong>: AI systems in regulated industries require
+integration layers.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5"><strong>Compliance and Auditing</strong>: AI systems in regulated industries require
 comprehensive audit trails and compliance capabilities. SLIM's structured topic
 hierarchy and optional message persistence support regulatory requirements,
 while the end-to-end encryption provides compliance with data protection
-regulations.<a href="#section-3.9-5" class="pilcrow">¶</a></p>
-</section>
-</div>
+regulations.<a href="#section-6-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="rpc-in-agentic-protocols-and-relationship-to-messaging">
-<section id="section-4">
+<section id="section-7">
       <h2 id="name-rpc-in-agentic-protocols-an">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-rpc-in-agentic-protocols-an" class="section-name selfRef">RPC in Agentic Protocols and Relationship to Messaging</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-rpc-in-agentic-protocols-an" class="section-name selfRef">RPC in Agentic Protocols and Relationship to Messaging</a>
       </h2>
-<p id="section-4-1">Most agent-facing interfaces in use today — notably A2A and the Model Context
-Protocol (MCP) — are Remote Procedure Call (RPC) oriented. They expose
-synchronous request/response semantics for tool invocation, resource listing,
-and capability execution. This section clarifies how RPC relates to asynchronous
-messaging and how the two paradigms interoperate in agentic systems.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">Agentic AI systems are predominantly built around Remote Procedure Call
+(RPC)-oriented protocols. A2A <span>[<a href="#A2A" class="cite xref">A2A</a>]</span>, the Model Context Protocol (MCP) <span>[<a href="#MCP" class="cite xref">MCP</a>]</span>,
+and the Agent Client Protocol (ACP) <span>[<a href="#ACP" class="cite xref">ACP</a>]</span> all expose synchronous
+request/response semantics: a caller issues a structured request, awaits a
+response within a bounded time, and receives an explicit result or error. This
+design provides well-defined interfaces, typed contracts, and composable error
+handling that make agents discoverable and interoperable across heterogeneous
+systems.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">However, pure point-to-point RPC does not scale to all coordination demands of
+multi-agent systems. Fan-out invocations, asynchronous event delivery, streaming
+responses, dynamic group membership, and multi-domain security are capabilities
+that RPC protocols delegate to the underlying transport. This section examines
+how RPC and messaging interoperate in agentic systems, and how SLIM's SRPC
+capability provides a purpose-built solution.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<div id="agentic-protocols-are-rpc-oriented">
+<section id="section-7.1">
+        <h3 id="name-agentic-protocols-are-rpc-o">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-agentic-protocols-are-rpc-o" class="section-name selfRef">Agentic Protocols Are RPC-Oriented</a>
+        </h3>
+<p id="section-7.1-1">The three leading agentic coordination protocols each define an RPC-based
+interaction model:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2"><strong>Model Context Protocol (MCP)</strong> defines a JSON-RPC interface between LLM hosts
+and tools or resources. A host invokes tools by name with typed parameters and
+receives typed results or streaming token outputs. MCP is designed for
+synchronous tool calls with optional server-side streaming for partial results.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.1-3"><strong>Agent2Agent (A2A)</strong> is an HTTP-based protocol for delegating tasks between
+agents. An orchestrator submits task requests to worker agents and receives
+structured results or a stream of progress events. Agent capabilities are
+advertised via Agent Cards, enabling dynamic discovery without pre-configuration.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1-4"><strong>Agent Client Protocol (ACP)</strong> standardizes JSON-RPC communication between
+code editors and coding agents, operating over stdio for local agents or HTTP
+and WebSocket for remote agents. It enables editors to invoke coding agents and
+receive structured responses, following a pattern analogous to the Language
+Server Protocol for language tools.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1-5">All three share a fundamental structure: a caller invokes a named callee with
+parameters and awaits a response within a bounded time. SLIM is designed to
+serve as the transport layer beneath all three.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="rpc-vs-messaging-synchronous-vs-asynchronous">
-<section id="section-4.1">
+<section id="section-7.2">
         <h3 id="name-rpc-vs-messaging-synchronou">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-rpc-vs-messaging-synchronou" class="section-name selfRef">RPC vs. Messaging: Synchronous vs. Asynchronous</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-rpc-vs-messaging-synchronou" class="section-name selfRef">RPC vs. Messaging: Synchronous vs. Asynchronous</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="section-4.1-1.1">
-            <p id="section-4.1-1.1.1"><strong>RPC (A2A, MCP)</strong>: Caller issues a request and blocks/awaits a timely
-response. Semantics emphasize tightly scoped operations (for example, “call tool
-X with parameters Y”) with bounded latency and explicit error contracts.<a href="#section-4.1-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.2-1.1">
+            <p id="section-7.2-1.1.1"><strong>RPC (A2A, MCP, ACP)</strong>: The caller issues a request and blocks or awaits a
+timely response. Semantics emphasize tightly scoped operations with bounded
+latency and explicit error contracts.<a href="#section-7.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.1-1.2">
-            <p id="section-4.1-1.2.1"><strong>Messaging (AMQP, MQTT, NATS, Kafka, SLIM)</strong>: Decoupled producers/consumers
-communicate via topics/subjects/queues. Delivery can be one-to-one, one-to-many,
-or many-to-many with loose coupling, buffering, and retries. Producers are not
-inherently blocked by consumers.<a href="#section-4.1-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.2-1.2">
+            <p id="section-7.2-1.2.1"><strong>Messaging (AMQP, MQTT, NATS, Kafka, SLIM)</strong>: Decoupled producers and
+consumers communicate via topics, subjects, or queues. Delivery can be
+one-to-one, one-to-many, or many-to-many, with loose coupling, buffering,
+and retries. Producers are not inherently blocked by consumers.<a href="#section-7.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.1-2">In practice, agentic applications need both: synchronous tool invocations for
+<p id="section-7.2-2">In practice, agentic applications need both: synchronous tool invocations for
 interactivity and asynchronous channels for streaming output, progress,
-coordination, and fan-out/fan-in patterns.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+coordination, and fan-out/fan-in patterns.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="when-asynchronous-feels-synchronous-interactive-real-time">
-<section id="section-4.2">
-        <h3 id="name-when-asynchronous-feels-syn">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-when-asynchronous-feels-syn" class="section-name selfRef">When Asynchronous Feels Synchronous (Interactive Real-Time)</a>
+<div id="challenges-of-running-rpc-over-messaging">
+<section id="section-7.3">
+        <h3 id="name-challenges-of-running-rpc-o">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-challenges-of-running-rpc-o" class="section-name selfRef">Challenges of Running RPC over Messaging</a>
         </h3>
-<p id="section-4.2-1">Asynchronous transports can provide an interactive, “RPC-like” experience when:
-- A request message includes a correlation ID and reply-to destination.
-- The callee publishes a response on the indicated reply destination within a short SLA.
-- Client libraries surface responses as futures/promises and manage timeouts/retries.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">This underpins instant messaging UX and maps well to agent UIs where a user
-triggers an action and expects prompt, possibly streaming, results.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="bridging-patterns-rpc-over-messaging-and-streaming-rpc">
-<section id="section-4.3">
-        <h3 id="name-bridging-patterns-rpc-over-">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-bridging-patterns-rpc-over-" class="section-name selfRef">Bridging Patterns: RPC over Messaging and Streaming RPC</a>
-        </h3>
+<p id="section-7.3-1">Layering RPC semantics onto an asynchronous messaging substrate introduces
+several non-trivial challenges:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.3-1.1">
-            <p id="section-4.3-1.1.1"><strong>Request/Reply over Pub/Sub</strong>: Implement RPC by publishing a command event
-and awaiting a correlated reply event (applies to AMQP, NATS, MQTT, and SLIM
-topics).<a href="#section-4.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.3-2.1">
+            <p id="section-7.3-2.1.1"><strong>Request/response correlation</strong>: Messaging systems are decoupled by design
+and provide no direct return path. Implementing RPC requires correlating
+requests and responses using unique identifiers and temporary reply channels.<a href="#section-7.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-1.2">
-            <p id="section-4.3-1.2.1"><strong>Streaming RPC</strong>: Use bidirectional streams (for example, gRPC over SLIM
-HTTP/2/3) to deliver token streams, partial results, or progress updates while
-retaining an RPC caller experience.<a href="#section-4.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.3-2.2">
+            <p id="section-7.3-2.2.1"><strong>Latency and ordering</strong>: Messaging layers may introduce variable delivery
+latency and do not guarantee strict ordering, which can conflict with
+synchronous RPC contracts.<a href="#section-7.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-1.3">
-            <p id="section-4.3-1.3.1"><strong>Sagas and CQRS</strong>: For multi-step workflows across agents, coordinate via
-asynchronous orchestration with idempotency keys, correlation/causation IDs, and
-compensations.<a href="#section-4.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.3-2.3">
+            <p id="section-7.3-2.3.1"><strong>Error propagation</strong>: Messaging systems may buffer, retry, or drop messages,
+making it difficult to propagate errors and timeouts in a way that matches
+RPC error contracts.<a href="#section-7.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-1.4">
-            <p id="section-4.3-1.4.1"><strong>Backpressure and Flow Control</strong>: Prefer streaming transports (HTTP/2/3,
-gRPC) or messaging systems with flow control when returning large/continuous
-results.<a href="#section-4.3-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.3-2.4">
+            <p id="section-7.3-2.4.1"><strong>Streaming and multiplexing</strong>: Supporting streaming RPC (server streaming,
+client streaming, bidirectional) over messaging requires careful management
+of stream lifecycles, backpressure, and multiplexing multiple logical RPCs
+over shared channels.<a href="#section-7.3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-2.5">
+            <p id="section-7.3-2.5.1"><strong>Security and authorization</strong>: Ensuring that only authorized callers can
+invoke specific methods, and that all messages are authenticated and
+encrypted end-to-end, is more complex in a distributed, group-based
+messaging environment.<a href="#section-7.3-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
+<p id="section-7.3-3">SRPC resolves all of these challenges natively, as described below.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="a2a-and-mcp-in-context">
-<section id="section-4.4">
-        <h3 id="name-a2a-and-mcp-in-context">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-a2a-and-mcp-in-context" class="section-name selfRef">A2A and MCP in Context</a>
+<div id="when-asynchronous-feels-synchronous">
+<section id="section-7.4">
+        <h3 id="name-when-asynchronous-feels-syn">
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-when-asynchronous-feels-syn" class="section-name selfRef">When Asynchronous Feels Synchronous</a>
+        </h3>
+<p id="section-7.4-1">Asynchronous transports can provide an interactive, RPC-like experience when:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.4-2.1">
+            <p id="section-7.4-2.1.1">A request message carries a correlation ID and a reply-to destination.<a href="#section-7.4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-2.2">
+            <p id="section-7.4-2.2.1">The callee publishes a response to the reply destination within a short SLA.<a href="#section-7.4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-2.3">
+            <p id="section-7.4-2.3.1">Client libraries surface responses as futures or promises and manage
+timeouts and retries.<a href="#section-7.4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-7.4-3">This pattern underpins agent UIs where a user triggers an action and expects
+prompt, possibly streaming, results.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="bridging-patterns-rpc-over-messaging">
+<section id="section-7.5">
+        <h3 id="name-bridging-patterns-rpc-over-">
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-bridging-patterns-rpc-over-" class="section-name selfRef">Bridging Patterns: RPC over Messaging</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="section-4.4-1.1">
-            <p id="section-4.4-1.1.1"><strong>A2A Agent Cards</strong>: Describe capabilities/endpoints commonly invoked via
-RPC-style calls (tool execution, configuration). They benefit from messaging for
-discovery, eventing, and long-running workflows.<a href="#section-4.4-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.5-1.1">
+            <p id="section-7.5-1.1.1"><strong>Request/Reply over Pub/Sub</strong>: Implement RPC by publishing a command event
+and awaiting a correlated reply event (applicable to AMQP, NATS, MQTT, and
+SLIM topics).<a href="#section-7.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.4-1.2">
-            <p id="section-4.4-1.2.1"><strong>MCP</strong>: Standardizes RPC-like interactions (resources, tools, prompts). For
-multi-party sessions, combine MCP RPC with a messaging layer for broadcast,
-presence, and coordination.<a href="#section-4.4-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.5-1.2">
+            <p id="section-7.5-1.2.1"><strong>Streaming RPC</strong>: Use bidirectional streams (gRPC over SLIM HTTP/2/3) to
+deliver token streams, partial results, or progress updates while retaining
+an RPC caller experience.<a href="#section-7.5-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-1.3">
+            <p id="section-7.5-1.3.1"><strong>Sagas and CQRS</strong>: For multi-step workflows across agents, coordinate via
+asynchronous orchestration with idempotency keys, correlation/causation IDs,
+and compensating transactions.<a href="#section-7.5-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-1.4">
+            <p id="section-7.5-1.4.1"><strong>Backpressure and Flow Control</strong>: Prefer streaming transports (HTTP/2/3,
+gRPC) or messaging systems with flow control when returning large or
+continuous results.<a href="#section-7.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="slim-rpc-srpc">
-<section id="section-4.5">
+<section id="section-7.6">
         <h3 id="name-slim-rpc-srpc">
-<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-slim-rpc-srpc" class="section-name selfRef">SLIM RPC (SRPC)</a>
+<a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-slim-rpc-srpc" class="section-name selfRef">SLIM RPC (SRPC)</a>
         </h3>
-<p id="section-4.5-1">SLIM also supports a native RPC style via SRPC (Slim RPC), which layers
-request/response semantics on top of SLIM's interactive, real-time messaging.
-SRPC addresses practical RPC concerns in distributed agent systems:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-7.6-1">SRPC layers request/response semantics directly onto SLIM's secure messaging
+fabric, addressing all of the challenges enumerated above:<a href="#section-7.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.5-2.1">
-            <p id="section-4.5-2.1.1">Correlation and reply routing for synchronous calls over an async transport<a href="#section-4.5-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.6-2.1">
+            <p id="section-7.6-2.1.1"><strong>Correlation and reply routing</strong>: SRPC manages correlation IDs and reply
+channel lifecycle automatically, with no application-level plumbing required.<a href="#section-7.6-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.5-2.2">
-            <p id="section-4.5-2.2.1">Idempotency keys and deduplication to make retries safe<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.6-2.2">
+            <p id="section-7.6-2.2.1"><strong>Idempotency and deduplication</strong>: SRPC idempotency keys make retries safe
+without duplicating side effects.<a href="#section-7.6-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.5-2.3">
-            <p id="section-4.5-2.3.1">Lightweight synchronization/ordering guarantees for request/response and streaming<a href="#section-4.5-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.6-2.3">
+            <p id="section-7.6-2.3.1"><strong>Ordering and synchronization</strong>: Lightweight ordering guarantees for both
+request/response and streaming patterns.<a href="#section-7.6-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.5-2.4">
-            <p id="section-4.5-2.4.1">Seamless fit for A2A/MCP-style tool calls while retaining SLIM's MLS security and multiplexing<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.6-2.4">
+            <p id="section-7.6-2.4.1"><strong>All four gRPC interaction patterns</strong>: Unary, server streaming, client
+streaming, and bidirectional streaming are all supported, enabling direct
+mapping of A2A, MCP, and ACP interaction models onto SLIM.<a href="#section-7.6-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.6-2.5">
+            <p id="section-7.6-2.5.1"><strong>Integrated security</strong>: Every SRPC call inherits SLIM's MLS end-to-end
+encryption and OAuth-based authorization without additional configuration.<a href="#section-7.6-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.5-3">See SRPC reference and examples: <a href="https://github.com/agntcy/slim/blob/main/data-plane/python/integrations/slimrpc/README.md">SLIM RPC (SRPC) README</a>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-7.6-3">See the SRPC specification for details <span>[<a href="#SRPC" class="cite xref">SRPC</a>]</span>.<a href="#section-7.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="advantages-of-slim-for-a2a-apis">
-<section id="section-4.6">
-        <h3 id="name-advantages-of-slim-for-a2a-">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-advantages-of-slim-for-a2a-" class="section-name selfRef">Advantages of SLIM for A2A APIs</a>
+<div id="advantages-of-slim-for-agentic-protocols">
+<section id="section-7.7">
+        <h3 id="name-advantages-of-slim-for-agen">
+<a href="#section-7.7" class="section-number selfRef">7.7. </a><a href="#name-advantages-of-slim-for-agen" class="section-name selfRef">Advantages of SLIM for Agentic Protocols</a>
         </h3>
-<p id="section-4.6-1">SLIM augments existing A2A-style RPC with capabilities that are difficult to
-achieve over plain request/response transports:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-7.7-1">SLIM augments the point-to-point RPC model of A2A, MCP, and ACP with
+capabilities that are difficult to achieve over plain request/response transports:<a href="#section-7.7-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.6-2.1">
-            <p id="section-4.6-2.1.1"><strong>Simultaneous fan-out RPC (scatter-gather)</strong>: Invoke a single RPC across many
-agents (by topic/group/labels) concurrently and aggregate responses
-(first-success, quorum, all-success) with correlation IDs.<a href="#section-4.6-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.7-2.1">
+            <p id="section-7.7-2.1.1"><strong>Scatter-gather RPC</strong>: Invoke a single RPC across many agents simultaneously
+(by topic, group, or label) and aggregate responses (first-success, quorum,
+or all-success) using correlation IDs.<a href="#section-7.7-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.6-2.2">
-            <p id="section-4.6-2.2.1"><strong>Group addressing and dynamic membership</strong>: Target MLS-secured groups;
-add/remove agents without reconfiguring endpoints.<a href="#section-4.6-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.7-2.2">
+            <p id="section-7.7-2.2.1"><strong>Group addressing and dynamic membership</strong>: Target MLS-secured groups; add
+or remove agents without reconfiguring endpoints or updating caller code.<a href="#section-7.7-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.6-2.3">
-            <p id="section-4.6-2.3.1"><strong>Streaming responses</strong>: Return partial results or token streams from each
-agent over a single multiplexed connection (gRPC over HTTP/2/3).<a href="#section-4.6-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.7-2.3">
+            <p id="section-7.7-2.3.1"><strong>Streaming responses</strong>: Return partial results or token streams from each
+agent over a single multiplexed connection.<a href="#section-7.7-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.6-2.4">
-            <p id="section-4.6-2.4.1"><strong>Idempotency and safe retries</strong>: SRPC supports idempotency keys and
-deduplication, enabling robust retry without duplicating effects.<a href="#section-4.6-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.7-2.4">
+            <p id="section-7.7-2.4.1"><strong>Idempotency and safe retries</strong>: SRPC idempotency keys enable robust retry
+without duplicating effects—critical for expensive or stateful agent
+operations.<a href="#section-7.7-2.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.6-2.5">
-            <p id="section-4.6-2.5.1"><strong>QoS, deadlines, and backpressure</strong>: Apply delivery guarantees, per-call
-timeouts, and flow control to avoid overload while maintaining interactivity.<a href="#section-4.6-2.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.7-2.5">
+            <p id="section-7.7-2.5.1"><strong>QoS, deadlines, and backpressure</strong>: Apply delivery guarantees, per-call
+timeouts, and flow control to avoid overload while maintaining interactivity.<a href="#section-7.7-2.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.6-2.6">
-            <p id="section-4.6-2.6.1"><strong>End-to-end security and multi-tenant isolation</strong>: MLS E2E encryption and
-OAuth-based policy across both RPC and messaging channels.<a href="#section-4.6-2.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.7-2.6">
+            <p id="section-7.7-2.6.1"><strong>End-to-end security</strong>: MLS encryption and OAuth-based policy apply
+uniformly across both RPC and messaging channels.<a href="#section-7.7-2.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.6-2.7">
-            <p id="section-4.6-2.7.1"><strong>Observability and tracing</strong>: Correlation/causation IDs and standardized
-transport enable distributed tracing and per-agent metrics.<a href="#section-4.6-2.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.7-2.7">
+            <p id="section-7.7-2.7.1"><strong>Observability</strong>: Correlation and causation IDs, combined with standard
+HTTP/2 transport, enable distributed tracing and per-agent metrics with
+existing tooling.<a href="#section-7.7-2.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.6-3">These capabilities let A2A-style tool calls scale beyond one-to-one
-interactions, enabling broadcast queries, coordinated multi-agent actions, and
-efficient collection of results in real time.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+<p id="section-7.7-3">These capabilities let A2A, MCP, and ACP interactions scale beyond one-to-one
+invocations, enabling broadcast queries, coordinated multi-agent actions, and
+efficient collection of results in real time.<a href="#section-7.7-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-implications">
-<section id="section-4.7">
+<section id="section-7.8">
         <h3 id="name-security-implications">
-<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-security-implications" class="section-name selfRef">Security Implications</a>
+<a href="#section-7.8" class="section-number selfRef">7.8. </a><a href="#name-security-implications" class="section-name selfRef">Security Implications</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="section-4.7-1.1">
-            <p id="section-4.7-1.1.1"><strong>Identity and Authorization</strong>: Reuse OAuth tokens across RPC (gRPC) and
-messaging (SLIM channels as topics) for consistent policy enforcement.<a href="#section-4.7-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.8-1.1">
+            <p id="section-7.8-1.1.1"><strong>Unified identity</strong>: OAuth tokens are reused across RPC calls and messaging
+channels for consistent policy enforcement. An agent's identity and
+authorization scope apply uniformly to tool calls and subscription channels.<a href="#section-7.8-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.7-1.2">
-            <p id="section-4.7-1.2.1"><strong>End-to-End Security</strong>: MLS-backed secure channels (SLIM) so both RPC and
-messaging inherit end to end message encryption.
-## Guidance: When to Choose What<a href="#section-4.7-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.8-1.2">
+            <p id="section-7.8-1.2.1"><strong>End-to-end encryption</strong>: MLS-backed channels ensure that RPC requests,
+responses, and streaming payloads are encrypted end-to-end, independently
+of transport hops. Routing nodes cannot inspect RPC call content.<a href="#section-7.8-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.7-1.3">
-            <p id="section-4.7-1.3.1">Use <strong>RPC (A2A/MCP)</strong> for low-latency, point operations with immediate
-feedback and well-defined error contracts.<a href="#section-4.7-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.8-1.3">
+            <p id="section-7.8-1.3.1"><strong>Caller authentication</strong>: SRPC carries MLS group membership proofs with
+each call, allowing callees to verify that the caller is an authorized group
+member before executing the requested operation.<a href="#section-7.8-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.7-1.4">
-            <p id="section-4.7-1.4.1">Use <strong>Messaging</strong> for broadcast/fan-out, decoupling, retries, buffering, and
-multi-party coordination.<a href="#section-4.7-1.4.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="guidance-when-to-choose-what">
+<section id="section-7.9">
+        <h3 id="name-guidance-when-to-choose-wha">
+<a href="#section-7.9" class="section-number selfRef">7.9. </a><a href="#name-guidance-when-to-choose-wha" class="section-name selfRef">Guidance: When to Choose What</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-7.9-1.1">
+            <p id="section-7.9-1.1.1">Use <strong>RPC (A2A, MCP, ACP)</strong> for low-latency point operations with immediate
+feedback and well-defined error contracts.<a href="#section-7.9-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.7-1.5">
-            <p id="section-4.7-1.5.1">Use <strong>Streaming RPC or RPC over Messaging</strong> for interactive UX with
-partial/continuous results or uncertain duration operations.<a href="#section-4.7-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-7.9-1.2">
+            <p id="section-7.9-1.2.1">Use <strong>Messaging</strong> for broadcast/fan-out, decoupling, retries, buffering,
+and multi-party coordination.<a href="#section-7.9-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.9-1.3">
+            <p id="section-7.9-1.3.1">Use <strong>SRPC over SLIM</strong> for any of the above when end-to-end security,
+scatter-gather invocation, streaming responses, or multi-organization
+deployment is required.<a href="#section-7.9-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1791,11 +1943,11 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </section>
 </div>
 <div id="comparison">
-<section id="section-5">
+<section id="section-8">
       <h2 id="name-comparison">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-comparison" class="section-name selfRef">Comparison</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-comparison" class="section-name selfRef">Comparison</a>
       </h2>
-<p id="section-5-1">Table 1 provides a detailed comparison of three popular messaging protocols commonly considered for agent communication systems:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">Table 1 provides a detailed comparison of three popular messaging protocols commonly considered for agent communication systems:<a href="#section-8-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
         <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
@@ -1921,7 +2073,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
           </tr>
         </tbody>
       </table>
-<p id="section-5-3">Table 2 extends the comparison to include additional protocols relevant to modern agentic AI systems:<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-8-3">Table 2 extends the comparison to include additional protocols relevant to modern agentic AI systems:<a href="#section-8-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
         <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -1939,7 +2091,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">AMQP tunneled through WebSockets</td>
             <td class="text-left" rowspan="1" colspan="1">Distributed commit log, high-throughput pub/sub</td>
-            <td class="text-left" rowspan="1" colspan="1">SLIM Spec</td>
+            <td class="text-left" rowspan="1" colspan="1">Secure low-latency interactive messaging</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -1955,7 +2107,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Same as AMQP (depends on the broker's AMQP model)</td>
             <td class="text-left" rowspan="1" colspan="1">Topics with partitions, consumer groups, offset-based consumption</td>
-            <td class="text-left" rowspan="1" colspan="1">Topics based on organization, namespace, agent types etc.</td>
+            <td class="text-left" rowspan="1" colspan="1">Hierarchical names (<code>org/namespace/service/instance</code>), point-to-point and group sessions</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -1963,15 +2115,15 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Same as AMQP</td>
             <td class="text-left" rowspan="1" colspan="1">At-least-once default; exactly-once possible via transactions</td>
-            <td class="text-left" rowspan="1" colspan="1">Fire&amp;Forget unreliable (at-most-once), unreliable and reliable (exactly-once). This extends to request/reply and streaming as well.</td>
+            <td class="text-left" rowspan="1" colspan="1">At-most-once (fire-and-forget) or exactly-once (reliable); applies consistently to request/reply and streaming interactions</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
               <strong>Streaming</strong>
 </td>
             <td class="text-left" rowspan="1" colspan="1">Same as AMQP if broker supports streaming</td>
-            <td class="text-left" rowspan="1" colspan="1">Native log-based streaming (Kafka Streams, KSQL, etc.)</td>
-            <td class="text-left" rowspan="1" colspan="1">Native gRPC support via HTTP/2/3 client streaming, server streaming. Notice that Server Sent Events (SSE) with HTTP/1.1 cannot carry binary nor compressed data.</td>
+            <td class="text-left" rowspan="1" colspan="1">Native log-based streaming (Kafka Streams, ksqlDB, etc.)</td>
+            <td class="text-left" rowspan="1" colspan="1">Native gRPC support via HTTP/2/3 client streaming, server streaming</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -1987,7 +2139,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Higher (AMQP + WebSockets handshake)</td>
             <td class="text-left" rowspan="1" colspan="1">Moderate (custom binary protocol, but optimized for high throughput)</td>
-            <td class="text-left" rowspan="1" colspan="1">Low: Wire format uses protocol buffer. Supports also binary (byte type in protobuf)</td>
+            <td class="text-left" rowspan="1" colspan="1">Low: binary Protocol Buffers wire format; native support for both binary (bytes) and text payloads</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -1995,7 +2147,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Yes</td>
             <td class="text-left" rowspan="1" colspan="1">Yes (distributed cluster)</td>
-            <td class="text-left" rowspan="1" colspan="1">Yes for efficient multi-party. P2P is also possible.</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes for multi-party group sessions; peer-to-peer also supported</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -2003,7 +2155,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Same as AMQP (broker-based)</td>
             <td class="text-left" rowspan="1" colspan="1">SASL/PLAIN, SASL/SCRAM, Kerberos, OAuth</td>
-            <td class="text-left" rowspan="1" colspan="1">Transports MLS credentials and proofs inside OAuth bearer tokens over HTTP/2. This gives you: Interoperability: Leverage standard HTTP/2 and OAuth libraries. Scalability: One persistent HTTP/2 connection carries many MLS messages. Immediate revocation: Eject bad actors by revoking their OAuth tokens—no need to rebalance the ratchet tree first.</td>
+            <td class="text-left" rowspan="1" colspan="1">OAuth bearer tokens carrying MLS credentials and cryptographic proofs; standard HTTP/2 and OAuth libraries for interoperability; immediate revocation by invalidating OAuth tokens</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -2019,7 +2171,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Same as AMQP (depends on the broker's encryption at rest/in-transit)</td>
             <td class="text-left" rowspan="1" colspan="1">TLS in-flight encryption, optional at-rest encryption (broker config)</td>
-            <td class="text-left" rowspan="1" colspan="1">MLS (Quantum safe, Secure end-to-end, even across insecure hops, post-compromise security)</td>
+            <td class="text-left" rowspan="1" colspan="1">MLS end-to-end encryption with forward secrecy and post-compromise security, independent of transport</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -2035,7 +2187,7 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Browser-based apps needing AMQP behind firewalls</td>
             <td class="text-left" rowspan="1" colspan="1">High-throughput data pipelines, streaming analytics, event sourcing</td>
-            <td class="text-left" rowspan="1" colspan="1">Group messaging, one-to-many, many-to-many, Cloud-native microservices, real-time communications, streaming</td>
+            <td class="text-left" rowspan="1" colspan="1">Group messaging, one-to-many, many-to-many, cloud-native microservices, real-time communications, streaming</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">
@@ -2043,21 +2195,46 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </td>
             <td class="text-left" rowspan="1" colspan="1">Less common, mainly for browser/firewall scenarios using RabbitMQ or similar</td>
             <td class="text-left" rowspan="1" colspan="1">Extremely widespread across industries; de facto standard for large-scale event streaming</td>
-            <td class="text-left" rowspan="1" colspan="1">New Entrant, low</td>
+            <td class="text-left" rowspan="1" colspan="1">New entrant; reference implementations in Python and Go available; early production deployments</td>
           </tr>
         </tbody>
       </table>
 </section>
 </div>
+<div id="security-considerations">
+<section id="section-9">
+      <h2 id="name-security-considerations">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-9-1">This document is an informational comparison of messaging protocols for agentic
+AI systems. Security properties specific to each protocol are discussed in the
+Security Analysis section of this document. Readers deploying any
+of the protocols described <span class="bcp14">SHOULD</span> consult the security considerations sections
+of the respective protocol specifications.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">Of the protocols analyzed, only SLIM provides application-layer end-to-end
+encryption via MLS <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, forward secrecy, and post-compromise security
+independent of transport-layer security. All other protocols rely on
+transport-layer TLS, which does not protect message content from trusted
+intermediaries.<a href="#section-9-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-10">
+      <h2 id="name-iana-considerations">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-10-1">This document has no IANA actions.<a href="#section-10-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="sec-combined-references">
-<section id="section-6">
+<section id="section-11">
       <h2 id="name-references">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-6.1">
+<section id="section-11.1">
         <h3 id="name-normative-references">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
@@ -2068,13 +2245,13 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
         <dd>
 <span class="refAuthor">Hardt, D., Ed.</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework"</span>, <span class="seriesInfo">RFC 6749</span>, <span class="seriesInfo">DOI 10.17487/RFC6749</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6749">https://www.rfc-editor.org/rfc/rfc6749</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC7540">[RFC7540]</dt>
-        <dd>
-<span class="refAuthor">Belshe, M.</span>, <span class="refAuthor">Peon, R.</span>, and <span class="refAuthor">M. Thomson, Ed.</span>, <span class="refTitle">"Hypertext Transfer Protocol Version 2 (HTTP/2)"</span>, <span class="seriesInfo">RFC 7540</span>, <span class="seriesInfo">DOI 10.17487/RFC7540</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7540">https://www.rfc-editor.org/rfc/rfc7540</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9113">[RFC9113]</dt>
+        <dd>
+<span class="refAuthor">Thomson, M., Ed.</span> and <span class="refAuthor">C. Benfield, Ed.</span>, <span class="refTitle">"HTTP/2"</span>, <span class="seriesInfo">RFC 9113</span>, <span class="seriesInfo">DOI 10.17487/RFC9113</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9113">https://www.rfc-editor.org/rfc/rfc9113</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9420">[RFC9420]</dt>
       <dd>
@@ -2084,11 +2261,19 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-6.2">
+<section id="section-11.2">
         <h3 id="name-informative-references">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="A2A">[A2A]</dt>
+        <dd>
+<span class="refAuthor">Google</span>, <span class="refTitle">"Agent2Agent (A2A) Protocol"</span>, <span>n.d.</span>, <span>&lt;<a href="https://google.github.io/A2A/">https://google.github.io/A2A/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ACP">[ACP]</dt>
+        <dd>
+<span class="refAuthor">Community, A. C. P.</span>, <span class="refTitle">"Agent Client Protocol (ACP)"</span>, <span>n.d.</span>, <span>&lt;<a href="https://agentclientprotocol.com/get-started/introduction">https://agentclientprotocol.com/get-started/introduction</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="AMQP">[AMQP]</dt>
         <dd>
 <span class="refAuthor">OASIS</span>, <span class="refTitle">"OASIS Advanced Message Queuing Protocol (AMQP) 1.0 Specification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.oasis-open.org/standards#amqp">https://www.oasis-open.org/standards#amqp</a>&gt;</span>. </dd>
@@ -2101,6 +2286,10 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
         <dd>
 <span class="refAuthor">Foundation, A. S.</span>, <span class="refTitle">"Apache Kafka Documentation"</span>, <span>n.d.</span>, <span>&lt;<a href="https://kafka.apache.org/documentation/">https://kafka.apache.org/documentation/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="MCP">[MCP]</dt>
+        <dd>
+<span class="refAuthor">Anthropic</span>, <span class="refTitle">"Model Context Protocol (MCP) Specification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://modelcontextprotocol.io/">https://modelcontextprotocol.io/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="MQTT">[MQTT]</dt>
         <dd>
 <span class="refAuthor">OASIS</span>, <span class="refTitle">"OASIS MQTT Version 5.0 Specification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html">https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html</a>&gt;</span>. </dd>
@@ -2110,8 +2299,12 @@ partial/continuous results or uncertain duration operations.<a href="#section-4.
 <span class="refAuthor">Communications, S.</span>, <span class="refTitle">"NATS Documentation"</span>, <span>n.d.</span>, <span>&lt;<a href="https://docs.nats.io/">https://docs.nats.io/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SLIM">[SLIM]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">AGNTCY</span>, <span class="refTitle">"AGNTCY SLIM Specification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://spec.slim.agntcy.org">https://spec.slim.agntcy.org</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SRPC">[SRPC]</dt>
+      <dd>
+<span class="refAuthor">AGNTCY</span>, <span class="refTitle">"SLIM RPC (SRPC) Reference"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md">https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
