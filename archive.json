@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-26T00:38:56.704884+00:00",
+  "timestamp": "2026-07-07T00:54:00.160266+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -798,6 +798,32 @@
       "mergeCommit": {
         "oid": "9691007958f69fe7d6c63083d08f713e9f4101f9"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDON1QDo87ujYAU",
+      "title": "docs: RFC-quality review of messaging and SLIM spec drafts",
+      "url": "https://github.com/agntcy/slim-spec/pull/17",
+      "state": "OPEN",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- Fix abbrev typo; add missing informative refs (A2A, MCP, ACP, SRPC)\r\n- Update RFC7540 -> RFC9113 (HTTP/2); fix imprecise quantum-safe claims\r\n- Promote cross-cutting sections (Security, Performance, Deployment) to top-level instead of nested under Protocol Analysis\r\n- Rewrite RPC section: add all three agentic protocols (A2A, MCP, ACP), introduce Challenges of Running RPC over Messaging, expand SRPC and SLIM advantages to cover all three protocols\r\n- Add Security Considerations and IANA Considerations to both drafts\r\n- Fix grammar, formatting, em-dash consistency, table cell wording, KSQL -> ksqlDB throughout",
+      "createdAt": "2026-07-06T21:27:03Z",
+      "updatedAt": "2026-07-06T21:27:54Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "9691007958f69fe7d6c63083d08f713e9f4101f9",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "chore/rfc-quality-review",
+      "headRefOid": "2410f38895687c5796920ff42b832f709120c969",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
