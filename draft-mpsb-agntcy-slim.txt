@@ -25,6 +25,13 @@ Abstract
    compatibility with existing gRPC deployments and supporting end-to-
    end encryption via MLS.
 
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/agntcy/slim-spec.
+
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -47,17 +54,6 @@ Copyright Notice
    Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 1]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
    license-info) in effect on the date of publication of this document.
@@ -66,35 +62,35 @@ Internet-Draft                 agent-slim                      July 2026
 
 Table of Contents
 
-   1.  Conventions and Definitions . . . . . . . . . . . . . . . . .   2
-   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     2.1.  Summary . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   4
-     3.1.  Routing Nodes (Data Plane)  . . . . . . . . . . . . . . .   6
-       3.1.1.  Connection Table  . . . . . . . . . . . . . . . . . .   7
-       3.1.2.  Subscription Table and Matching . . . . . . . . . . .   8
-     3.2.  Control Plane . . . . . . . . . . . . . . . . . . . . . .   8
-     3.3.  Session Layer . . . . . . . . . . . . . . . . . . . . . .   9
-       3.3.1.  Core Responsibilities . . . . . . . . . . . . . . . .   9
-       3.3.2.  API Design Principles . . . . . . . . . . . . . . . .  10
-       3.3.3.  Session Management  . . . . . . . . . . . . . . . . .  10
-     3.4.  Naming Considerations . . . . . . . . . . . . . . . . . .  10
-     3.5.  Deployment Considerations . . . . . . . . . . . . . . . .  11
-   4.  RPC in Agentic Protocols and Relationship to Messaging  . . .  12
-     4.1.  RPC vs. Messaging: Synchronous vs. Asynchronous . . . . .  12
-     4.2.  Challenges of RPC over Messaging  . . . . . . . . . . . .  12
-     4.3.  Remote Procedure Calls over SLIM (SRPC) . . . . . . . . .  13
-       4.3.1.  Overview  . . . . . . . . . . . . . . . . . . . . . .  13
-       4.3.2.  Key Features  . . . . . . . . . . . . . . . . . . . .  13
-       4.3.3.  Architecture  . . . . . . . . . . . . . . . . . . . .  14
-       4.3.4.  Benefits for Agentic Applications . . . . . . . . . .  14
-       4.3.5.  SLIM Naming in SRPC . . . . . . . . . . . . . . . . .  14
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+   1.  Conventions and Definitions
+   2.  Introduction
+     2.1.  Summary
+   3.  Protocol Overview
+     3.1.  Routing Nodes (Data Plane)
+       3.1.1.  Connection Table
+       3.1.2.  Subscription Table and Matching
+     3.2.  Control Plane
+     3.3.  Session Layer
+       3.3.1.  Core Responsibilities
+       3.3.2.  API Design Principles
+       3.3.3.  Session Management
+     3.4.  Naming Considerations
+     3.5.  Deployment Considerations
+   4.  RPC in Agentic Protocols and Relationship to Messaging
+     4.1.  RPC vs. Messaging: Synchronous vs. Asynchronous
+     4.2.  Challenges of RPC over Messaging
+     4.3.  Remote Procedure Calls over SLIM (SRPC)
+       4.3.1.  Overview
+       4.3.2.  Key Features
+       4.3.3.  Architecture
+       4.3.4.  Benefits for Agentic Applications
+       4.3.5.  SLIM Naming in SRPC
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Authors' Addresses
 
 1.  Conventions and Definitions
 
@@ -105,14 +101,6 @@ Table of Contents
    capitals, as shown here.
 
 2.  Introduction
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 2]
-
-Internet-Draft                 agent-slim                      July 2026
-
 
 2.1.  Summary
 
@@ -162,14 +150,6 @@ Internet-Draft                 agent-slim                      July 2026
    Security is fundamental to SLIM's design, with authentication and
    authorization handled through MLS groups, cryptographic client
    identities, and configurable access policies.  The protocol supports
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 3]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    deployment in various environments, from data center workloads to
    mobile applications, while maintaining consistent security guarantees
    and low-latency performance characteristics.
@@ -216,16 +196,6 @@ Internet-Draft                 agent-slim                      July 2026
    the same channel, allowing consumers to retrieve messages using this
    name.
 
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 4]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    A routable name is a name prefix that is stored in a forwarding table
    (FIB).  This enables requests to reach the producer and fetch a
    response, if one exists.
@@ -268,20 +238,6 @@ Internet-Draft                 agent-slim                      July 2026
    SLIM channel.  MLS commit messages are exchanged directly using the
    SLIM routing nodes.
 
-
-
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 5]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
 3.1.  Routing Nodes (Data Plane)
 
    Routing nodes are fundamental components of the SLIM architecture
@@ -322,21 +278,6 @@ Internet-Draft                 agent-slim                      July 2026
    subscription table manages topic subscriptions and implements message
    filtering rules, determining which messages should be delivered to
    which clients.
-
-
-
-
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 6]
-
-Internet-Draft                 agent-slim                      July 2026
-
 
    Through this dual-table architecture, routing nodes can effectively
    coordinate message delivery while maintaining optimal system
@@ -387,13 +328,6 @@ Internet-Draft                 agent-slim                      July 2026
    Channel names are encoded as human-readable hierarchical names for
    efficient table lookup operations.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 7]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
 3.1.2.  Subscription Table and Matching
 
    The subscription table is used to map channel subscriptions to
@@ -441,15 +375,6 @@ Internet-Draft                 agent-slim                      July 2026
       subscription table updates.  This ensures consistent and correct
       routing behavior across the node network.
 
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 8]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    *  *Monitoring and Analytics*: The control plane collects and
       analyzes telemetry data from messaging nodes, providing insights
       into system performance, message flow, and potential issues.
@@ -496,16 +421,6 @@ Internet-Draft                 agent-slim                      July 2026
    nodes, automatically handling node discovery, connection
    establishment, and subscription management.
 
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 9]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
 3.3.2.  API Design Principles
 
    The session layer API is designed with the following principles:
@@ -549,18 +464,6 @@ Internet-Draft                 agent-slim                      July 2026
    A channel name identifies a messaging group and must be routable;
    that is, it must include a globally unique network prefix that can be
    aggregated for scalable lookups and message forwarding.
-
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 10]
-
-Internet-Draft                 agent-slim                      July 2026
-
 
    A group in SLIM is an MLS group with a moderator client responsible
    for adding and removing group members.  The moderator is identified
@@ -607,16 +510,6 @@ Internet-Draft                 agent-slim                      July 2026
    the secure group.  The channel and client naming structure combined
    allows for service discovery capabilities by binding the application
    a specific application namespace and service name.
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 11]
-
-Internet-Draft                 agent-slim                      July 2026
-
 
 4.  RPC in Agentic Protocols and Relationship to Messaging
 
@@ -667,13 +560,6 @@ Internet-Draft                 agent-slim                      July 2026
       careful management of stream lifecycles, backpressure, and
       multiplexing multiple logical RPCs over shared channels.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 12]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    *  *Security and Authorization*: Ensuring that only authorized
       parties can invoke or respond to RPCs, and that all messages are
       authenticated and encrypted, is more complex in a distributed,
@@ -718,17 +604,6 @@ Internet-Draft                 agent-slim                      July 2026
    *  *Protocol Buffers Integration*: Service definitions and message
       schemas are specified using Protocol Buffers, enabling strong
       typing and interoperability across languages and platforms.
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 13]
-
-Internet-Draft                 agent-slim                      July 2026
-
 
 4.3.3.  Architecture
 
@@ -779,13 +654,6 @@ Internet-Draft                 agent-slim                      July 2026
    appends a handler-qualified suffix to the service component to form
    unique, routable identifiers for RPC methods.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 14]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    Service interface definitions (e.g., Protocol Buffers) describe one
    or more RPC handlers supporting the four common gRPC communication
    patterns:
@@ -835,13 +703,6 @@ Internet-Draft                 agent-slim                      July 2026
    functions.  Developers implement only the handler logic exactly as
    with conventional gRPC, without manual SLIM channel management.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 15]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    Benefits of this naming approach: - Deterministic and collision-
    resistant per-method naming. - Preserves hierarchical aggregation for
    routing efficiency. - Avoids separate discovery round-trips for
@@ -886,17 +747,6 @@ Internet-Draft                 agent-slim                      July 2026
 7.  References
 
 7.1.  Normative References
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 16]
-
-Internet-Draft                 agent-slim                      July 2026
-
 
    [DID-Methods]
               Group, W. C. C., "Known DID Methods in the Decentralized
@@ -946,14 +796,6 @@ Internet-Draft                 agent-slim                      July 2026
               for Static Cryptographic Keys", 26 March 2025,
               <https://w3c-ccg.github.io/did-method-key/>.
 
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 17]
-
-Internet-Draft                 agent-slim                      July 2026
-
-
    [DID-Web]  Group, W. C. C., "The did:web Method Specification", n.d.,
               <https://w3c-ccg.github.io/did-method-web/>.
 
@@ -981,28 +823,3 @@ Authors' Addresses
    Sam Betts
    Cisco
    Email: sambetts@cisco.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 18]

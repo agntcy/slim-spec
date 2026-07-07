@@ -40,6 +40,13 @@ Abstract
    while supporting dynamic group membership changes essential for
    collaborative AI agents.
 
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/agntcy/slim-spec.
+
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -49,14 +56,6 @@ Status of This Memo
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
    Drafts is at https://datatracker.ietf.org/drafts/current/.
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 1]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
@@ -78,43 +77,35 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Conventions and Definitions . . . . . . . . . . . . . . . . .   3
-   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Protocol Analysis for Agentic AI Systems  . . . . . . . . . .   3
-     3.1.  Traditional Enterprise Messaging: AMQP  . . . . . . . . .   4
-     3.2.  IoT-Optimized Messaging: MQTT . . . . . . . . . . . . . .   4
-     3.3.  Cloud-Native Messaging: NATS  . . . . . . . . . . . . . .   5
-     3.4.  Browser Integration: AMQP over WebSockets . . . . . . . .   5
-     3.5.  High-Throughput Streaming: Apache Kafka . . . . . . . . .   6
-     3.6.  Next-Generation Agent Messaging: SLIM . . . . . . . . . .   7
-   4.  Security Analysis . . . . . . . . . . . . . . . . . . . . . .   9
-   5.  Performance Characteristics . . . . . . . . . . . . . . . . .  10
-   6.  Deployment and Operational Considerations . . . . . . . . . .  10
-   7.  RPC in Agentic Protocols and Relationship to Messaging  . . .  11
-     7.1.  Agentic Protocols Are RPC-Oriented  . . . . . . . . . . .  11
-     7.2.  RPC vs. Messaging: Synchronous vs. Asynchronous . . . . .  12
-     7.3.  Challenges of Running RPC over Messaging  . . . . . . . .  12
-     7.4.  When Asynchronous Feels Synchronous . . . . . . . . . . .  13
-     7.5.  Bridging Patterns: RPC over Messaging . . . . . . . . . .  13
-     7.6.  SLIM RPC (SRPC) . . . . . . . . . . . . . . . . . . . . .  14
-     7.7.  Advantages of SLIM for Agentic Protocols  . . . . . . . .  14
-     7.8.  Security Implications . . . . . . . . . . . . . . . . . .  15
-     7.9.  Guidance: When to Choose What . . . . . . . . . . . . . .  15
-   8.  Comparison  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  20
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  21
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 2]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+   1.  Conventions and Definitions
+   2.  Introduction
+   3.  Protocol Analysis for Agentic AI Systems
+     3.1.  Traditional Enterprise Messaging: AMQP
+     3.2.  IoT-Optimized Messaging: MQTT
+     3.3.  Cloud-Native Messaging: NATS
+     3.4.  Browser Integration: AMQP over WebSockets
+     3.5.  High-Throughput Streaming: Apache Kafka
+     3.6.  Next-Generation Agent Messaging: SLIM
+   4.  Security Analysis
+   5.  Performance Characteristics
+   6.  Deployment and Operational Considerations
+   7.  RPC in Agentic Protocols and Relationship to Messaging
+     7.1.  Agentic Protocols Are RPC-Oriented
+     7.2.  RPC vs. Messaging: Synchronous vs. Asynchronous
+     7.3.  Challenges of Running RPC over Messaging
+     7.4.  When Asynchronous Feels Synchronous
+     7.5.  Bridging Patterns: RPC over Messaging
+     7.6.  SLIM RPC (SRPC)
+     7.7.  Advantages of SLIM for Agentic Protocols
+     7.8.  Security Implications
+     7.9.  Guidance: When to Choose What
+   8.  Comparison
+   9.  Security Considerations
+   10. IANA Considerations
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
+   Authors' Addresses
 
 1.  Conventions and Definitions
 
@@ -160,16 +151,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    The following sections provide detailed analysis of each messaging
    protocol in the context of agentic AI requirements.
 
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 3]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
 3.1.  Traditional Enterprise Messaging: AMQP
 
    The Advanced Message Queuing Protocol (AMQP), most commonly
@@ -212,19 +193,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    AI systems, QoS 0 (at-most-once) works well for frequent status
    updates or non-critical notifications, while QoS 2 (exactly-once)
    ensures critical agent coordination messages are delivered reliably.
-
-
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 4]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    The protocol's very low overhead makes it attractive for scenarios
    involving large numbers of lightweight AI agents or edge computing
@@ -275,13 +243,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    applications to overcome firewall restrictions and network topology
    limitations.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 5]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    For agentic AI systems that include web-based components—such as
    user-facing AI assistants that need to coordinate with backend AI
    agents—this protocol variant provides a bridge between browser
@@ -330,13 +291,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    than end-to-end message encryption, which may not meet the security
    requirements of AI systems handling sensitive model data or
    proprietary algorithms.
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 6]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
 3.6.  Next-Generation Agent Messaging: SLIM
 
@@ -387,13 +341,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    are never lost.  This extends consistently across request-reply
    patterns and streaming communications.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 7]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    SLIM's security model is intentionally two-tiered.  At the network
    layer, HTTP/2 with TLS 1.3 provides hop-by-hop transport security,
    integrating naturally with existing infrastructure—load balancers,
@@ -440,16 +387,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    external registries.  The structure maps cleanly to organizational
    boundaries and multi-tenant deployments.
 
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 8]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    The protocol's support for both broker-based and peer-to-peer
    operation offers deployment flexibility.  While broker-based
    operation provides efficiency for multi-party group communications
@@ -495,16 +432,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    typically assume trust in messaging infrastructure, but SLIM's end-
    to-end encryption ensures secure communication even when messages
    transit through potentially untrusted intermediaries.
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                 [Page 9]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    *Dynamic Group Membership*: AI agent groups frequently change as
    agents join collaborations, complete tasks, or become unavailable.
@@ -554,14 +481,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    *Infrastructure Requirements*: Traditional enterprise protocols like
    AMQP require dedicated message broker infrastructure with high
    availability and clustering capabilities.  Kafka requires even more
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 10]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    complex distributed infrastructure.  SLIM's optional broker
    architecture allows deployments to scale infrastructure complexity
    with system requirements.
@@ -608,15 +527,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
 
    The three leading agentic coordination protocols each define an RPC-
    based interaction model:
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 11]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    *Model Context Protocol (MCP)* defines a JSON-RPC interface between
    LLM hosts and tools or resources.  A host invokes tools by name with
@@ -667,13 +577,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
       requires correlating requests and responses using unique
       identifiers and temporary reply channels.
 
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 12]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    *  *Latency and ordering*: Messaging layers may introduce variable
       delivery latency and do not guarantee strict ordering, which can
       conflict with synchronous RPC contracts.
@@ -720,15 +623,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    *  *Streaming RPC*: Use bidirectional streams (gRPC over SLIM
       HTTP/2/3) to deliver token streams, partial results, or progress
       updates while retaining an RPC caller experience.
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 13]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    *  *Sagas and CQRS*: For multi-step workflows across agents,
       coordinate via asynchronous orchestration with idempotency keys,
@@ -778,14 +672,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
       groups; add or remove agents without reconfiguring endpoints or
       updating caller code.
 
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 14]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    *  *Streaming responses*: Return partial results or token streams
       from each agent over a single multiplexed connection.
 
@@ -832,15 +718,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
 
    *  Use *Messaging* for broadcast/fan-out, decoupling, retries,
       buffering, and multi-party coordination.
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 15]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    *  Use *SRPC over SLIM* for any of the above when end-to-end
       security, scatter-gather invocation, streaming responses, or
@@ -890,14 +767,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    |*Broker         | Yes            | Yes              |Optional (but |
    |Required*       |                |                  |common)       |
    +----------------+----------------+------------------+--------------+
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 16]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    |*Authentication*| User/password, | Username/        |NKey, JWT,    |
    |                | SASL (e.g.,    | password or      |token, user/  |
    |                | LDAP,          | custom tokens    |password      |
@@ -946,14 +815,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    |*Protocol Type* |AMQP      |Distributed | Secure low-latency       |
    |                |tunneled  |commit log, | interactive messaging    |
    |                |through   |high-       |                          |
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 17]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    |                |WebSockets|throughput  |                          |
    |                |          |pub/sub     |                          |
    +----------------+----------+------------+--------------------------+
@@ -1002,14 +863,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    |*Broker         |Yes       |Yes         | Yes for multi-party      |
    |Required*       |          |(distributed| group sessions; peer-    |
    |                |          |cluster)    | to-peer also supported   |
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 18]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    +----------------+----------+------------+--------------------------+
    |*Authentication*|Same as   |SASL/PLAIN, | OAuth bearer tokens      |
    |                |AMQP      |SASL/SCRAM, | carrying MLS             |
@@ -1058,14 +911,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    |                |browser/  |industries; | available; early         |
    |                |firewall  |de facto    | production deployments   |
    |                |scenarios |standard for|                          |
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 19]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    |                |using     |large-scale |                          |
    |                |RabbitMQ  |event       |                          |
    |                |or similar|streaming   |                          |
@@ -1112,15 +957,6 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    [RFC9113]  Thomson, M., Ed. and C. Benfield, Ed., "HTTP/2", RFC 9113,
               DOI 10.17487/RFC9113, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9113>.
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 20]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
 
    [RFC9420]  Barnes, R., Beurdouche, B., Robert, R., Millican, J.,
               Omara, E., and K. Cohn-Gordon, "The Messaging Layer
@@ -1169,15 +1005,6 @@ Authors' Addresses
    Email: lumuscar@cisco.com
 
 
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 21]
-
-Internet-Draft            agntcy-messaging-eco                 July 2026
-
-
    Michele Papalini
    Cisco
    Email: micpapal@cisco.com
@@ -1191,42 +1018,3 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    Sam Betts
    Cisco
    Email: sambetts@cisco.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Muscariello, et al.      Expires 8 January 2027                [Page 22]
