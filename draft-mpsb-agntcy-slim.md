@@ -3,7 +3,7 @@ title: "Secure Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
 category: info
 
-docname: draft-mpsb-agntcy-slim-02
+docname: draft-mpsb-agntcy-slim-latest
 submissiontype: independent
 number:
 date:
