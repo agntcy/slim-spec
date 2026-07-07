@@ -6,7 +6,7 @@ category: info
 docname: draft-mpsb-agntcy-slim-02
 submissiontype: independent
 number:
-date:
+date: 2026-07-07
 consensus: false
 v: 3
 # area:
