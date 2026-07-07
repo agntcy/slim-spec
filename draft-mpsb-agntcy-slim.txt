@@ -11,7 +11,7 @@ Expires: 8 January 2027                                         S. Betts
 
 
             Secure Low-Latency Interactive Messaging (SLIM)
-                       draft-mpsb-agntcy-slim-02
+                     draft-mpsb-agntcy-slim-latest
 
 Abstract
 
