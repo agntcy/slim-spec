@@ -3,7 +3,7 @@ title: "Secure Low-Latency Interactive Messaging (SLIM)"
 abbrev: "agent-slim"
 category: info
 
-docname: draft-mpsb-agntcy-slim-latest
+docname: draft-mpsb-agntcy-slim-02
 submissiontype: independent
 number:
 date:
@@ -83,7 +83,7 @@ informative:
 
 --- abstract
 
-This document specifies the Secure Low-Latency Interactive Real-Time Messaging
+This document specifies the Secure Low-Latency Interactive Messaging
 (SLIM), a protocol designed to support real-time interactive AI applications at
 scale. SLIM provides the transport layer for agent protocols (for example, A2A
 and MCP), combining gRPC over HTTP/2 and HTTP/3 with secure messaging, group
@@ -144,20 +144,31 @@ rather than the underlying messaging complexities.
 Security is fundamental to SLIM's design, with authentication and authorization
 handled through MLS groups, cryptographic client identities, and configurable
 access policies. The protocol supports deployment in various environments, from
-data center workloads and mobile applications, while maintaining
+data center workloads to mobile applications, while maintaining
 consistent security guarantees and low-latency performance characteristics.
 
 # Protocol Overview
 
 SLIM is designed to work as a messaging layer for applications running as
 workloads in a data center, but also running in a browser or mobile device while
-guaranteeing end-to-end security and low-latency communication. SLIM leverages
-HTTP/2 and HTTP/3 end to end as a thin waist of the communication stack and
-avoids the need to create message transcoding along the path. By leveraging
-message encryption via MLS {{!RFC9420}} {{!RFC9750}}, TLS connection termination
-along the path does not negatively affect confidentiality. Authentication and
-authorization are handled at the application level and can be managed in a
-decentralized or federated way or a mix of both.
+guaranteeing end-to-end security and low-latency communication.
+
+SLIM employs a two-tier security architecture. At the **network layer**, HTTP/2
+and HTTP/3 serve as the thin waist of the communication stack, providing
+hop-by-hop TLS 1.3 encryption and eliminating message transcoding along the
+path. HTTP/2 is chosen deliberately: it integrates with the existing
+infrastructure ecosystem—load balancers, API gateways, CDNs, and observability
+tooling—without exposing message content to those components. At the **content
+layer**, MLS {{!RFC9420}} {{!RFC9750}} provides an application-layer encryption
+envelope around every message payload. Because MLS encryption is independent of
+the TLS session, terminating a TLS connection at an intermediate routing node
+does not compromise confidentiality—routing nodes see only metadata and an
+opaque encrypted blob. This zero-trust intermediary property is what
+distinguishes SLIM from protocols that provide only transport-layer security
+(where relay nodes must decrypt content to route it).
+
+Authentication and authorization are handled at the application level and can be
+managed in a decentralized or federated way or a mix of both.
 
 In SLIM there are three main communication elements: routing nodes (data plane),
 session-layer clients, and application endpoints that publish and receive
@@ -197,7 +208,8 @@ This enables requests to reach the producer and fetch a response, if one exists.
  Legend:
  - Producers publish to topics via routing nodes.
  - Consumers subscribe to topics via routing nodes.
- - MLS Authentication Service handles group authentication and key management.
+ - MLS Authentication Service handles group authentication
+   and key management.
  - Encryption group coincides with the topic identifier.
 ~~~
 {: #fig-general-arch title="Main components of the SLIM architecture."}
@@ -658,4 +670,31 @@ new routable token.
 This integration of SRPC handler naming with SLIM's hierarchical naming model
 ensures consistent, secure, and scalable routing semantics for RPC traffic
 within agentic groups.
+
+# Security Considerations
+
+SLIM's security architecture uses a two-tier model. At the network layer,
+HTTP/2 with TLS 1.3 provides mandatory hop-by-hop encryption. At the content
+layer, MLS {{!RFC9420}} {{!RFC9750}} provides an application-layer encryption
+envelope that is independent of the underlying TLS sessions. Routing nodes
+operate as zero-trust intermediaries: they forward opaque encrypted blobs and
+cannot access message content even after TLS termination.
+
+Implementors MUST validate MLS KeyPackages before use and MUST reject stale or
+expired credentials. OAuth bearer tokens used for authentication MUST be
+short-lived and subject to server-side revocation to enable immediate ejection
+of compromised or malicious agents.
+
+The security properties of the DID methods used for node and client naming
+depend on the security of their respective resolution infrastructure. Operators
+SHOULD prefer DID methods whose resolution is auditable and tamper-evident.
+
+Forward secrecy and post-compromise security are provided by MLS's ratcheting
+mechanism. Implementors MUST ensure that MLS epoch transitions are applied
+correctly and that removed members cannot decrypt messages sent after their
+removal.
+
+# IANA Considerations
+
+This document has no IANA actions.
 

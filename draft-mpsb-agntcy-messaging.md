@@ -1,9 +1,9 @@
 ---
 title: "An Overview of Messaging Systems and Their Applicability to Agentic AI"
-abbrev: "agncty-messaging-eco"
+abbrev: "agntcy-messaging-eco"
 category: info
 
-docname: draft-mpsb-agntcy-messaging-latest
+docname: draft-mpsb-agntcy-messaging-02
 submissiontype: independent
 number:
 date:
@@ -67,14 +67,34 @@ informative:
     author:
       - name: AGNTCY
     target: https://spec.slim.agntcy.org
+  A2A:
+    title: "Agent2Agent (A2A) Protocol"
+    author:
+      - name: Google
+    target: https://google.github.io/A2A/
+  MCP:
+    title: "Model Context Protocol (MCP) Specification"
+    author:
+      - name: Anthropic
+    target: https://modelcontextprotocol.io/
+  SRPC:
+    title: "SLIM RPC (SRPC) Reference"
+    author:
+      - name: AGNTCY
+    target: https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md
+  ACP:
+    title: "Agent Client Protocol (ACP)"
+    author:
+      - name: Agent Client Protocol Community
+    target: https://agentclientprotocol.com/get-started/introduction
 
 --- abstract
 
 Agentic AI systems require messaging infrastructure that supports real-time
 collaboration, high-volume streaming, and dynamic group coordination across
-distributed networks. Traditional protocols like AMQP, MQTT, and NATS address
-some requirements but fall short on security, particularly regarding {{AMQP}} {{MQTT}} {{NATS}}
-post-compromise protection and quantum-safe encryption essential for autonomous
+distributed networks. Traditional protocols like AMQP {{AMQP}}, MQTT {{MQTT}}, and NATS {{NATS}} address
+some requirements but fall short on security, particularly regarding
+post-compromise protection and forward secrecy essential for autonomous
 agents handling sensitive data.
 
 This document analyzes six messaging protocols—AMQP, MQTT, NATS, AMQP over
@@ -85,8 +105,8 @@ agentic AI deployments, from lightweight edge computing scenarios to large-scale
 multi-organizational collaborations.
 
 AGNTCY SLIM emerges as a purpose-built solution, integrating Message Layer
-Security (MLS) {{!RFC9420}} with gRPC {{gRPC}} over HTTP/2 {{!RFC7540}} to
-provide quantum-safe end-to-end encryption, efficient streaming, and OAuth-based
+Security (MLS) {{!RFC9420}} with gRPC {{gRPC}} over HTTP/2 {{!RFC9113}} to
+provide end-to-end encryption with forward secrecy, efficient streaming, and OAuth-based
 authentication {{!RFC6749}}. Unlike transport-layer security approaches, SLIM's
 MLS implementation ensures secure communication even through untrusted
 intermediaries while supporting dynamic
@@ -100,8 +120,6 @@ group membership changes essential for collaborative AI agents.
 
 # Introduction
 
-
-
 When designing a multi-agent system for generative AI, the messaging layer
 becomes a critical piece of infrastructure. GenAI agents—built with frameworks
 like LangGraph, AutoGen, or LlamaIndex—often need to collaborate in real time,
@@ -111,7 +129,7 @@ requirements extend well beyond basic TLS; in scenarios where agents share
 sensitive models or partial computations, post-compromise security and robust
 end-to-end encryption are essential.
 
-In practice, you’ll want a protocol that efficiently handles one-to-many or
+In practice, a designer of such systems will require a protocol that efficiently handles one-to-many or
 many-to-many communication, supports dynamic membership (with agents joining or
 leaving on the fly), and scales to accommodate a “forest” of agents spread
 across global networks. Some protocols excel at ultra-low-latency,
@@ -121,12 +139,12 @@ Additionally, advanced cryptographic features such as automatic key rotation and
 forward secrecy are vital when compromised credentials must not enable an
 attacker to decrypt future communications.
 
-Below, we compare six popular messaging protocols—AMQP, MQTT, NATS, AMQP over
-WebSockets, Kafka, and the emerging AGNTCY SLIM (Secure Low-Latency Interactive
-Messaging)—across
-dimensions that matter for GenAI agent systems: streaming performance, delivery
-guarantees, flexible pub/sub patterns, agent coordination, security (including
-end-to-end encryption and zero-trust support), and real-world adoption.
+Below, we compare six messaging protocols—AMQP, MQTT, NATS, AMQP over
+WebSockets, Kafka, and AGNTCY SLIM (Secure Low-Latency Interactive
+Messaging)—across dimensions that matter for GenAI agent systems: streaming
+performance, delivery guarantees, flexible pub/sub patterns, agent coordination,
+security (including end-to-end encryption and zero-trust support), and
+real-world adoption.
 
 
 # Protocol Analysis for Agentic AI Systems
@@ -230,7 +248,7 @@ communication.
 
 ## High-Throughput Streaming: Apache Kafka
 
-Apache Kafka represents a fundamentally different approach to messaging, based
+Apache Kafka {{Kafka}} represents a fundamentally different approach to messaging, based
 on distributed commit logs rather than traditional message queues. This
 architecture provides exceptional throughput and built-in streaming capabilities
 that align well with certain agentic AI use cases.
@@ -238,7 +256,7 @@ that align well with certain agentic AI use cases.
 Kafka's partition-based topic model enables massive horizontal scaling, making
 it suitable for AI systems that need to process large volumes of training data,
 model updates, or inference results across distributed agent networks. The
-platform's native streaming capabilities through Kafka Streams and KSQL provide
+platform's native streaming capabilities through Kafka Streams and ksqlDB provide
 powerful tools for real-time processing of agent-generated data.
 
 The protocol's built-in persistence across distributed clusters ensures that
@@ -261,13 +279,14 @@ sensitive model data or proprietary algorithms.
 
 ## Next-Generation Agent Messaging: SLIM
 
-AGNTCY SLIM (Secure Low-Latency Interactive Messaging) represents a
+AGNTCY SLIM {{SLIM}} (Secure Low-Latency Interactive Messaging) represents a
 purpose-built protocol for modern agentic AI systems, designed to address the
 specific security, performance, and coordination requirements that existing
 protocols cannot fully satisfy.
 
-SLIM is intended as a transport layer for agent protocols like A2A and MCP. It
-handles secure routing, group messaging, and end-to-end encryption so protocol
+SLIM is intended as a transport layer for agent protocols like A2A {{A2A}},
+MCP {{MCP}}, and ACP {{ACP}}. It handles secure routing, group messaging, and
+end-to-end encryption so protocol
 implementations can focus on agent semantics. A registration-based model lets
 agents become reachable through the SLIM network without exposing server ports,
 while only routing nodes need to be publicly reachable. This simplifies
@@ -301,12 +320,23 @@ reliable exactly-once delivery ensures critical coordination messages and
 expensive computational results are never lost. This extends consistently across
 request-reply patterns and streaming communications.
 
-Perhaps most significantly, SLIM's integration of Message Layer Security (MLS)
-provides quantum-safe, end-to-end encryption specifically designed for group
-communications. Unlike transport-layer security approaches used by other
-protocols, MLS ensures that messages remain secure even when transmitted through
-potentially compromised intermediaries—a critical requirement for AI systems
-operating across multiple trust domains.
+SLIM's security model is intentionally two-tiered. At the network layer,
+HTTP/2 with TLS 1.3 provides hop-by-hop transport security, integrating
+naturally with existing infrastructure—load balancers, API gateways, and
+observability tools all operate on TLS-protected HTTP/2 connections without
+requiring access to message content. At the content layer, MLS provides an
+application-layer encryption envelope that protects message payloads
+end-to-end, independently of how many TLS connections are traversed along the
+path. Routing nodes see only the channel name and an encrypted blob; even after
+terminating a TLS session, an intermediate node cannot access agent data.
+
+This two-tier approach—HTTP/2 for network security, MLS for content
+security—gives SLIM a zero-trust intermediary property: routing nodes can
+forward messages through untrusted infrastructure while maintaining full payload
+confidentiality. Protocols that rely solely on transport-layer security require
+trust in all intermediaries, since each hop terminates TLS and has visibility
+into message content. For agentic AI deployments spanning multiple organizations
+or transiting third-party infrastructure, this distinction is critical.
 
 The protocol's authentication model demonstrates particular innovation in
 addressing agentic AI security requirements. By transporting MLS credentials and
@@ -340,7 +370,7 @@ SLIM provides multi-language bindings. Python and Go bindings are available
 today, with JavaScript/TypeScript, C#, and Kotlin in progress, enabling
 heterogeneous agent systems to interoperate on the same transport.
 
-## Security Considerations for Agentic AI
+# Security Analysis
 
 Security requirements for agentic AI systems extend well beyond the capabilities
 provided by traditional messaging protocols. The autonomous nature of AI agents,
@@ -358,8 +388,9 @@ credential compromise.
 **Quantum-Safe Cryptography**: As quantum computing advances threaten current
 cryptographic standards, AI systems—which may operate for years with the same
 cryptographic keys—need protection against future quantum attacks. SLIM's
-quantum-safe MLS implementation provides this protection, while traditional
-protocols rely on classical cryptographic assumptions that may become
+MLS implementation provides this protection and, when combined with
+post-quantum cipher suites, also defends against future quantum attacks; traditional
+protocols rely entirely on classical cryptographic assumptions that may become
 vulnerable.
 
 **Multi-Domain Operations**: Agentic AI systems often span multiple
@@ -375,7 +406,7 @@ key management handles these membership changes while maintaining security
 properties, unlike approaches that require complete cryptographic context
 regeneration.
 
-## Performance Implications
+# Performance Characteristics
 
 The performance characteristics of messaging protocols significantly impact the
 behavior and capabilities of agentic AI systems, particularly as the number of
@@ -404,7 +435,7 @@ token-by-token language model outputs or real-time sensor data. SLIM's native
 gRPC streaming support over HTTP/2 provides efficient bidirectional streaming
 without the overhead of connection-per-stream approaches.
 
-## Deployment and Operational Considerations
+# Deployment and Operational Considerations
 
 The operational characteristics of messaging protocols significantly impact the
 total cost of ownership and operational complexity of agentic AI systems.
@@ -435,114 +466,180 @@ regulations.
 
 # RPC in Agentic Protocols and Relationship to Messaging
 
-Most agent-facing interfaces in use today — notably A2A and the Model Context
-Protocol (MCP) — are Remote Procedure Call (RPC) oriented. They expose
-synchronous request/response semantics for tool invocation, resource listing,
-and capability execution. This section clarifies how RPC relates to asynchronous
-messaging and how the two paradigms interoperate in agentic systems.
+Agentic AI systems are predominantly built around Remote Procedure Call
+(RPC)-oriented protocols. A2A {{A2A}}, the Model Context Protocol (MCP) {{MCP}},
+and the Agent Client Protocol (ACP) {{ACP}} all expose synchronous
+request/response semantics: a caller issues a structured request, awaits a
+response within a bounded time, and receives an explicit result or error. This
+design provides well-defined interfaces, typed contracts, and composable error
+handling that make agents discoverable and interoperable across heterogeneous
+systems.
+
+However, pure point-to-point RPC does not scale to all coordination demands of
+multi-agent systems. Fan-out invocations, asynchronous event delivery, streaming
+responses, dynamic group membership, and multi-domain security are capabilities
+that RPC protocols delegate to the underlying transport. This section examines
+how RPC and messaging interoperate in agentic systems, and how SLIM's SRPC
+capability provides a purpose-built solution.
+
+## Agentic Protocols Are RPC-Oriented
+
+The three leading agentic coordination protocols each define an RPC-based
+interaction model:
+
+**Model Context Protocol (MCP)** defines a JSON-RPC interface between LLM hosts
+and tools or resources. A host invokes tools by name with typed parameters and
+receives typed results or streaming token outputs. MCP is designed for
+synchronous tool calls with optional server-side streaming for partial results.
+
+**Agent2Agent (A2A)** is an HTTP-based protocol for delegating tasks between
+agents. An orchestrator submits task requests to worker agents and receives
+structured results or a stream of progress events. Agent capabilities are
+advertised via Agent Cards, enabling dynamic discovery without pre-configuration.
+
+**Agent Client Protocol (ACP)** standardizes JSON-RPC communication between
+code editors and coding agents, operating over stdio for local agents or HTTP
+and WebSocket for remote agents. It enables editors to invoke coding agents and
+receive structured responses, following a pattern analogous to the Language
+Server Protocol for language tools.
+
+All three share a fundamental structure: a caller invokes a named callee with
+parameters and awaits a response within a bounded time. SLIM is designed to
+serve as the transport layer beneath all three.
 
 ## RPC vs. Messaging: Synchronous vs. Asynchronous
 
-- **RPC (A2A, MCP)**: Caller issues a request and blocks/awaits a timely
-response. Semantics emphasize tightly scoped operations (for example, “call tool
-X with parameters Y”) with bounded latency and explicit error contracts.
-- **Messaging (AMQP, MQTT, NATS, Kafka, SLIM)**: Decoupled producers/consumers
-communicate via topics/subjects/queues. Delivery can be one-to-one, one-to-many,
-or many-to-many with loose coupling, buffering, and retries. Producers are not
-inherently blocked by consumers.
+- **RPC (A2A, MCP, ACP)**: The caller issues a request and blocks or awaits a
+  timely response. Semantics emphasize tightly scoped operations with bounded
+  latency and explicit error contracts.
+- **Messaging (AMQP, MQTT, NATS, Kafka, SLIM)**: Decoupled producers and
+  consumers communicate via topics, subjects, or queues. Delivery can be
+  one-to-one, one-to-many, or many-to-many, with loose coupling, buffering,
+  and retries. Producers are not inherently blocked by consumers.
 
 In practice, agentic applications need both: synchronous tool invocations for
 interactivity and asynchronous channels for streaming output, progress,
 coordination, and fan-out/fan-in patterns.
 
-## When Asynchronous Feels Synchronous (Interactive Real-Time)
+## Challenges of Running RPC over Messaging
 
-Asynchronous transports can provide an interactive, “RPC-like” experience when:
-- A request message includes a correlation ID and reply-to destination.
-- The callee publishes a response on the indicated reply destination within a short SLA.
-- Client libraries surface responses as futures/promises and manage timeouts/retries.
+Layering RPC semantics onto an asynchronous messaging substrate introduces
+several non-trivial challenges:
 
-This underpins instant messaging UX and maps well to agent UIs where a user
-triggers an action and expects prompt, possibly streaming, results.
+- **Request/response correlation**: Messaging systems are decoupled by design
+  and provide no direct return path. Implementing RPC requires correlating
+  requests and responses using unique identifiers and temporary reply channels.
+- **Latency and ordering**: Messaging layers may introduce variable delivery
+  latency and do not guarantee strict ordering, which can conflict with
+  synchronous RPC contracts.
+- **Error propagation**: Messaging systems may buffer, retry, or drop messages,
+  making it difficult to propagate errors and timeouts in a way that matches
+  RPC error contracts.
+- **Streaming and multiplexing**: Supporting streaming RPC (server streaming,
+  client streaming, bidirectional) over messaging requires careful management
+  of stream lifecycles, backpressure, and multiplexing multiple logical RPCs
+  over shared channels.
+- **Security and authorization**: Ensuring that only authorized callers can
+  invoke specific methods, and that all messages are authenticated and
+  encrypted end-to-end, is more complex in a distributed, group-based
+  messaging environment.
 
-## Bridging Patterns: RPC over Messaging and Streaming RPC
+SRPC resolves all of these challenges natively, as described below.
+
+## When Asynchronous Feels Synchronous
+
+Asynchronous transports can provide an interactive, RPC-like experience when:
+
+- A request message carries a correlation ID and a reply-to destination.
+- The callee publishes a response to the reply destination within a short SLA.
+- Client libraries surface responses as futures or promises and manage
+  timeouts and retries.
+
+This pattern underpins agent UIs where a user triggers an action and expects
+prompt, possibly streaming, results.
+
+## Bridging Patterns: RPC over Messaging
 
 - **Request/Reply over Pub/Sub**: Implement RPC by publishing a command event
-and awaiting a correlated reply event (applies to AMQP, NATS, MQTT, and SLIM
-topics).
-- **Streaming RPC**: Use bidirectional streams (for example, gRPC over SLIM
-HTTP/2/3) to deliver token streams, partial results, or progress updates while
-retaining an RPC caller experience.
+  and awaiting a correlated reply event (applicable to AMQP, NATS, MQTT, and
+  SLIM topics).
+- **Streaming RPC**: Use bidirectional streams (gRPC over SLIM HTTP/2/3) to
+  deliver token streams, partial results, or progress updates while retaining
+  an RPC caller experience.
 - **Sagas and CQRS**: For multi-step workflows across agents, coordinate via
-asynchronous orchestration with idempotency keys, correlation/causation IDs, and
-compensations.
+  asynchronous orchestration with idempotency keys, correlation/causation IDs,
+  and compensating transactions.
 - **Backpressure and Flow Control**: Prefer streaming transports (HTTP/2/3,
-gRPC) or messaging systems with flow control when returning large/continuous
-results.
-
-## A2A and MCP in Context
-
-- **A2A Agent Cards**: Describe capabilities/endpoints commonly invoked via
-RPC-style calls (tool execution, configuration). They benefit from messaging for
-discovery, eventing, and long-running workflows.
-- **MCP**: Standardizes RPC-like interactions (resources, tools, prompts). For
-multi-party sessions, combine MCP RPC with a messaging layer for broadcast,
-presence, and coordination.
-
+  gRPC) or messaging systems with flow control when returning large or
+  continuous results.
 
 ## SLIM RPC (SRPC)
 
-SLIM also supports a native RPC style via SRPC (Slim RPC), which layers
-request/response semantics on top of SLIM's interactive, real-time messaging.
-SRPC addresses practical RPC concerns in distributed agent systems:
+SRPC layers request/response semantics directly onto SLIM's secure messaging
+fabric, addressing all of the challenges enumerated above:
 
-- Correlation and reply routing for synchronous calls over an async transport
-- Idempotency keys and deduplication to make retries safe
-- Lightweight synchronization/ordering guarantees for request/response and streaming
-- Seamless fit for A2A/MCP-style tool calls while retaining SLIM's MLS security and multiplexing
-- Supports all four gRPC interaction patterns (unary, server streaming, client streaming, bidirectional streaming)
+- **Correlation and reply routing**: SRPC manages correlation IDs and reply
+  channel lifecycle automatically, with no application-level plumbing required.
+- **Idempotency and deduplication**: SRPC idempotency keys make retries safe
+  without duplicating side effects.
+- **Ordering and synchronization**: Lightweight ordering guarantees for both
+  request/response and streaming patterns.
+- **All four gRPC interaction patterns**: Unary, server streaming, client
+  streaming, and bidirectional streaming are all supported, enabling direct
+  mapping of A2A, MCP, and ACP interaction models onto SLIM.
+- **Integrated security**: Every SRPC call inherits SLIM's MLS end-to-end
+  encryption and OAuth-based authorization without additional configuration.
 
-See SRPC reference and examples: [SLIM RPC (SRPC) README](https://github.com/agntcy/slim/blob/main/data-plane/python/integrations/slimrpc/README.md).
+See the SRPC specification for details {{SRPC}}.
 
-## Advantages of SLIM for A2A APIs
+## Advantages of SLIM for Agentic Protocols
 
-SLIM augments existing A2A-style RPC with capabilities that are difficult to
-achieve over plain request/response transports:
+SLIM augments the point-to-point RPC model of A2A, MCP, and ACP with
+capabilities that are difficult to achieve over plain request/response transports:
 
-- **Simultaneous fan-out RPC (scatter-gather)**: Invoke a single RPC across many
-agents (by topic/group/labels) concurrently and aggregate responses
-(first-success, quorum, all-success) with correlation IDs.
-- **Group addressing and dynamic membership**: Target MLS-secured groups;
-add/remove agents without reconfiguring endpoints.
+- **Scatter-gather RPC**: Invoke a single RPC across many agents simultaneously
+  (by topic, group, or label) and aggregate responses (first-success, quorum,
+  or all-success) using correlation IDs.
+- **Group addressing and dynamic membership**: Target MLS-secured groups; add
+  or remove agents without reconfiguring endpoints or updating caller code.
 - **Streaming responses**: Return partial results or token streams from each
-agent over a single multiplexed connection (gRPC over HTTP/2/3).
-- **Idempotency and safe retries**: SRPC supports idempotency keys and
-deduplication, enabling robust retry without duplicating effects.
+  agent over a single multiplexed connection.
+- **Idempotency and safe retries**: SRPC idempotency keys enable robust retry
+  without duplicating effects—critical for expensive or stateful agent
+  operations.
 - **QoS, deadlines, and backpressure**: Apply delivery guarantees, per-call
-timeouts, and flow control to avoid overload while maintaining interactivity.
-- **End-to-end security and multi-tenant isolation**: MLS E2E encryption and
-OAuth-based policy across both RPC and messaging channels.
-- **Observability and tracing**: Correlation/causation IDs and standardized
-transport enable distributed tracing and per-agent metrics.
+  timeouts, and flow control to avoid overload while maintaining interactivity.
+- **End-to-end security**: MLS encryption and OAuth-based policy apply
+  uniformly across both RPC and messaging channels.
+- **Observability**: Correlation and causation IDs, combined with standard
+  HTTP/2 transport, enable distributed tracing and per-agent metrics with
+  existing tooling.
 
-These capabilities let A2A-style tool calls scale beyond one-to-one
-interactions, enabling broadcast queries, coordinated multi-agent actions, and
+These capabilities let A2A, MCP, and ACP interactions scale beyond one-to-one
+invocations, enabling broadcast queries, coordinated multi-agent actions, and
 efficient collection of results in real time.
 
 ## Security Implications
 
-- **Identity and Authorization**: Reuse OAuth tokens across RPC (gRPC) and
-messaging (SLIM channels as topics) for consistent policy enforcement.
-- **End-to-End Security**: MLS-backed secure channels (SLIM) so both RPC and
-messaging inherit end to end message encryption.
+- **Unified identity**: OAuth tokens are reused across RPC calls and messaging
+  channels for consistent policy enforcement. An agent's identity and
+  authorization scope apply uniformly to tool calls and subscription channels.
+- **End-to-end encryption**: MLS-backed channels ensure that RPC requests,
+  responses, and streaming payloads are encrypted end-to-end, independently
+  of transport hops. Routing nodes cannot inspect RPC call content.
+- **Caller authentication**: SRPC carries MLS group membership proofs with
+  each call, allowing callees to verify that the caller is an authorized group
+  member before executing the requested operation.
+
 ## Guidance: When to Choose What
 
-- Use **RPC (A2A/MCP)** for low-latency, point operations with immediate
-feedback and well-defined error contracts.
-- Use **Messaging** for broadcast/fan-out, decoupling, retries, buffering, and
-multi-party coordination.
-- Use **Streaming RPC or RPC over Messaging** for interactive UX with
-partial/continuous results or uncertain duration operations.
+- Use **RPC (A2A, MCP, ACP)** for low-latency point operations with immediate
+  feedback and well-defined error contracts.
+- Use **Messaging** for broadcast/fan-out, decoupling, retries, buffering,
+  and multi-party coordination.
+- Use **SRPC over SLIM** for any of the above when end-to-end security,
+  scatter-gather invocation, streaming responses, or multi-organization
+  deployment is required.
 
 # Comparison
 
@@ -568,18 +665,36 @@ Table 1 provides a detailed comparison of three popular messaging protocols comm
 Table 2 extends the comparison to include additional protocols relevant to modern agentic AI systems:
 
 | Feature | AMQP over WebSockets | Kafka | SLIM |
-|---------|---------------------|-------|-----|
+|---------|---------------------|-------|------|
 | **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | Secure low-latency interactive messaging |
 | **Transport** | WebSockets over TLS | TCP (optionally TLS) | gRPC (over HTTP/2-HTTP/3) |
 | **Message Model** | Same as AMQP (depends on the broker's AMQP model) | Topics with partitions, consumer groups, offset-based consumption | Hierarchical names (`org/namespace/service/instance`), point-to-point and group sessions |
-| **QoS / Delivery** | Same as AMQP | At-least-once default; exactly-once possible via transactions | Fire&Forget unreliable (at-most-once), unreliable and reliable (exactly-once). This extends to request/reply and streaming as well. |
-| **Streaming** | Same as AMQP if broker supports streaming | Native log-based streaming (Kafka Streams, KSQL, etc.) | Native gRPC support via HTTP/2/3 client streaming, server streaming. Notice that Server Sent Events (SSE) with HTTP/1.1 cannot carry binary nor compressed data. |
+| **QoS / Delivery** | Same as AMQP | At-least-once default; exactly-once possible via transactions | At-most-once (fire-and-forget) or exactly-once (reliable); applies consistently to request/reply and streaming interactions |
+| **Streaming** | Same as AMQP if broker supports streaming | Native log-based streaming (Kafka Streams, ksqlDB, etc.) | Native gRPC support via HTTP/2/3 client streaming, server streaming |
 | **Persistence** | Same as AMQP | Built-in: messages persist on disk across clusters | Not supported |
-| **Protocol Overhead** | Higher (AMQP + WebSockets handshake) | Moderate (custom binary protocol, but optimized for high throughput) | Low: Wire format uses protocol buffer. Supports also binary (byte type in protobuf) |
-| **Broker Required** | Yes | Yes (distributed cluster) | Yes for efficient multi-party. P2P is also possible. |
-| **Authentication** | Same as AMQP (broker-based) | SASL/PLAIN, SASL/SCRAM, Kerberos, OAuth | Transports MLS credentials and proofs inside OAuth bearer tokens over HTTP/2. This gives you: Interoperability: Leverage standard HTTP/2 and OAuth libraries. Scalability: One persistent HTTP/2 connection carries many MLS messages. Immediate revocation: Eject bad actors by revoking their OAuth tokens—no need to rebalance the ratchet tree first. |
+| **Protocol Overhead** | Higher (AMQP + WebSockets handshake) | Moderate (custom binary protocol, but optimized for high throughput) | Low: binary Protocol Buffers wire format; native support for both binary (bytes) and text payloads |
+| **Broker Required** | Yes | Yes (distributed cluster) | Yes for multi-party group sessions; peer-to-peer also supported |
+| **Authentication** | Same as AMQP (broker-based) | SASL/PLAIN, SASL/SCRAM, Kerberos, OAuth | OAuth bearer tokens carrying MLS credentials and cryptographic proofs; standard HTTP/2 and OAuth libraries for interoperability; immediate revocation by invalidating OAuth tokens |
 | **Transport Security** | WSS (WebSocket Secure) | TLS | TLS |
-| **Message Security** | Same as AMQP (depends on the broker's encryption at rest/in-transit) | TLS in-flight encryption, optional at-rest encryption (broker config) | MLS (Quantum safe, Secure end-to-end, even across insecure hops, post-compromise security) |
+| **Message Security** | Same as AMQP (depends on the broker's encryption at rest/in-transit) | TLS in-flight encryption, optional at-rest encryption (broker config) | MLS end-to-end encryption with forward secrecy and post-compromise security, independent of transport |
 | **Binary or Text** | Binary AMQP frames over WebSockets | Binary protocol (common payloads: Avro, JSON, Protobuf) | Binary or Text |
-| **Use Cases** | Browser-based apps needing AMQP behind firewalls | High-throughput data pipelines, streaming analytics, event sourcing | Group messaging, one-to-many, many-to-many, Cloud-native microservices, real-time communications, streaming |
-| **Real-World Usage** | Less common, mainly for browser/firewall scenarios using RabbitMQ or similar | Extremely widespread across industries; de facto standard for large-scale event streaming | New Entrant, low |
+| **Use Cases** | Browser-based apps needing AMQP behind firewalls | High-throughput data pipelines, streaming analytics, event sourcing | Group messaging, one-to-many, many-to-many, cloud-native microservices, real-time communications, streaming |
+| **Real-World Usage** | Less common, mainly for browser/firewall scenarios using RabbitMQ or similar | Extremely widespread across industries; de facto standard for large-scale event streaming | New entrant; reference implementations in Python and Go available; early production deployments |
+
+# Security Considerations
+
+This document is an informational comparison of messaging protocols for agentic
+AI systems. Security properties specific to each protocol are discussed in the
+Security Analysis section of this document. Readers deploying any
+of the protocols described SHOULD consult the security considerations sections
+of the respective protocol specifications.
+
+Of the protocols analyzed, only SLIM provides application-layer end-to-end
+encryption via MLS {{!RFC9420}}, forward secrecy, and post-compromise security
+independent of transport-layer security. All other protocols rely on
+transport-layer TLS, which does not protect message content from trusted
+intermediaries.
+
+# IANA Considerations
+
+This document has no IANA actions.

@@ -35,22 +35,24 @@ jobs:
           .refcache
           .venv
           .gems
-          node_modules
-          .targets.mk
         key: i-d-${{ steps.setup.outputs.date }}
         restore-keys: i-d-
 
     - name: "Build Drafts"
-      uses: martinthomson/i-d-template@v1
-      with:
-        token: ${{ github.token }}
+      run: ./build.sh
+
+    - name: "Stage GitHub Pages"
+      if: ${{ github.event_name == 'push' }}
+      run: mkdir -p /tmp/pages && cp draft-*.html draft-*.txt /tmp/pages/
 
     - name: "Update GitHub Pages"
-      uses: martinthomson/i-d-template@v1
       if: ${{ github.event_name == 'push' }}
+      uses: peaceiris/actions-gh-pages@v4
       with:
-        make: gh-pages
-        token: ${{ github.token }}
+        github_token: ${{ github.token }}
+        publish_dir: /tmp/pages
+        keep_files: true
+        commit_message: "Update editor's copy [ci skip]"
 
     - name: "Archive Built Drafts"
       uses: actions/upload-artifact@v4
