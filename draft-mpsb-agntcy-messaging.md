@@ -3,7 +3,7 @@ title: "An Overview of Messaging Systems and Their Applicability to Agentic AI"
 abbrev: "agntcy-messaging-eco"
 category: info
 
-docname: draft-mpsb-agntcy-messaging-02
+docname: draft-mpsb-agntcy-messaging-latest
 submissiontype: independent
 number:
 date:
