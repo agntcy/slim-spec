@@ -13,8 +13,3 @@ else
 	    https://github.com/martinthomson/i-d-template $(LIBDIR)
 endif
 endif
-
-# Drafts use explicit version numbers in docname (-02 etc.);
-# override the i-d-template lint rule that requires -latest.
-lint-docname:
-	@true

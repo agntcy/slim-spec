@@ -43,6 +43,7 @@ jobs:
     - name: "Build Drafts"
       uses: martinthomson/i-d-template@v1
       with:
+        make: build
         token: ${{ github.token }}
 
     - name: "Update GitHub Pages"
