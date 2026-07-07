@@ -5,9 +5,9 @@
 Network Working Group                                     L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 7 January 2027                                         S. Betts
+Expires: 8 January 2027                                         S. Betts
                                                                    Cisco
-                                                             6 July 2026
+                                                             7 July 2026
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2027.
+   This Internet-Draft will expire on 8 January 2027.
 
 Copyright Notice
 
@@ -258,7 +258,7 @@ Table of Contents
 
 3.5.  High-Throughput Streaming: Apache Kafka
 
-   Apache Kafka represents a fundamentally different approach to
+   Apache Kafka [Kafka] represents a fundamentally different approach to
    messaging, based on distributed commit logs rather than traditional
    message queues.  This architecture provides exceptional throughput
    and built-in streaming capabilities that align well with certain
@@ -294,10 +294,11 @@ Table of Contents
 
 3.6.  Next-Generation Agent Messaging: SLIM
 
-   AGNTCY SLIM (Secure Low-Latency Interactive Messaging) represents a
-   purpose-built protocol for modern agentic AI systems, designed to
-   address the specific security, performance, and coordination
-   requirements that existing protocols cannot fully satisfy.
+   AGNTCY SLIM [SLIM] (Secure Low-Latency Interactive Messaging)
+   represents a purpose-built protocol for modern agentic AI systems,
+   designed to address the specific security, performance, and
+   coordination requirements that existing protocols cannot fully
+   satisfy.
 
    SLIM is intended as a transport layer for agent protocols like A2A
    [A2A], MCP [MCP], and ACP [ACP].  It handles secure routing, group

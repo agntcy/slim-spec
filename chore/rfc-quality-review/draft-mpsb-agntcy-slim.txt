@@ -5,9 +5,9 @@
 Network Working Group                                     L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 7 January 2027                                         S. Betts
+Expires: 8 January 2027                                         S. Betts
                                                                    Cisco
-                                                             6 July 2026
+                                                             7 July 2026
 
 
             Secure Low-Latency Interactive Messaging (SLIM)
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2027.
+   This Internet-Draft will expire on 8 January 2027.
 
 Copyright Notice
 
@@ -221,7 +221,8 @@ Table of Contents
  Legend:
  - Producers publish to topics via routing nodes.
  - Consumers subscribe to topics via routing nodes.
- - MLS Authentication Service handles group authentication and key management.
+ - MLS Authentication Service handles group authentication
+   and key management.
  - Encryption group coincides with the topic identifier.
 
          Figure 1: Main components of the SLIM architecture.
