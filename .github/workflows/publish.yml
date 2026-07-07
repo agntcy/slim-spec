@@ -40,9 +40,12 @@ jobs:
         restore-keys: i-d-
 
     - name: "Build Drafts"
-      uses: martinthomson/i-d-template@v1
-      with:
-        token: ${{ github.token }}
+      run: |
+        ./build.sh
+        mkdir -p versioned
+        for f in draft-*.xml draft-*.txt draft-*.html; do
+          [ -f "$f" ] && cp "$f" versioned/
+        done
 
     - name: "Upload to Datatracker"
       uses: martinthomson/i-d-template@v1
