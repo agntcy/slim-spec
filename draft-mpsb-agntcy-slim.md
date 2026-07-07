@@ -208,7 +208,8 @@ This enables requests to reach the producer and fetch a response, if one exists.
  Legend:
  - Producers publish to topics via routing nodes.
  - Consumers subscribe to topics via routing nodes.
- - MLS Authentication Service handles group authentication and key management.
+ - MLS Authentication Service handles group authentication
+   and key management.
  - Encryption group coincides with the topic identifier.
 ~~~
 {: #fig-general-arch title="Main components of the SLIM architecture."}

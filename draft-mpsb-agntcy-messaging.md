@@ -248,7 +248,7 @@ communication.
 
 ## High-Throughput Streaming: Apache Kafka
 
-Apache Kafka represents a fundamentally different approach to messaging, based
+Apache Kafka {{Kafka}} represents a fundamentally different approach to messaging, based
 on distributed commit logs rather than traditional message queues. This
 architecture provides exceptional throughput and built-in streaming capabilities
 that align well with certain agentic AI use cases.
@@ -279,7 +279,7 @@ sensitive model data or proprietary algorithms.
 
 ## Next-Generation Agent Messaging: SLIM
 
-AGNTCY SLIM (Secure Low-Latency Interactive Messaging) represents a
+AGNTCY SLIM {{SLIM}} (Secure Low-Latency Interactive Messaging) represents a
 purpose-built protocol for modern agentic AI systems, designed to address the
 specific security, performance, and coordination requirements that existing
 protocols cannot fully satisfy.
