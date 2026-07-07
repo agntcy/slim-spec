@@ -388,7 +388,7 @@ credential compromise.
 **Quantum-Safe Cryptography**: As quantum computing advances threaten current
 cryptographic standards, AI systems—which may operate for years with the same
 cryptographic keys—need protection against future quantum attacks. SLIM's
-SLIM's MLS implementation provides this protection and, when combined with
+MLS implementation provides this protection and, when combined with
 post-quantum cipher suites, also defends against future quantum attacks; traditional
 protocols rely entirely on classical cryptographic assumptions that may become
 vulnerable.
