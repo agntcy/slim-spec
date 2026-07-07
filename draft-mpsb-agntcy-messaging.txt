@@ -484,11 +484,10 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    *Quantum-Safe Cryptography*: As quantum computing advances threaten
    current cryptographic standards, AI systems—which may operate for
    years with the same cryptographic keys—need protection against future
-   quantum attacks.  SLIM's SLIM's MLS implementation provides this
-   protection and, when combined with post-quantum cipher suites, also
-   defends against future quantum attacks; traditional protocols rely
-   entirely on classical cryptographic assumptions that may become
-   vulnerable.
+   quantum attacks.  SLIM's MLS implementation provides this protection
+   and, when combined with post-quantum cipher suites, also defends
+   against future quantum attacks; traditional protocols rely entirely
+   on classical cryptographic assumptions that may become vulnerable.
 
    *Multi-Domain Operations*: Agentic AI systems often span multiple
    organizational and security domains, with agents from different
@@ -496,6 +495,7 @@ Internet-Draft            agntcy-messaging-eco                 July 2026
    typically assume trust in messaging infrastructure, but SLIM's end-
    to-end encryption ensures secure communication even when messages
    transit through potentially untrusted intermediaries.
+
 
 
 
