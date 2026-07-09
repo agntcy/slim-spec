@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-07T00:54:00.160266+00:00",
+  "timestamp": "2026-07-09T00:50:52.454438+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -806,26 +806,236 @@
       "id": "PR_kwDON1QDo87ujYAU",
       "title": "docs: RFC-quality review of messaging and SLIM spec drafts",
       "url": "https://github.com/agntcy/slim-spec/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muscariello",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "- Fix abbrev typo; add missing informative refs (A2A, MCP, ACP, SRPC)\r\n- Update RFC7540 -> RFC9113 (HTTP/2); fix imprecise quantum-safe claims\r\n- Promote cross-cutting sections (Security, Performance, Deployment) to top-level instead of nested under Protocol Analysis\r\n- Rewrite RPC section: add all three agentic protocols (A2A, MCP, ACP), introduce Challenges of Running RPC over Messaging, expand SRPC and SLIM advantages to cover all three protocols\r\n- Add Security Considerations and IANA Considerations to both drafts\r\n- Fix grammar, formatting, em-dash consistency, table cell wording, KSQL -> ksqlDB throughout",
       "createdAt": "2026-07-06T21:27:03Z",
-      "updatedAt": "2026-07-06T21:27:54Z",
+      "updatedAt": "2026-07-07T12:31:08Z",
       "baseRepository": "agntcy/slim-spec",
       "baseRefName": "main",
       "baseRefOid": "9691007958f69fe7d6c63083d08f713e9f4101f9",
       "headRepository": "agntcy/slim-spec",
       "headRefName": "chore/rfc-quality-review",
-      "headRefOid": "2410f38895687c5796920ff42b832f709120c969",
-      "closedAt": null,
+      "headRefOid": "e5a60e9efe58658fc6b7c1795f0cf2f31d7a0895",
+      "closedAt": "2026-07-07T12:31:06Z",
+      "mergedAt": "2026-07-07T12:31:06Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "7c76d6b0d1d498877b8abbdf03b676034d9df870"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo88AAAABFLpUpg",
+          "commit": {
+            "abbreviatedOid": "2410f38"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-07-07T07:29:02Z",
+          "updatedAt": "2026-07-07T07:41:08Z",
+          "comments": [
+            {
+              "originalPosition": 164,
+              "body": "```suggestion\nMLS implementation provides this protection and, when combined with\n```",
+              "createdAt": "2026-07-07T07:29:02Z",
+              "updatedAt": "2026-07-07T07:41:08Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDON1QDo87u02nH",
+      "title": "docs: SLIM and messaging spec v03 continued work",
+      "url": "https://github.com/agntcy/slim-spec/pull/18",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Continued development on the SLIM specification and messaging ecosystem drafts following the v02 Datatracker submission.",
+      "createdAt": "2026-07-07T12:42:06Z",
+      "updatedAt": "2026-07-07T12:47:00Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "7c76d6b0d1d498877b8abbdf03b676034d9df870",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "docs/slim-spec-v2",
+      "headRefOid": "ac094c5f5d3ea3bce2fae4f147f99acbe0757a35",
+      "closedAt": "2026-07-07T12:46:58Z",
+      "mergedAt": "2026-07-07T12:46:58Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "3164d7c9c62308643afe39f6a6672878eaf3d9e4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo88AAAABFOAU7g",
+          "commit": {
+            "abbreviatedOid": "ac094c5"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "LGTM ",
+          "createdAt": "2026-07-07T12:46:46Z",
+          "updatedAt": "2026-07-07T12:46:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDON1QDo87u1Ho7",
+      "title": "fix: replace i-d-template build in publish.yml with build.sh",
+      "url": "https://github.com/agntcy/slim-spec/pull/19",
+      "state": "CLOSED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes lint-docname failures when docname uses explicit version numbers (-02). Stages versioned/ directory so make upload can submit to Datatracker.",
+      "createdAt": "2026-07-07T12:52:55Z",
+      "updatedAt": "2026-07-07T12:53:47Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "3164d7c9c62308643afe39f6a6672878eaf3d9e4",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "chore/fix-publish-workflow",
+      "headRefOid": "539bfeed1e0f3c7186bb7dc6e1089a0337c691c4",
+      "closedAt": "2026-07-07T12:53:47Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
+      "comments": [
+        {
+          "author": "muscariello",
+          "authorAssociation": "MEMBER",
+          "body": "Closing \u2014 workflows should not be modified; fixing docnames to -latest instead.",
+          "createdAt": "2026-07-07T12:53:47Z",
+          "updatedAt": "2026-07-07T12:53:47Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDON1QDo87u1LDJ",
+      "title": "fix: restore docnames to -latest and revert ghpages.yml to template",
+      "url": "https://github.com/agntcy/slim-spec/pull/20",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- Set both docnames back to `-latest` as required by i-d-template lint-docname\\n- Revert ghpages.yml to the unmodified i-d-template original\\n- Version numbers are assigned from git tags by the CI pipeline",
+      "createdAt": "2026-07-07T12:54:46Z",
+      "updatedAt": "2026-07-07T13:01:10Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "e80858ed1bcfab1a99ac99619e8ed1d4abd2fc5e",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "fix/restore-template-workflows-and-docnames",
+      "headRefOid": "68316ab1cd645032f35bb67bbce7d37cfc49d003",
+      "closedAt": "2026-07-07T13:01:08Z",
+      "mergedAt": "2026-07-07T13:01:08Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "81a9c74ded453e01fc284a481bd3a6fee77dd645"
+      },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDON1QDo87u1PeW",
+      "title": "fix: restore docnames to -latest",
+      "url": "https://github.com/agntcy/slim-spec/pull/21",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The i-d-template CI requires `docname` to end with `-latest` in the source files. Version numbers (e.g. `-02`) are assigned automatically by the publish pipeline from git tags.\\n\\nThis restores both docnames so the CI passes.",
+      "createdAt": "2026-07-07T12:57:17Z",
+      "updatedAt": "2026-07-07T13:00:48Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "3164d7c9c62308643afe39f6a6672878eaf3d9e4",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "fix/docnames-to-latest",
+      "headRefOid": "84cc1cfe1193cc41636b65ed8d3d12f2f97d5550",
+      "closedAt": "2026-07-07T13:00:46Z",
+      "mergedAt": "2026-07-07T13:00:46Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "e80858ed1bcfab1a99ac99619e8ed1d4abd2fc5e"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDON1QDo87u1kQD",
+      "title": "fix: remove Makefile and set docnames to -02",
+      "url": "https://github.com/agntcy/slim-spec/pull/22",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Comparison with agntcy/dir-spec (which publishes successfully)",
+      "createdAt": "2026-07-07T13:09:00Z",
+      "updatedAt": "2026-07-07T13:23:07Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "81a9c74ded453e01fc284a481bd3a6fee77dd645",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "fix/remove-makefile-and-set-version",
+      "headRefOid": "f6b26b92212f96a1cc56c8da21723c7dbbbb76fa",
+      "closedAt": "2026-07-07T13:22:45Z",
+      "mergedAt": "2026-07-07T13:22:45Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "e7f68d8116a606fafd7200c04d5e2bb192385903"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo88AAAABFOOlOQ",
+          "commit": {
+            "abbreviatedOid": "f6b26b9"
+          },
+          "author": "msardara",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-07-07T13:11:00Z",
+          "updatedAt": "2026-07-07T13:11:00Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON1QDo88AAAABFOO14g",
+          "commit": {
+            "abbreviatedOid": "f6b26b9"
+          },
+          "author": "micpapal",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-07-07T13:11:27Z",
+          "updatedAt": "2026-07-07T13:11:27Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
