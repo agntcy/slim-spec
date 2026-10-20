@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-09T00:50:52.454438+00:00",
+  "timestamp": "2026-10-20T00:43:11.143839+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -1033,6 +1033,48 @@
           "body": "",
           "createdAt": "2026-07-07T13:11:27Z",
           "updatedAt": "2026-07-07T13:11:27Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "PR_kwDON1QDo88AAAABJUXhrQ",
+      "title": "ci: add CI Summary check",
+      "url": "https://github.com/agntcy/slim-spec/pull/23",
+      "state": "MERGED",
+      "author": "msardara",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Adds a `CI Summary` workflow that runs on pull requests and merge groups, waits for all other checks on the commit and fails if any of them did not succeed. The branch ruleset can then require `CI Summary` (and `DCO`) instead of listing each job.\n\nIt polls instead of reacting to `check_suite`, because GitHub does not deliver `check_suite` events to workflows when the suite was created by GitHub Actions. Validated on agntcy/slim-a2a-go#42.",
+      "createdAt": "2026-10-19T11:36:54Z",
+      "updatedAt": "2026-10-19T12:00:18Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "e7f68d8116a606fafd7200c04d5e2bb192385903",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "ci/ci-summary",
+      "headRefOid": "888daf7597e994c75174bb25a26c937151224398",
+      "closedAt": "2026-10-19T12:00:15Z",
+      "mergedAt": "2026-10-19T12:00:15Z",
+      "mergedBy": "msardara",
+      "mergeCommit": {
+        "oid": "20d92915ef4b3ed3a8d3233e08a225d4a97bcd0d"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON1QDo88AAAABTBD_NQ",
+          "commit": {
+            "abbreviatedOid": "888daf7"
+          },
+          "author": "janosSarusiKis",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-10-19T11:55:57Z",
+          "updatedAt": "2026-10-19T11:55:57Z",
           "comments": []
         }
       ]
