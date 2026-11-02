@@ -3,10 +3,10 @@ title: "An Overview of Messaging Systems and Their Applicability to Agentic AI"
 abbrev: "agntcy-messaging-eco"
 category: info
 
-docname: draft-mpsb-agntcy-messaging-02
+docname: draft-mpsb-agntcy-messaging-03
 submissiontype: independent
 number:
-date: 2026-07-07
+date: 2026-11-02
 consensus: false
 v: 3
 # area: Applications
@@ -57,6 +57,31 @@ informative:
     author:
       - name: Apache Software Foundation
     target: https://kafka.apache.org/documentation/
+  RabbitMQNetworking:
+    title: "Networking and RabbitMQ"
+    author:
+      - name: Broadcom
+    target: https://www.rabbitmq.com/docs/networking
+  RabbitMQWebMQTT:
+    title: "RabbitMQ Web MQTT Plugin"
+    author:
+      - name: Broadcom
+    target: https://www.rabbitmq.com/docs/web-mqtt
+  NATSLeaf:
+    title: "NATS Leaf Nodes"
+    author:
+      - name: Synadia Communications
+    target: https://docs.nats.io/learn/topologies/leaf-nodes
+  NATSGateway:
+    title: "NATS Super-clusters"
+    author:
+      - name: Synadia Communications
+    target: https://docs.nats.io/learn/topologies/super-clusters
+  KafkaListeners:
+    title: "Kafka Broker Configs: Listeners"
+    author:
+      - name: Apache Software Foundation
+    target: https://kafka.apache.org/44/configuration/broker-configs/#brokerconfigs_advertised.listeners
   gRPC:
     title: "gRPC Documentation"
     author:
@@ -77,6 +102,51 @@ informative:
     author:
       - name: Anthropic
     target: https://modelcontextprotocol.io/
+  AgentMesh:
+    title: "Agent Mesh"
+    author:
+      - name: Google
+    target: https://github.com/google/agentmesh
+  AgentMeshDocs:
+    title: "Agent Mesh Architecture Documentation"
+    author:
+      - name: Google
+    target: https://google.github.io/agentmesh/docs/concepts/architecture/
+  AgentMeshNetworking:
+    title: "Agent Mesh Networking and Node API"
+    author:
+      - name: Google
+    target: https://google.github.io/agentmesh/docs/concepts/networking/
+  AgentMeshAuthorization:
+    title: "Agent Mesh Authorization"
+    author:
+      - name: Google
+    target: https://google.github.io/agentmesh/docs/concepts/authorization/
+  AgentMeshAgentGateway:
+    title: "Agent Mesh: Agent Gateway Integration"
+    author:
+      - name: Google
+    target: https://google.github.io/agentmesh/docs/guides/agentgateway/
+  AgentGateway:
+    title: "Agent Gateway"
+    author:
+      - name: Agentgateway Project
+    target: https://agentgateway.dev/
+  AgentGatewayMCP:
+    title: "Agent Gateway MCP Guardrails"
+    author:
+      - name: Agentgateway Project
+    target: https://agentgateway.dev/docs/standalone/latest/documentation/mcp/guardrails/
+  AgentGatewayLLM:
+    title: "Agent Gateway LLM Guardrails"
+    author:
+      - name: Agentgateway Project
+    target: https://agentgateway.dev/docs/standalone/latest/documentation/llm/prompt-guards/
+  AgentGatewayA2A:
+    title: "Agent Gateway A2A Gateway"
+    author:
+      - name: Agentgateway Project
+    target: https://agentgateway.dev/docs/standalone/latest/documentation/agent/a2a/
   SRPC:
     title: "SLIM RPC (SRPC) Reference"
     author:
@@ -104,13 +174,10 @@ operational complexity. We examine how each protocol's design decisions impact
 agentic AI deployments, from lightweight edge computing scenarios to large-scale
 multi-organizational collaborations.
 
-AGNTCY SLIM emerges as a purpose-built solution, integrating Message Layer
-Security (MLS) {{!RFC9420}} with gRPC {{gRPC}} over HTTP/2 {{!RFC9113}} to
-provide end-to-end encryption with forward secrecy, efficient streaming, and OAuth-based
-authentication {{!RFC6749}}. Unlike transport-layer security approaches, SLIM's
-MLS implementation ensures secure communication even through untrusted
-intermediaries while supporting dynamic
-group membership changes essential for collaborative AI agents.
+This document also describes Agent Mesh {{AgentMesh}}, an overlay for agent
+service discovery, policy enforcement, and cross-network connectivity. It
+operates at the service-network layer, alongside messaging systems that provide
+message delivery and session semantics.
 
 --- middle
 
@@ -292,12 +359,10 @@ agents become reachable through the SLIM network without exposing server ports,
 while only routing nodes need to be publicly reachable. This simplifies
 deployment for agents behind NATs and firewalls.
 
-SLIM's foundation on gRPC over HTTP/2 and HTTP/3 provides several immediate
-advantages for AI agent communication. The binary protocol buffer wire format
-minimizes serialization overhead while supporting both binary and text data
-types essential for AI workloads. HTTP/2's multiplexing capabilities allow a
-single connection to carry multiple concurrent agent conversations, reducing
-connection overhead in systems with many interacting agents.
+SLIM carries Protocol Buffers messages over streaming gRPC {{gRPC}} on HTTP/2 or
+over WebSocket. HTTP/2 supports multiplexed streams; latency, throughput, and
+connection costs depend on the implementation, network path, and workload and
+should be measured in the target deployment.
 
 SLIM is architected as a distributed system with a clear separation of
 concerns:
@@ -313,44 +378,23 @@ Routing nodes run only the data plane, keeping infrastructure lightweight,
 while language bindings include the data-plane client plus the session layer
 for full security and reliability.
 
-The protocol's quality of service model explicitly addresses the diverse
-communication patterns found in agentic AI systems. Fire-and-forget messaging
-supports high-frequency status updates and non-critical notifications, while
-reliable exactly-once delivery ensures critical coordination messages and
-expensive computational results are never lost. This extends consistently across
-request-reply patterns and streaming communications.
+SLIM session delivery retries and acknowledgements are configurable and are not
+guaranteed for every session. Applications should select and test the behavior
+they require; they should not infer exactly-once processing from transport
+retries. Idempotent handlers and application-level deduplication remain useful
+when operations may be retried.
 
-SLIM's security model is intentionally two-tiered. At the network layer,
-HTTP/2 with TLS 1.3 provides hop-by-hop transport security, integrating
-naturally with existing infrastructure—load balancers, API gateways, and
-observability tools all operate on TLS-protected HTTP/2 connections without
-requiring access to message content. At the content layer, MLS provides an
-application-layer encryption envelope that protects message payloads
-end-to-end, independently of how many TLS connections are traversed along the
-path. Routing nodes see only the channel name and an encrypted blob; even after
-terminating a TLS session, an intermediate node cannot access agent data.
+SLIM separates hop-by-hop transport protection from optional session-layer
+content protection. TLS may protect a transport hop. When MLS is enabled for a
+session, application content is protected between session members while routing
+nodes forward it using message metadata. Without MLS, transport security alone
+does not hide content from a routing node that terminates the protected hop.
 
-This two-tier approach—HTTP/2 for network security, MLS for content
-security—gives SLIM a zero-trust intermediary property: routing nodes can
-forward messages through untrusted infrastructure while maintaining full payload
-confidentiality. Protocols that rely solely on transport-layer security require
-trust in all intermediaries, since each hop terminates TLS and has visibility
-into message content. For agentic AI deployments spanning multiple organizations
-or transiting third-party infrastructure, this distinction is critical.
-
-The protocol's authentication model demonstrates particular innovation in
-addressing agentic AI security requirements. By transporting MLS credentials and
-cryptographic proofs within OAuth bearer tokens over HTTP/2, SLIM achieves
-several important properties:
-
-- **Interoperability**: Leverages standard HTTP/2 and OAuth libraries, reducing
-  implementation complexity and improving compatibility with existing
-  infrastructure
-- **Scalability**: Single persistent HTTP/2 connections efficiently carry many
-  MLS-secured messages between agents
-- **Immediate revocation**: Malicious or compromised agents can be immediately
-  ejected by revoking their OAuth tokens without requiring complex ratchet
-  tree rebalancing operations
+Authentication and authorization use configured identity providers and session
+policies. MLS group membership and identity-provider credentials serve related
+but distinct purposes; deployments define how identity changes affect session
+membership. Revoking an application credential does not by itself establish
+that a participant has been removed from an existing MLS group.
 
 SLIM's naming system is hierarchical and DID-inspired, for example:
 `organization/namespace/service/instance`. This supports anycast routing (to any
@@ -370,6 +414,71 @@ SLIM provides multi-language bindings. Python and Go bindings are available
 today, with JavaScript/TypeScript, C#, and Kotlin in progress, enabling
 heterogeneous agent systems to interoperate on the same transport.
 
+# Agent-Network Overlays
+
+Agent-network overlays combine service discovery, identity, authorization, and
+connectivity across networks. They operate at the service-network layer and can
+work alongside messaging protocols and agent interaction protocols.
+
+Google Agent Mesh {{AgentMesh}} is a service-network overlay with a control
+plane, routers, and nodes {{AgentMeshDocs}}. The control plane admits nodes,
+issues credentials, distributes policy, and provides router configuration. A
+node runs alongside an agent or service and connects that workload to the mesh.
+Routers provide a directory for service discovery and relay traffic between
+nodes when a direct connection is unavailable.
+
+## Enrollment and Identity
+
+A node can enroll using an OpenID Connect identity token or an operator-issued
+bootstrap token, and proves possession of its node key during enrollment. The
+control plane issues a signed Biscuit credential containing the node identity
+and authorization facts, such as roles and identity-provider claims. Nodes and
+routers verify these credentials using the control plane's public key. The
+control plane also holds mesh policy and distributes it to the nodes that
+enforce that policy.
+
+## Service Discovery and Calls
+
+Nodes publish services under typed names, including MCP, A2A, and inference
+services. A node queries a router to discover the provider for a service name;
+routers maintain and exchange directory records. Nodes connect directly when
+network reachability permits, or use a router relay when it does not. Agent Mesh
+uses libp2p for node connectivity, with QUIC or TCP transports; hole punching
+can establish a direct path when the network permits it.
+
+An agent uses the local node API rather than addressing remote nodes itself.
+The API includes an MCP server for discovering and calling remote tools, an
+OpenAI-compatible endpoint for inference services, and proxy routes for
+individual services, including A2A agents. For a service call, the connecting
+node authenticates to the provider with its credential. The provider verifies
+the credential and evaluates the service policy before forwarding the request
+to its local backend. The caller can also verify the provider's credential and
+attested labels before sending request data.
+
+The documented service-call path is point-to-point: a caller discovers one or
+more providers and addresses a call to a selected provider
+{{AgentMeshNetworking}}. Authorization policy can use identity groups when
+deciding which peer nodes a caller may reach, but such a group is not a
+multicast destination or shared message channel {{AgentMeshAuthorization}}.
+Routers also distribute signed mesh-control events through gossip; those events
+manage mesh state and are distinct from application messages. The documented
+Agent Mesh APIs do not describe an application-level group messaging channel.
+
+## Transport Security and Trust Boundaries
+
+Node-to-node connections use authenticated encrypted channels over libp2p. The
+documented implementations use TLS 1.3 or Noise; routers relay encrypted traffic
+when they are on the path. The control plane handles enrollment, credentials,
+and policy distribution, while application requests travel between nodes. The
+control plane is the trust root for credentials and mesh policy; service nodes
+make the authorization decision for their hosted services.
+
+Agent Mesh describes service discovery, identity, authorization, and network
+connectivity. Messaging protocols describe message delivery and session
+semantics. The Agent Mesh node APIs expose MCP and A2A services to applications;
+this section describes that integration boundary without treating the overlay
+as a broker protocol.
+
 # Security Analysis
 
 Security requirements for agentic AI systems extend well beyond the capabilities
@@ -377,28 +486,22 @@ provided by traditional messaging protocols. The autonomous nature of AI agents,
 combined with their access to sensitive data and computational resources,
 creates unique threat models that messaging infrastructure must address.
 
-**Post-Compromise Security**: In traditional systems, credential compromise
-typically requires immediate revocation and re-authentication. However, AI
-agents may operate for extended periods with limited human oversight. SLIM's
-MLS implementation provides forward secrecy, ensuring that compromise of
-current credentials cannot decrypt past communications, and post-compromise
-security, guaranteeing that future communications remain secure even after
-credential compromise.
+**Post-Compromise Security**: MLS defines forward secrecy and post-compromise
+security properties for group key evolution. These properties depend on correct
+MLS operation and group updates; recovery after a compromise is not automatic
+merely because MLS is enabled. Deployments also need procedures to remove or
+re-authenticate compromised participants.
 
-**Quantum-Safe Cryptography**: As quantum computing advances threaten current
-cryptographic standards, AI systems—which may operate for years with the same
-cryptographic keys—need protection against future quantum attacks. SLIM's
-MLS implementation provides this protection and, when combined with
-post-quantum cipher suites, also defends against future quantum attacks; traditional
-protocols rely entirely on classical cryptographic assumptions that may become
-vulnerable.
+**Post-Quantum Cryptography**: MLS does not by itself imply post-quantum
+protection. The algorithms negotiated by an implementation determine whether a
+deployment has classical, hybrid, or post-quantum security. The same applies to
+the other systems discussed here; deployments should verify the algorithms
+actually supported and enabled.
 
-**Multi-Domain Operations**: Agentic AI systems often span multiple
-organizational and security domains, with agents from different organizations
-collaborating on shared tasks. Traditional protocols typically assume trust in
-messaging infrastructure, but SLIM's end-to-end encryption ensures secure
-communication even when messages transit through potentially untrusted
-intermediaries.
+**Multi-Domain Operations**: Agentic AI systems can span organizational and
+security domains. Optional MLS protection can limit intermediary access to
+application content, but it does not replace identity federation, authorization,
+endpoint security, or operational trust decisions.
 
 **Dynamic Group Membership**: AI agent groups frequently change as agents join
 collaborations, complete tasks, or become unavailable. MLS's efficient group
@@ -412,11 +515,10 @@ The performance characteristics of messaging protocols significantly impact the
 behavior and capabilities of agentic AI systems, particularly as the number of
 agents and frequency of interactions scale.
 
-**Latency Sensitivity**: Many AI agent interactions are latency-sensitive,
-particularly in real-time decision-making scenarios or when agents are
-coordinating time-critical tasks. SLIM's HTTP/2 foundation provides header
-compression and multiplexing that reduce per-message overhead, while the binary
-protocol buffer encoding minimizes serialization costs.
+**Latency Sensitivity**: Many AI agent interactions are latency-sensitive.
+SLIM supports streaming over HTTP/2 or WebSocket with Protocol Buffers encoding,
+but protocol choice alone does not determine end-to-end latency. Implementations
+should benchmark representative payloads, fan-out patterns, and network paths.
 
 **Throughput Requirements**: Large-scale agentic AI systems may involve
 thousands of agents generating substantial message volumes. While protocols
@@ -441,10 +543,9 @@ The operational characteristics of messaging protocols significantly impact the
 total cost of ownership and operational complexity of agentic AI systems.
 
 **Infrastructure Requirements**: Traditional enterprise protocols like AMQP
-require dedicated message broker infrastructure with high availability and
-clustering capabilities. Kafka requires even more complex distributed
-infrastructure. SLIM's optional broker architecture allows deployments to scale
-infrastructure complexity with system requirements.
+require broker infrastructure, while Kafka deployments typically use a
+distributed cluster. SLIM deployments use a network of routing nodes; the
+required topology depends on deployment scale and availability goals.
 
 **Monitoring and Observability**: Debugging distributed agentic AI systems
 requires comprehensive visibility into agent communications. SLIM's foundation
@@ -458,11 +559,180 @@ integrates naturally with cloud load balancers, API gateways, and observability
 services, while specialized messaging protocols may require additional
 integration layers.
 
-**Compliance and Auditing**: AI systems in regulated industries require
-comprehensive audit trails and compliance capabilities. SLIM's structured topic
-hierarchy and optional message persistence support regulatory requirements,
-while the end-to-end encryption provides compliance with data protection
-regulations.
+**Compliance and Auditing**: Regulated deployments need explicit audit,
+retention, and access-control policies. SLIM's optional session-state
+persistence is not a message archive or audit log, and encryption alone does not
+establish regulatory compliance.
+
+# Connectivity for Agents Behind NAT
+
+Messaging semantics and network reachability are separate concerns. An agent
+that cannot accept inbound connections can still participate as a client when
+it can establish an outbound connection to a reachable broker or routing node.
+The established connection carries traffic in both directions, so replies and
+subscribed messages can return without opening an inbound firewall port at the
+agent. Long-lived connections require suitable keepalive settings and network
+policy that permits egress to the service endpoint.
+
+This client-connection pattern does not, by itself, make a private agent
+service directly reachable by another agent. For direct RPC to a service behind
+NAT, deployments need a reachable gateway, relay, reverse connection, or
+network overlay. Alternatively, the private agent can subscribe to requests on
+a broker and publish replies over its existing outbound connection. The latter
+uses the messaging system's request/reply conventions and requires application
+logic for correlation, timeouts, retries, and authorization.
+
+## Patterns by System
+
+**AMQP**: An AMQP client initiates a TCP connection to an AMQP listener on a
+broker. An agent in a private network can connect outward to a broker reachable
+from that network; the broker mediates communication with other connected
+clients. Where the broker is private as well, network routing, a VPN, or an
+implementation-specific broker bridge is needed between the agent network and
+the broker network. RabbitMQ documents separate client listeners and
+inter-node ports; cluster inter-node access is an operator networking concern
+and is distinct from client connectivity {{RabbitMQNetworking}}.
+
+**MQTT**: MQTT defines the client as opening a bidirectional connection to a
+server, then publishing and subscribing through that connection {{MQTT}}. This
+fits devices or agents behind NAT when they can reach the broker outbound.
+MQTT 5.0 supports TCP-based transports and WebSocket; a broker's WebSocket
+listener can be used by browser clients, subject to the broker implementation
+and its network configuration {{RabbitMQWebMQTT}}. A local MQTT broker or
+bridge can aggregate clients on a private network and forward configured topic
+traffic to an upstream broker.
+
+**NATS**: Clients connect to a NATS server. For an edge network that permits
+outbound connections only, a local NATS leaf node can dial a hub and bridge
+subject interest and matching messages in both directions over that link. Local
+agents then connect to the leaf on the private network; they do not each need a
+public address or a direct connection to the hub {{NATSLeaf}}. NATS gateways
+connect separate NATS clusters, while leaf nodes connect edge servers to a
+hub {{NATSGateway}}.
+
+**Kafka**: A Kafka client can initiate its connections outbound, but connecting
+to the bootstrap address is not sufficient if broker metadata advertises
+addresses the client cannot reach. Every broker address returned through
+`advertised.listeners` must be reachable from the agent's network, directly or
+through configured network paths such as private routing or a VPN
+{{KafkaListeners}}. Kafka's broker topology is therefore an explicit part of
+the connectivity design for clients in separate private networks.
+
+**AMQP over WebSockets**: A WebSocket binding can let browser-based clients
+connect through networks that permit HTTP(S) egress, when the chosen broker or
+gateway implements that binding. WebSockets change how the client reaches the
+service; they do not remove the need for a reachable broker endpoint or provide
+an inbound route to a private agent.
+
+**SLIM**: A SLIM endpoint can initiate a streaming gRPC connection over HTTP/2
+or a WebSocket connection to an accessible routing node. Messages are then
+routed by name through the interconnected routing-node network, rather than
+requiring every application endpoint to expose an Internet-reachable listener.
+Deployments still need reachable routing nodes and connectivity between the
+routing nodes that carry the route.
+
+**Agent Mesh**: An Agent Mesh node runs beside an agent or service and connects
+to routers; nodes can communicate directly when network conditions permit and
+use router relays otherwise. This lets a node behind NAT participate without
+publishing its own reachable service address. Its service discovery and
+authorization behavior is described in the Agent-Network Overlays section
+{{AgentMeshNetworking}}.
+
+These patterns place a reachable broker, edge bridge, gateway, or router on
+the network boundary and keep end-device connectivity outbound. They differ in
+what that boundary component provides: message brokering, topic or subject
+bridging, log access, or name-routed service connectivity. Deployments should
+also account for the trust boundary at that component, connection loss and
+reconnection behavior, and whether messages are buffered while an endpoint is
+offline.
+
+# Agent Gateways for Inspection
+
+An Agent Gateway can enforce content policy when it is placed inline on a
+request path and receives the application protocol in a form it can parse. For
+example, a gateway between an agent and an MCP server, A2A agent, or LLM API can
+inspect requests and responses, apply authorization and content guardrails, and
+forward permitted traffic to a backend. Agent Gateway documents HTTP and gRPC
+proxying, native MCP and A2A routing, and request/response guardrails for those
+protocols {{AgentGateway}} {{AgentGatewayMCP}} {{AgentGatewayLLM}}
+{{AgentGatewayA2A}}.
+
+For inspection, the gateway must be an actual data-path hop. TLS therefore
+terminates at the gateway, which establishes a separate protected connection to
+the upstream service. This makes the gateway a trusted plaintext-handling
+component; deployment policy should cover credential forwarding, payload
+logging, redaction, audit retention, and failure behavior. A generic TCP proxy
+can forward a connection, but application-level inspection requires a
+protocol-aware gateway or adapter.
+
+## Synchronous Enforcement and Streaming
+
+Content enforcement is an inline decision, not a passive copy of traffic. For a
+request-phase check, the gateway receives and parses the request, evaluates the
+policy locally or calls a policy service, and holds the request until it has a
+decision. It then forwards the original or modified request, or rejects it
+without contacting the backend. A response-phase check runs after the backend
+returns and before the gateway releases the response to the client. Agent
+Gateway documents request and response phases for MCP guardrail processors,
+including pass, mutate, and deny outcomes {{AgentGatewayMCP}}.
+
+This introduces enforcement latency and may require buffering the content being
+checked. Local deterministic rules can reduce this delay; remote classifiers or
+policy services add their processing and network time. Deployments should set
+body-size limits, timeouts, concurrency limits, and an explicit failure mode.
+Fail-closed behavior preserves the policy when the checker is unavailable but
+can make the service unavailable; fail-open behavior preserves availability but
+allows unchecked traffic. Audit-only evaluation can help tune policies, but it
+does not block or redact content.
+
+Streaming makes response enforcement different from request enforcement. A
+gateway can hold a complete buffered response, inspect or redact it, and then
+release it, at the cost of delaying the first response byte and storing the
+response while it is checked. Alternatively, it can inspect a response stream
+incrementally, but bytes already sent cannot be retracted. Agent Gateway's LLM
+guardrail documentation states that streamed responses can be rejected when a
+guardrail matches, but response masking does not apply to content already sent;
+buffered responses support masking {{AgentGatewayLLM}}. Applications that
+require redaction before any content reaches the caller therefore need buffering
+or an endpoint-side policy, rather than relying on post-send inspection.
+
+The integration depends on the messaging system:
+
+- **HTTP-based A2A, MCP, or model APIs**: Configure clients or service routing
+  to send requests through the gateway. The gateway can apply protocol-aware
+  policy before forwarding to a public or privately reachable backend.
+- **AMQP, MQTT, NATS, or Kafka**: A gateway can be placed at the client/broker
+  boundary, but a generic TCP listener does not interpret broker frames or
+  message payloads. Prompt inspection therefore requires a protocol-aware proxy,
+  broker extension, or application adapter. An alternative is to inspect
+  messages at the producer before publishing and at the consumer after delivery.
+- **SLIM**: A generic gateway attached to a routing node does not parse SLIM's
+  Protocol Buffers message envelope. Relay inspection requires a SLIM-aware
+  integration. If MLS is enabled, application content remains opaque to routing
+  nodes; inspect before MLS encryption at the sending endpoint, after decryption
+  at the receiving endpoint, or make the inspection gateway an explicitly
+  trusted session participant.
+- **Agent Mesh**: Agent Mesh documents an integration with Agent Gateway in
+  front of an `agentmesh-node` {{AgentMeshAgentGateway}}. The client sends its
+  identity-provider token to Agent Gateway. The gateway validates the token,
+  exchanges it at the node's `/oauth/token` endpoint for a caller-bound mesh
+  credential, then forwards the request to the node's `/mesh/<peer-id>/<type>/<name>/`
+  proxy with that credential. The node connects to the selected mesh provider,
+  and the provider node enforces its service policy. This places supported
+  application-layer checks at Agent Gateway before the request enters the mesh
+  and before the response returns to the client.
+
+  The gateway is not inserted into the Agent Mesh router's relay or peer-link
+  path. Those links carry authenticated encrypted traffic, whether relayed or
+  direct, and are not readable by a gateway attached only to a router. To make
+  gateway policy mandatory, clients must use the gateway-facing endpoint rather
+  than bypassing it and calling a node API directly.
+
+Colocating an Agent Gateway with a relay does not by itself enable inspection:
+the gateway must terminate or receive the application-level plaintext, and the
+system must route every applicable path through it. If end-to-end encryption is
+required, inspection belongs at a trusted endpoint or authorized group member;
+adding an intermediary that can decrypt changes the trust model.
 
 # RPC in Agentic Protocols and Relationship to Messaging
 
@@ -667,16 +937,16 @@ Table 2 extends the comparison to include additional protocols relevant to moder
 | Feature | AMQP over WebSockets | Kafka | SLIM |
 |---------|---------------------|-------|------|
 | **Protocol Type** | AMQP tunneled through WebSockets | Distributed commit log, high-throughput pub/sub | Secure low-latency interactive messaging |
-| **Transport** | WebSockets over TLS | TCP (optionally TLS) | gRPC (over HTTP/2-HTTP/3) |
+| **Transport** | WebSockets over TLS | TCP (optionally TLS) | Streaming gRPC over HTTP/2 or WebSocket |
 | **Message Model** | Same as AMQP (depends on the broker's AMQP model) | Topics with partitions, consumer groups, offset-based consumption | Hierarchical names (`org/namespace/service/instance`), point-to-point and group sessions |
-| **QoS / Delivery** | Same as AMQP | At-least-once default; exactly-once possible via transactions | At-most-once (fire-and-forget) or exactly-once (reliable); applies consistently to request/reply and streaming interactions |
+| **QoS / Delivery** | Same as AMQP | At-least-once default; exactly-once possible via transactions | Configurable retries and acknowledgements; not guaranteed for every session |
 | **Streaming** | Same as AMQP if broker supports streaming | Native log-based streaming (Kafka Streams, ksqlDB, etc.) | Native gRPC support via HTTP/2/3 client streaming, server streaming |
 | **Persistence** | Same as AMQP | Built-in: messages persist on disk across clusters | Not supported |
 | **Protocol Overhead** | Higher (AMQP + WebSockets handshake) | Moderate (custom binary protocol, but optimized for high throughput) | Low: binary Protocol Buffers wire format; native support for both binary (bytes) and text payloads |
-| **Broker Required** | Yes | Yes (distributed cluster) | Yes for multi-party group sessions; peer-to-peer also supported |
-| **Authentication** | Same as AMQP (broker-based) | SASL/PLAIN, SASL/SCRAM, Kerberos, OAuth | OAuth bearer tokens carrying MLS credentials and cryptographic proofs; standard HTTP/2 and OAuth libraries for interoperability; immediate revocation by invalidating OAuth tokens |
+| **Broker Required** | Yes | Yes (distributed cluster) | Routed through SLIM nodes; topology is deployment-specific |
+| **Authentication** | Same as AMQP (broker-based) | SASL/PLAIN, SASL/SCRAM, Kerberos, OAuth | Configured identity providers and session policies |
 | **Transport Security** | WSS (WebSocket Secure) | TLS | TLS |
-| **Message Security** | Same as AMQP (depends on the broker's encryption at rest/in-transit) | TLS in-flight encryption, optional at-rest encryption (broker config) | MLS end-to-end encryption with forward secrecy and post-compromise security, independent of transport |
+| **Message Security** | Same as AMQP (depends on the broker's encryption at rest/in-transit) | TLS in-flight encryption, optional at-rest encryption (broker config) | Optional MLS end-to-end content protection, independent of transport |
 | **Binary or Text** | Binary AMQP frames over WebSockets | Binary protocol (common payloads: Avro, JSON, Protobuf) | Binary or Text |
 | **Use Cases** | Browser-based apps needing AMQP behind firewalls | High-throughput data pipelines, streaming analytics, event sourcing | Group messaging, one-to-many, many-to-many, cloud-native microservices, real-time communications, streaming |
 | **Real-World Usage** | Less common, mainly for browser/firewall scenarios using RabbitMQ or similar | Extremely widespread across industries; de facto standard for large-scale event streaming | New entrant; reference implementations in Python and Go available; early production deployments |
@@ -689,11 +959,12 @@ Security Analysis section of this document. Readers deploying any
 of the protocols described SHOULD consult the security considerations sections
 of the respective protocol specifications.
 
-Of the protocols analyzed, only SLIM provides application-layer end-to-end
-encryption via MLS {{!RFC9420}}, forward secrecy, and post-compromise security
-independent of transport-layer security. All other protocols rely on
-transport-layer TLS, which does not protect message content from trusted
-intermediaries.
+Among the systems analyzed, SLIM explicitly integrates optional MLS-based
+end-to-end protection for session content. The other protocols and systems do
+not provide that same integrated MLS model, although applications can add
+message-level encryption or other end-to-end protections. Transport-layer TLS
+alone protects a hop and does not hide content from an intermediary that
+terminates that hop.
 
 # IANA Considerations
 
