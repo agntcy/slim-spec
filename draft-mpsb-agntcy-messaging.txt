@@ -5,13 +5,13 @@
 Network Working Group                                     L. Muscariello
 Internet-Draft                                               M. Papalini
 Intended status: Informational                                M. Sardara
-Expires: 8 January 2027                                         S. Betts
+Expires: 6 May 2027                                             S. Betts
                                                                    Cisco
-                                                             7 July 2026
+                                                         2 November 2026
 
 
  An Overview of Messaging Systems and Their Applicability to Agentic AI
-                     draft-mpsb-agntcy-messaging-02
+                     draft-mpsb-agntcy-messaging-03
 
 Abstract
 
@@ -31,14 +31,11 @@ Abstract
    lightweight edge computing scenarios to large-scale multi-
    organizational collaborations.
 
-   AGNTCY SLIM emerges as a purpose-built solution, integrating Message
-   Layer Security (MLS) [RFC9420] with gRPC [gRPC] over HTTP/2 [RFC9113]
-   to provide end-to-end encryption with forward secrecy, efficient
-   streaming, and OAuth-based authentication [RFC6749].  Unlike
-   transport-layer security approaches, SLIM's MLS implementation
-   ensures secure communication even through untrusted intermediaries
-   while supporting dynamic group membership changes essential for
-   collaborative AI agents.
+   This document also describes Agent Mesh [AgentMesh], an overlay for
+   agent service discovery, policy enforcement, and cross-network
+   connectivity.  It operates at the service-network layer, alongside
+   messaging systems that provide message delivery and session
+   semantics.
 
 Discussion Venues
 
@@ -62,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2027.
+   This Internet-Draft will expire on 6 May 2027.
 
 Copyright Notice
 
@@ -86,25 +83,33 @@ Table of Contents
      3.4.  Browser Integration: AMQP over WebSockets
      3.5.  High-Throughput Streaming: Apache Kafka
      3.6.  Next-Generation Agent Messaging: SLIM
-   4.  Security Analysis
-   5.  Performance Characteristics
-   6.  Deployment and Operational Considerations
-   7.  RPC in Agentic Protocols and Relationship to Messaging
-     7.1.  Agentic Protocols Are RPC-Oriented
-     7.2.  RPC vs. Messaging: Synchronous vs. Asynchronous
-     7.3.  Challenges of Running RPC over Messaging
-     7.4.  When Asynchronous Feels Synchronous
-     7.5.  Bridging Patterns: RPC over Messaging
-     7.6.  SLIM RPC (SRPC)
-     7.7.  Advantages of SLIM for Agentic Protocols
-     7.8.  Security Implications
-     7.9.  Guidance: When to Choose What
-   8.  Comparison
-   9.  Security Considerations
-   10. IANA Considerations
-   11. References
-     11.1.  Normative References
-     11.2.  Informative References
+   4.  Agent-Network Overlays
+     4.1.  Enrollment and Identity
+     4.2.  Service Discovery and Calls
+     4.3.  Transport Security and Trust Boundaries
+   5.  Security Analysis
+   6.  Performance Characteristics
+   7.  Deployment and Operational Considerations
+   8.  Connectivity for Agents Behind NAT
+     8.1.  Patterns by System
+   9.  Agent Gateways for Inspection
+     9.1.  Synchronous Enforcement and Streaming
+   10. RPC in Agentic Protocols and Relationship to Messaging
+     10.1.  Agentic Protocols Are RPC-Oriented
+     10.2.  RPC vs. Messaging: Synchronous vs. Asynchronous
+     10.3.  Challenges of Running RPC over Messaging
+     10.4.  When Asynchronous Feels Synchronous
+     10.5.  Bridging Patterns: RPC over Messaging
+     10.6.  SLIM RPC (SRPC)
+     10.7.  Advantages of SLIM for Agentic Protocols
+     10.8.  Security Implications
+     10.9.  Guidance: When to Choose What
+   11. Comparison
+   12. Security Considerations
+   13. IANA Considerations
+   14. References
+     14.1.  Normative References
+     14.2.  Informative References
    Authors' Addresses
 
 1.  Conventions and Definitions
@@ -308,13 +313,11 @@ Table of Contents
    ports, while only routing nodes need to be publicly reachable.  This
    simplifies deployment for agents behind NATs and firewalls.
 
-   SLIM's foundation on gRPC over HTTP/2 and HTTP/3 provides several
-   immediate advantages for AI agent communication.  The binary protocol
-   buffer wire format minimizes serialization overhead while supporting
-   both binary and text data types essential for AI workloads.  HTTP/2's
-   multiplexing capabilities allow a single connection to carry multiple
-   concurrent agent conversations, reducing connection overhead in
-   systems with many interacting agents.
+   SLIM carries Protocol Buffers messages over streaming gRPC [gRPC] on
+   HTTP/2 or over WebSocket.  HTTP/2 supports multiplexed streams;
+   latency, throughput, and connection costs depend on the
+   implementation, network path, and workload and should be measured in
+   the target deployment.
 
    SLIM is architected as a distributed system with a clear separation
    of concerns:
@@ -333,52 +336,26 @@ Table of Contents
    lightweight, while language bindings include the data-plane client
    plus the session layer for full security and reliability.
 
-   The protocol's quality of service model explicitly addresses the
-   diverse communication patterns found in agentic AI systems.  Fire-
-   and-forget messaging supports high-frequency status updates and non-
-   critical notifications, while reliable exactly-once delivery ensures
-   critical coordination messages and expensive computational results
-   are never lost.  This extends consistently across request-reply
-   patterns and streaming communications.
+   SLIM session delivery retries and acknowledgements are configurable
+   and are not guaranteed for every session.  Applications should select
+   and test the behavior they require; they should not infer exactly-
+   once processing from transport retries.  Idempotent handlers and
+   application-level deduplication remain useful when operations may be
+   retried.
 
-   SLIM's security model is intentionally two-tiered.  At the network
-   layer, HTTP/2 with TLS 1.3 provides hop-by-hop transport security,
-   integrating naturally with existing infrastructure—load balancers,
-   API gateways, and observability tools all operate on TLS-protected
-   HTTP/2 connections without requiring access to message content.  At
-   the content layer, MLS provides an application-layer encryption
-   envelope that protects message payloads end-to-end, independently of
-   how many TLS connections are traversed along the path.  Routing nodes
-   see only the channel name and an encrypted blob; even after
-   terminating a TLS session, an intermediate node cannot access agent
-   data.
+   SLIM separates hop-by-hop transport protection from optional session-
+   layer content protection.  TLS may protect a transport hop.  When MLS
+   is enabled for a session, application content is protected between
+   session members while routing nodes forward it using message
+   metadata.  Without MLS, transport security alone does not hide
+   content from a routing node that terminates the protected hop.
 
-   This two-tier approach—HTTP/2 for network security, MLS for content
-   security—gives SLIM a zero-trust intermediary property: routing nodes
-   can forward messages through untrusted infrastructure while
-   maintaining full payload confidentiality.  Protocols that rely solely
-   on transport-layer security require trust in all intermediaries,
-   since each hop terminates TLS and has visibility into message
-   content.  For agentic AI deployments spanning multiple organizations
-   or transiting third-party infrastructure, this distinction is
-   critical.
-
-   The protocol's authentication model demonstrates particular
-   innovation in addressing agentic AI security requirements.  By
-   transporting MLS credentials and cryptographic proofs within OAuth
-   bearer tokens over HTTP/2, SLIM achieves several important
-   properties:
-
-   *  *Interoperability*: Leverages standard HTTP/2 and OAuth libraries,
-      reducing implementation complexity and improving compatibility
-      with existing infrastructure
-
-   *  *Scalability*: Single persistent HTTP/2 connections efficiently
-      carry many MLS-secured messages between agents
-
-   *  *Immediate revocation*: Malicious or compromised agents can be
-      immediately ejected by revoking their OAuth tokens without
-      requiring complex ratchet tree rebalancing operations
+   Authentication and authorization use configured identity providers
+   and session policies.  MLS group membership and identity-provider
+   credentials serve related but distinct purposes; deployments define
+   how identity changes affect session membership.  Revoking an
+   application credential does not by itself establish that a
+   participant has been removed from an existing MLS group.
 
    SLIM's naming system is hierarchical and DID-inspired, for example:
    organization/namespace/service/instance.  This supports anycast
@@ -401,7 +378,80 @@ Table of Contents
    progress, enabling heterogeneous agent systems to interoperate on the
    same transport.
 
-4.  Security Analysis
+4.  Agent-Network Overlays
+
+   Agent-network overlays combine service discovery, identity,
+   authorization, and connectivity across networks.  They operate at the
+   service-network layer and can work alongside messaging protocols and
+   agent interaction protocols.
+
+   Google Agent Mesh [AgentMesh] is a service-network overlay with a
+   control plane, routers, and nodes [AgentMeshDocs].  The control plane
+   admits nodes, issues credentials, distributes policy, and provides
+   router configuration.  A node runs alongside an agent or service and
+   connects that workload to the mesh.  Routers provide a directory for
+   service discovery and relay traffic between nodes when a direct
+   connection is unavailable.
+
+4.1.  Enrollment and Identity
+
+   A node can enroll using an OpenID Connect identity token or an
+   operator-issued bootstrap token, and proves possession of its node
+   key during enrollment.  The control plane issues a signed Biscuit
+   credential containing the node identity and authorization facts, such
+   as roles and identity-provider claims.  Nodes and routers verify
+   these credentials using the control plane's public key.  The control
+   plane also holds mesh policy and distributes it to the nodes that
+   enforce that policy.
+
+4.2.  Service Discovery and Calls
+
+   Nodes publish services under typed names, including MCP, A2A, and
+   inference services.  A node queries a router to discover the provider
+   for a service name; routers maintain and exchange directory records.
+   Nodes connect directly when network reachability permits, or use a
+   router relay when it does not.  Agent Mesh uses libp2p for node
+   connectivity, with QUIC or TCP transports; hole punching can
+   establish a direct path when the network permits it.
+
+   An agent uses the local node API rather than addressing remote nodes
+   itself.  The API includes an MCP server for discovering and calling
+   remote tools, an OpenAI-compatible endpoint for inference services,
+   and proxy routes for individual services, including A2A agents.  For
+   a service call, the connecting node authenticates to the provider
+   with its credential.  The provider verifies the credential and
+   evaluates the service policy before forwarding the request to its
+   local backend.  The caller can also verify the provider's credential
+   and attested labels before sending request data.
+
+   The documented service-call path is point-to-point: a caller
+   discovers one or more providers and addresses a call to a selected
+   provider [AgentMeshNetworking].  Authorization policy can use
+   identity groups when deciding which peer nodes a caller may reach,
+   but such a group is not a multicast destination or shared message
+   channel [AgentMeshAuthorization].  Routers also distribute signed
+   mesh-control events through gossip; those events manage mesh state
+   and are distinct from application messages.  The documented Agent
+   Mesh APIs do not describe an application-level group messaging
+   channel.
+
+4.3.  Transport Security and Trust Boundaries
+
+   Node-to-node connections use authenticated encrypted channels over
+   libp2p.  The documented implementations use TLS 1.3 or Noise; routers
+   relay encrypted traffic when they are on the path.  The control plane
+   handles enrollment, credentials, and policy distribution, while
+   application requests travel between nodes.  The control plane is the
+   trust root for credentials and mesh policy; service nodes make the
+   authorization decision for their hosted services.
+
+   Agent Mesh describes service discovery, identity, authorization, and
+   network connectivity.  Messaging protocols describe message delivery
+   and session semantics.  The Agent Mesh node APIs expose MCP and A2A
+   services to applications; this section describes that integration
+   boundary without treating the overlay as a broker protocol.
+
+5.  Security Analysis
 
    Security requirements for agentic AI systems extend well beyond the
    capabilities provided by traditional messaging protocols.  The
@@ -409,29 +459,25 @@ Table of Contents
    sensitive data and computational resources, creates unique threat
    models that messaging infrastructure must address.
 
-   *Post-Compromise Security*: In traditional systems, credential
-   compromise typically requires immediate revocation and re-
-   authentication.  However, AI agents may operate for extended periods
-   with limited human oversight.  SLIM's MLS implementation provides
-   forward secrecy, ensuring that compromise of current credentials
-   cannot decrypt past communications, and post-compromise security,
-   guaranteeing that future communications remain secure even after
-   credential compromise.
+   *Post-Compromise Security*: MLS defines forward secrecy and post-
+   compromise security properties for group key evolution.  These
+   properties depend on correct MLS operation and group updates;
+   recovery after a compromise is not automatic merely because MLS is
+   enabled.  Deployments also need procedures to remove or re-
+   authenticate compromised participants.
 
-   *Quantum-Safe Cryptography*: As quantum computing advances threaten
-   current cryptographic standards, AI systems—which may operate for
-   years with the same cryptographic keys—need protection against future
-   quantum attacks.  SLIM's MLS implementation provides this protection
-   and, when combined with post-quantum cipher suites, also defends
-   against future quantum attacks; traditional protocols rely entirely
-   on classical cryptographic assumptions that may become vulnerable.
+   *Post-Quantum Cryptography*: MLS does not by itself imply post-
+   quantum protection.  The algorithms negotiated by an implementation
+   determine whether a deployment has classical, hybrid, or post-quantum
+   security.  The same applies to the other systems discussed here;
+   deployments should verify the algorithms actually supported and
+   enabled.
 
-   *Multi-Domain Operations*: Agentic AI systems often span multiple
-   organizational and security domains, with agents from different
-   organizations collaborating on shared tasks.  Traditional protocols
-   typically assume trust in messaging infrastructure, but SLIM's end-
-   to-end encryption ensures secure communication even when messages
-   transit through potentially untrusted intermediaries.
+   *Multi-Domain Operations*: Agentic AI systems can span organizational
+   and security domains.  Optional MLS protection can limit intermediary
+   access to application content, but it does not replace identity
+   federation, authorization, endpoint security, or operational trust
+   decisions.
 
    *Dynamic Group Membership*: AI agent groups frequently change as
    agents join collaborations, complete tasks, or become unavailable.
@@ -439,7 +485,7 @@ Table of Contents
    while maintaining security properties, unlike approaches that require
    complete cryptographic context regeneration.
 
-5.  Performance Characteristics
+6.  Performance Characteristics
 
    The performance characteristics of messaging protocols significantly
    impact the behavior and capabilities of agentic AI systems,
@@ -447,11 +493,10 @@ Table of Contents
    scale.
 
    *Latency Sensitivity*: Many AI agent interactions are latency-
-   sensitive, particularly in real-time decision-making scenarios or
-   when agents are coordinating time-critical tasks.  SLIM's HTTP/2
-   foundation provides header compression and multiplexing that reduce
-   per-message overhead, while the binary protocol buffer encoding
-   minimizes serialization costs.
+   sensitive.  SLIM supports streaming over HTTP/2 or WebSocket with
+   Protocol Buffers encoding, but protocol choice alone does not
+   determine end-to-end latency.  Implementations should benchmark
+   representative payloads, fan-out patterns, and network paths.
 
    *Throughput Requirements*: Large-scale agentic AI systems may involve
    thousands of agents generating substantial message volumes.  While
@@ -472,18 +517,17 @@ Table of Contents
    provides efficient bidirectional streaming without the overhead of
    connection-per-stream approaches.
 
-6.  Deployment and Operational Considerations
+7.  Deployment and Operational Considerations
 
    The operational characteristics of messaging protocols significantly
    impact the total cost of ownership and operational complexity of
    agentic AI systems.
 
    *Infrastructure Requirements*: Traditional enterprise protocols like
-   AMQP require dedicated message broker infrastructure with high
-   availability and clustering capabilities.  Kafka requires even more
-   complex distributed infrastructure.  SLIM's optional broker
-   architecture allows deployments to scale infrastructure complexity
-   with system requirements.
+   AMQP require broker infrastructure, while Kafka deployments typically
+   use a distributed cluster.  SLIM deployments use a network of routing
+   nodes; the required topology depends on deployment scale and
+   availability goals.
 
    *Monitoring and Observability*: Debugging distributed agentic AI
    systems requires comprehensive visibility into agent communications.
@@ -498,13 +542,209 @@ Table of Contents
    specialized messaging protocols may require additional integration
    layers.
 
-   *Compliance and Auditing*: AI systems in regulated industries require
-   comprehensive audit trails and compliance capabilities.  SLIM's
-   structured topic hierarchy and optional message persistence support
-   regulatory requirements, while the end-to-end encryption provides
-   compliance with data protection regulations.
+   *Compliance and Auditing*: Regulated deployments need explicit audit,
+   retention, and access-control policies.  SLIM's optional session-
+   state persistence is not a message archive or audit log, and
+   encryption alone does not establish regulatory compliance.
 
-7.  RPC in Agentic Protocols and Relationship to Messaging
+8.  Connectivity for Agents Behind NAT
+
+   Messaging semantics and network reachability are separate concerns.
+   An agent that cannot accept inbound connections can still participate
+   as a client when it can establish an outbound connection to a
+   reachable broker or routing node.  The established connection carries
+   traffic in both directions, so replies and subscribed messages can
+   return without opening an inbound firewall port at the agent.  Long-
+   lived connections require suitable keepalive settings and network
+   policy that permits egress to the service endpoint.
+
+   This client-connection pattern does not, by itself, make a private
+   agent service directly reachable by another agent.  For direct RPC to
+   a service behind NAT, deployments need a reachable gateway, relay,
+   reverse connection, or network overlay.  Alternatively, the private
+   agent can subscribe to requests on a broker and publish replies over
+   its existing outbound connection.  The latter uses the messaging
+   system's request/reply conventions and requires application logic for
+   correlation, timeouts, retries, and authorization.
+
+8.1.  Patterns by System
+
+   *AMQP*: An AMQP client initiates a TCP connection to an AMQP listener
+   on a broker.  An agent in a private network can connect outward to a
+   broker reachable from that network; the broker mediates communication
+   with other connected clients.  Where the broker is private as well,
+   network routing, a VPN, or an implementation-specific broker bridge
+   is needed between the agent network and the broker network.  RabbitMQ
+   documents separate client listeners and inter-node ports; cluster
+   inter-node access is an operator networking concern and is distinct
+   from client connectivity [RabbitMQNetworking].
+
+   *MQTT*: MQTT defines the client as opening a bidirectional connection
+   to a server, then publishing and subscribing through that connection
+   [MQTT].  This fits devices or agents behind NAT when they can reach
+   the broker outbound.  MQTT 5.0 supports TCP-based transports and
+   WebSocket; a broker's WebSocket listener can be used by browser
+   clients, subject to the broker implementation and its network
+   configuration [RabbitMQWebMQTT].  A local MQTT broker or bridge can
+   aggregate clients on a private network and forward configured topic
+   traffic to an upstream broker.
+
+   *NATS*: Clients connect to a NATS server.  For an edge network that
+   permits outbound connections only, a local NATS leaf node can dial a
+   hub and bridge subject interest and matching messages in both
+   directions over that link.  Local agents then connect to the leaf on
+   the private network; they do not each need a public address or a
+   direct connection to the hub [NATSLeaf].  NATS gateways connect
+   separate NATS clusters, while leaf nodes connect edge servers to a
+   hub [NATSGateway].
+
+   *Kafka*: A Kafka client can initiate its connections outbound, but
+   connecting to the bootstrap address is not sufficient if broker
+   metadata advertises addresses the client cannot reach.  Every broker
+   address returned through advertised.listeners must be reachable from
+   the agent's network, directly or through configured network paths
+   such as private routing or a VPN [KafkaListeners].  Kafka's broker
+   topology is therefore an explicit part of the connectivity design for
+   clients in separate private networks.
+
+   *AMQP over WebSockets*: A WebSocket binding can let browser-based
+   clients connect through networks that permit HTTP(S) egress, when the
+   chosen broker or gateway implements that binding.  WebSockets change
+   how the client reaches the service; they do not remove the need for a
+   reachable broker endpoint or provide an inbound route to a private
+   agent.
+
+   *SLIM*: A SLIM endpoint can initiate a streaming gRPC connection over
+   HTTP/2 or a WebSocket connection to an accessible routing node.
+   Messages are then routed by name through the interconnected routing-
+   node network, rather than requiring every application endpoint to
+   expose an Internet-reachable listener.  Deployments still need
+   reachable routing nodes and connectivity between the routing nodes
+   that carry the route.
+
+   *Agent Mesh*: An Agent Mesh node runs beside an agent or service and
+   connects to routers; nodes can communicate directly when network
+   conditions permit and use router relays otherwise.  This lets a node
+   behind NAT participate without publishing its own reachable service
+   address.  Its service discovery and authorization behavior is
+   described in the Agent-Network Overlays section
+   [AgentMeshNetworking].
+
+   These patterns place a reachable broker, edge bridge, gateway, or
+   router on the network boundary and keep end-device connectivity
+   outbound.  They differ in what that boundary component provides:
+   message brokering, topic or subject bridging, log access, or name-
+   routed service connectivity.  Deployments should also account for the
+   trust boundary at that component, connection loss and reconnection
+   behavior, and whether messages are buffered while an endpoint is
+   offline.
+
+9.  Agent Gateways for Inspection
+
+   An Agent Gateway can enforce content policy when it is placed inline
+   on a request path and receives the application protocol in a form it
+   can parse.  For example, a gateway between an agent and an MCP
+   server, A2A agent, or LLM API can inspect requests and responses,
+   apply authorization and content guardrails, and forward permitted
+   traffic to a backend.  Agent Gateway documents HTTP and gRPC
+   proxying, native MCP and A2A routing, and request/response guardrails
+   for those protocols [AgentGateway] [AgentGatewayMCP]
+   [AgentGatewayLLM] [AgentGatewayA2A].
+
+   For inspection, the gateway must be an actual data-path hop.  TLS
+   therefore terminates at the gateway, which establishes a separate
+   protected connection to the upstream service.  This makes the gateway
+   a trusted plaintext-handling component; deployment policy should
+   cover credential forwarding, payload logging, redaction, audit
+   retention, and failure behavior.  A generic TCP proxy can forward a
+   connection, but application-level inspection requires a protocol-
+   aware gateway or adapter.
+
+9.1.  Synchronous Enforcement and Streaming
+
+   Content enforcement is an inline decision, not a passive copy of
+   traffic.  For a request-phase check, the gateway receives and parses
+   the request, evaluates the policy locally or calls a policy service,
+   and holds the request until it has a decision.  It then forwards the
+   original or modified request, or rejects it without contacting the
+   backend.  A response-phase check runs after the backend returns and
+   before the gateway releases the response to the client.  Agent
+   Gateway documents request and response phases for MCP guardrail
+   processors, including pass, mutate, and deny outcomes
+   [AgentGatewayMCP].
+
+   This introduces enforcement latency and may require buffering the
+   content being checked.  Local deterministic rules can reduce this
+   delay; remote classifiers or policy services add their processing and
+   network time.  Deployments should set body-size limits, timeouts,
+   concurrency limits, and an explicit failure mode.  Fail-closed
+   behavior preserves the policy when the checker is unavailable but can
+   make the service unavailable; fail-open behavior preserves
+   availability but allows unchecked traffic.  Audit-only evaluation can
+   help tune policies, but it does not block or redact content.
+
+   Streaming makes response enforcement different from request
+   enforcement.  A gateway can hold a complete buffered response,
+   inspect or redact it, and then release it, at the cost of delaying
+   the first response byte and storing the response while it is checked.
+   Alternatively, it can inspect a response stream incrementally, but
+   bytes already sent cannot be retracted.  Agent Gateway's LLM
+   guardrail documentation states that streamed responses can be
+   rejected when a guardrail matches, but response masking does not
+   apply to content already sent; buffered responses support masking
+   [AgentGatewayLLM].  Applications that require redaction before any
+   content reaches the caller therefore need buffering or an endpoint-
+   side policy, rather than relying on post-send inspection.
+
+   The integration depends on the messaging system:
+
+   *  *HTTP-based A2A, MCP, or model APIs*: Configure clients or service
+      routing to send requests through the gateway.  The gateway can
+      apply protocol-aware policy before forwarding to a public or
+      privately reachable backend.
+
+   *  *AMQP, MQTT, NATS, or Kafka*: A gateway can be placed at the
+      client/broker boundary, but a generic TCP listener does not
+      interpret broker frames or message payloads.  Prompt inspection
+      therefore requires a protocol-aware proxy, broker extension, or
+      application adapter.  An alternative is to inspect messages at the
+      producer before publishing and at the consumer after delivery.
+
+   *  *SLIM*: A generic gateway attached to a routing node does not
+      parse SLIM's Protocol Buffers message envelope.  Relay inspection
+      requires a SLIM-aware integration.  If MLS is enabled, application
+      content remains opaque to routing nodes; inspect before MLS
+      encryption at the sending endpoint, after decryption at the
+      receiving endpoint, or make the inspection gateway an explicitly
+      trusted session participant.
+
+   *  *Agent Mesh*: Agent Mesh documents an integration with Agent
+      Gateway in front of an agentmesh-node [AgentMeshAgentGateway].
+      The client sends its identity-provider token to Agent Gateway.
+      The gateway validates the token, exchanges it at the node's
+      /oauth/token endpoint for a caller-bound mesh credential, then
+      forwards the request to the node's /mesh/<peer-id>/<type>/<name>/
+      proxy with that credential.  The node connects to the selected
+      mesh provider, and the provider node enforces its service policy.
+      This places supported application-layer checks at Agent Gateway
+      before the request enters the mesh and before the response returns
+      to the client.
+
+      The gateway is not inserted into the Agent Mesh router's relay or
+      peer-link path.  Those links carry authenticated encrypted
+      traffic, whether relayed or direct, and are not readable by a
+      gateway attached only to a router.  To make gateway policy
+      mandatory, clients must use the gateway-facing endpoint rather
+      than bypassing it and calling a node API directly.
+
+   Colocating an Agent Gateway with a relay does not by itself enable
+   inspection: the gateway must terminate or receive the application-
+   level plaintext, and the system must route every applicable path
+   through it.  If end-to-end encryption is required, inspection belongs
+   at a trusted endpoint or authorized group member; adding an
+   intermediary that can decrypt changes the trust model.
+
+10.  RPC in Agentic Protocols and Relationship to Messaging
 
    Agentic AI systems are predominantly built around Remote Procedure
    Call (RPC)-oriented protocols.  A2A [A2A], the Model Context Protocol
@@ -523,7 +763,7 @@ Table of Contents
    messaging interoperate in agentic systems, and how SLIM's SRPC
    capability provides a purpose-built solution.
 
-7.1.  Agentic Protocols Are RPC-Oriented
+10.1.  Agentic Protocols Are RPC-Oriented
 
    The three leading agentic coordination protocols each define an RPC-
    based interaction model:
@@ -551,7 +791,7 @@ Table of Contents
    callee with parameters and awaits a response within a bounded time.
    SLIM is designed to serve as the transport layer beneath all three.
 
-7.2.  RPC vs. Messaging: Synchronous vs. Asynchronous
+10.2.  RPC vs. Messaging: Synchronous vs. Asynchronous
 
    *  *RPC (A2A, MCP, ACP)*: The caller issues a request and blocks or
       awaits a timely response.  Semantics emphasize tightly scoped
@@ -567,7 +807,7 @@ Table of Contents
    invocations for interactivity and asynchronous channels for streaming
    output, progress, coordination, and fan-out/fan-in patterns.
 
-7.3.  Challenges of Running RPC over Messaging
+10.3.  Challenges of Running RPC over Messaging
 
    Layering RPC semantics onto an asynchronous messaging substrate
    introduces several non-trivial challenges:
@@ -597,7 +837,7 @@ Table of Contents
 
    SRPC resolves all of these challenges natively, as described below.
 
-7.4.  When Asynchronous Feels Synchronous
+10.4.  When Asynchronous Feels Synchronous
 
    Asynchronous transports can provide an interactive, RPC-like
    experience when:
@@ -614,7 +854,7 @@ Table of Contents
    This pattern underpins agent UIs where a user triggers an action and
    expects prompt, possibly streaming, results.
 
-7.5.  Bridging Patterns: RPC over Messaging
+10.5.  Bridging Patterns: RPC over Messaging
 
    *  *Request/Reply over Pub/Sub*: Implement RPC by publishing a
       command event and awaiting a correlated reply event (applicable to
@@ -632,7 +872,7 @@ Table of Contents
       (HTTP/2/3, gRPC) or messaging systems with flow control when
       returning large or continuous results.
 
-7.6.  SLIM RPC (SRPC)
+10.6.  SLIM RPC (SRPC)
 
    SRPC layers request/response semantics directly onto SLIM's secure
    messaging fabric, addressing all of the challenges enumerated above:
@@ -658,7 +898,7 @@ Table of Contents
 
    See the SRPC specification for details [SRPC].
 
-7.7.  Advantages of SLIM for Agentic Protocols
+10.7.  Advantages of SLIM for Agentic Protocols
 
    SLIM augments the point-to-point RPC model of A2A, MCP, and ACP with
    capabilities that are difficult to achieve over plain request/
@@ -695,7 +935,7 @@ Table of Contents
    multi-agent actions, and efficient collection of results in real
    time.
 
-7.8.  Security Implications
+10.8.  Security Implications
 
    *  *Unified identity*: OAuth tokens are reused across RPC calls and
       messaging channels for consistent policy enforcement.  An agent's
@@ -711,7 +951,7 @@ Table of Contents
       with each call, allowing callees to verify that the caller is an
       authorized group member before executing the requested operation.
 
-7.9.  Guidance: When to Choose What
+10.9.  Guidance: When to Choose What
 
    *  Use *RPC (A2A, MCP, ACP)* for low-latency point operations with
       immediate feedback and well-defined error contracts.
@@ -723,7 +963,7 @@ Table of Contents
       security, scatter-gather invocation, streaming responses, or
       multi-organization deployment is required.
 
-8.  Comparison
+11.  Comparison
 
    Table 1 provides a detailed comparison of three popular messaging
    protocols commonly considered for agent communication systems:
@@ -808,117 +1048,111 @@ Table of Contents
    Table 2 extends the comparison to include additional protocols
    relevant to modern agentic AI systems:
 
-   +================+==========+============+==========================+
-   |Feature         |AMQP over |Kafka       | SLIM                     |
-   |                |WebSockets|            |                          |
-   +================+==========+============+==========================+
-   |*Protocol Type* |AMQP      |Distributed | Secure low-latency       |
-   |                |tunneled  |commit log, | interactive messaging    |
-   |                |through   |high-       |                          |
-   |                |WebSockets|throughput  |                          |
-   |                |          |pub/sub     |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Transport*     |WebSockets|TCP         | gRPC (over               |
-   |                |over TLS  |(optionally | HTTP/2-HTTP/3)           |
-   |                |          |TLS)        |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Message Model* |Same as   |Topics with | Hierarchical names       |
-   |                |AMQP      |partitions, | (org/namespace/service/  |
-   |                |(depends  |consumer    | instance), point-to-     |
-   |                |on the    |groups,     | point and group          |
-   |                |broker's  |offset-based| sessions                 |
-   |                |AMQP      |consumption |                          |
-   |                |model)    |            |                          |
-   +----------------+----------+------------+--------------------------+
-   |*QoS / Delivery*|Same as   |At-least-   | At-most-once (fire-and-  |
-   |                |AMQP      |once        | forget) or exactly-once  |
-   |                |          |default;    | (reliable); applies      |
-   |                |          |exactly-once| consistently to          |
-   |                |          |possible via| request/reply and        |
-   |                |          |transactions| streaming interactions   |
-   +----------------+----------+------------+--------------------------+
-   |*Streaming*     |Same as   |Native log- | Native gRPC support via  |
-   |                |AMQP if   |based       | HTTP/2/3 client          |
-   |                |broker    |streaming   | streaming, server        |
-   |                |supports  |(Kafka      | streaming                |
-   |                |streaming |Streams,    |                          |
-   |                |          |ksqlDB,     |                          |
-   |                |          |etc.)       |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Persistence*   |Same as   |Built-in:   | Not supported            |
-   |                |AMQP      |messages    |                          |
-   |                |          |persist on  |                          |
-   |                |          |disk across |                          |
-   |                |          |clusters    |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Protocol       |Higher    |Moderate    | Low: binary Protocol     |
-   |Overhead*       |(AMQP +   |(custom     | Buffers wire format;     |
-   |                |WebSockets|binary      | native support for both  |
-   |                |handshake)|protocol,   | binary (bytes) and text  |
-   |                |          |but         | payloads                 |
-   |                |          |optimized   |                          |
-   |                |          |for high    |                          |
-   |                |          |throughput) |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Broker         |Yes       |Yes         | Yes for multi-party      |
-   |Required*       |          |(distributed| group sessions; peer-    |
-   |                |          |cluster)    | to-peer also supported   |
-   +----------------+----------+------------+--------------------------+
-   |*Authentication*|Same as   |SASL/PLAIN, | OAuth bearer tokens      |
-   |                |AMQP      |SASL/SCRAM, | carrying MLS             |
-   |                |(broker-  |Kerberos,   | credentials and          |
-   |                |based)    |OAuth       | cryptographic proofs;    |
-   |                |          |            | standard HTTP/2 and      |
-   |                |          |            | OAuth libraries for      |
-   |                |          |            | interoperability;        |
-   |                |          |            | immediate revocation by  |
-   |                |          |            | invalidating OAuth       |
-   |                |          |            | tokens                   |
-   +----------------+----------+------------+--------------------------+
-   |*Transport      |WSS       |TLS         | TLS                      |
-   |Security*       |(WebSocket|            |                          |
-   |                |Secure)   |            |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Message        |Same as   |TLS in-     | MLS end-to-end           |
-   |Security*       |AMQP      |flight      | encryption with forward  |
-   |                |(depends  |encryption, | secrecy and post-        |
-   |                |on the    |optional at-| compromise security,     |
-   |                |broker's  |rest        | independent of           |
-   |                |encryption|encryption  | transport                |
-   |                |at rest/  |(broker     |                          |
-   |                |in-       |config)     |                          |
-   |                |transit)  |            |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Binary or Text*|Binary    |Binary      | Binary or Text           |
-   |                |AMQP      |protocol    |                          |
-   |                |frames    |(common     |                          |
-   |                |over      |payloads:   |                          |
-   |                |WebSockets|Avro, JSON, |                          |
-   |                |          |Protobuf)   |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Use Cases*     |Browser-  |High-       | Group messaging, one-    |
-   |                |based apps|throughput  | to-many, many-to-many,   |
-   |                |needing   |data        | cloud-native             |
-   |                |AMQP      |pipelines,  | microservices, real-     |
-   |                |behind    |streaming   | time communications,     |
-   |                |firewalls |analytics,  | streaming                |
-   |                |          |event       |                          |
-   |                |          |sourcing    |                          |
-   +----------------+----------+------------+--------------------------+
-   |*Real-World     |Less      |Extremely   | New entrant; reference   |
-   |Usage*          |common,   |widespread  | implementations in       |
-   |                |mainly for|across      | Python and Go            |
-   |                |browser/  |industries; | available; early         |
-   |                |firewall  |de facto    | production deployments   |
-   |                |scenarios |standard for|                          |
-   |                |using     |large-scale |                          |
-   |                |RabbitMQ  |event       |                          |
-   |                |or similar|streaming   |                          |
-   +----------------+----------+------------+--------------------------+
+   +================+===========+============+=========================+
+   |Feature         |AMQP over  |Kafka       | SLIM                    |
+   |                |WebSockets |            |                         |
+   +================+===========+============+=========================+
+   |*Protocol Type* |AMQP       |Distributed | Secure low-latency      |
+   |                |tunneled   |commit log, | interactive messaging   |
+   |                |through    |high-       |                         |
+   |                |WebSockets |throughput  |                         |
+   |                |           |pub/sub     |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Transport*     |WebSockets |TCP         | Streaming gRPC over     |
+   |                |over TLS   |(optionally | HTTP/2 or WebSocket     |
+   |                |           |TLS)        |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Message Model* |Same as    |Topics with | Hierarchical names      |
+   |                |AMQP       |partitions, | (org/namespace/service/ |
+   |                |(depends   |consumer    | instance), point-to-    |
+   |                |on the     |groups,     | point and group         |
+   |                |broker's   |offset-based| sessions                |
+   |                |AMQP       |consumption |                         |
+   |                |model)     |            |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*QoS / Delivery*|Same as    |At-least-   | Configurable retries    |
+   |                |AMQP       |once        | and acknowledgements;   |
+   |                |           |default;    | not guaranteed for      |
+   |                |           |exactly-once| every session           |
+   |                |           |possible via|                         |
+   |                |           |transactions|                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Streaming*     |Same as    |Native log- | Native gRPC support via |
+   |                |AMQP if    |based       | HTTP/2/3 client         |
+   |                |broker     |streaming   | streaming, server       |
+   |                |supports   |(Kafka      | streaming               |
+   |                |streaming  |Streams,    |                         |
+   |                |           |ksqlDB,     |                         |
+   |                |           |etc.)       |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Persistence*   |Same as    |Built-in:   | Not supported           |
+   |                |AMQP       |messages    |                         |
+   |                |           |persist on  |                         |
+   |                |           |disk across |                         |
+   |                |           |clusters    |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Protocol       |Higher     |Moderate    | Low: binary Protocol    |
+   |Overhead*       |(AMQP +    |(custom     | Buffers wire format;    |
+   |                |WebSockets |binary      | native support for both |
+   |                |handshake) |protocol,   | binary (bytes) and text |
+   |                |           |but         | payloads                |
+   |                |           |optimized   |                         |
+   |                |           |for high    |                         |
+   |                |           |throughput) |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Broker         |Yes        |Yes         | Routed through SLIM     |
+   |Required*       |           |(distributed| nodes; topology is      |
+   |                |           |cluster)    | deployment-specific     |
+   +----------------+-----------+------------+-------------------------+
+   |*Authentication*|Same as    |SASL/PLAIN, | Configured identity     |
+   |                |AMQP       |SASL/SCRAM, | providers and session   |
+   |                |(broker-   |Kerberos,   | policies                |
+   |                |based)     |OAuth       |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Transport      |WSS        |TLS         | TLS                     |
+   |Security*       |(WebSocket |            |                         |
+   |                |Secure)    |            |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Message        |Same as    |TLS in-     | Optional MLS end-to-end |
+   |Security*       |AMQP       |flight      | content protection,     |
+   |                |(depends   |encryption, | independent of          |
+   |                |on the     |optional at-| transport               |
+   |                |broker's   |rest        |                         |
+   |                |encryption |encryption  |                         |
+   |                |at rest/   |(broker     |                         |
+   |                |in-        |config)     |                         |
+   |                |transit)   |            |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Binary or Text*|Binary     |Binary      | Binary or Text          |
+   |                |AMQP       |protocol    |                         |
+   |                |frames     |(common     |                         |
+   |                |over       |payloads:   |                         |
+   |                |WebSockets |Avro, JSON, |                         |
+   |                |           |Protobuf)   |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Use Cases*     |Browser-   |High-       | Group messaging, one-   |
+   |                |based apps |throughput  | to-many, many-to-many,  |
+   |                |needing    |data        | cloud-native            |
+   |                |AMQP       |pipelines,  | microservices, real-    |
+   |                |behind     |streaming   | time communications,    |
+   |                |firewalls  |analytics,  | streaming               |
+   |                |           |event       |                         |
+   |                |           |sourcing    |                         |
+   +----------------+-----------+------------+-------------------------+
+   |*Real-World     |Less       |Extremely   | New entrant; reference  |
+   |Usage*          |common,    |widespread  | implementations in      |
+   |                |mainly for |across      | Python and Go           |
+   |                |browser/   |industries; | available; early        |
+   |                |firewall   |de facto    | production deployments  |
+   |                |scenarios  |standard for|                         |
+   |                |using      |large-scale |                         |
+   |                |RabbitMQ   |event       |                         |
+   |                |or similar |streaming   |                         |
+   +----------------+-----------+------------+-------------------------+
 
                                   Table 2
 
-9.  Security Considerations
+12.  Security Considerations
 
    This document is an informational comparison of messaging protocols
    for agentic AI systems.  Security properties specific to each
@@ -927,43 +1161,31 @@ Table of Contents
    consult the security considerations sections of the respective
    protocol specifications.
 
-   Of the protocols analyzed, only SLIM provides application-layer end-
-   to-end encryption via MLS [RFC9420], forward secrecy, and post-
-   compromise security independent of transport-layer security.  All
-   other protocols rely on transport-layer TLS, which does not protect
-   message content from trusted intermediaries.
+   Among the systems analyzed, SLIM explicitly integrates optional MLS-
+   based end-to-end protection for session content.  The other protocols
+   and systems do not provide that same integrated MLS model, although
+   applications can add message-level encryption or other end-to-end
+   protections.  Transport-layer TLS alone protects a hop and does not
+   hide content from an intermediary that terminates that hop.
 
-10.  IANA Considerations
+13.  IANA Considerations
 
    This document has no IANA actions.
 
-11.  References
+14.  References
 
-11.1.  Normative References
+14.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
-   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
-              RFC 6749, DOI 10.17487/RFC6749, October 2012,
-              <https://www.rfc-editor.org/rfc/rfc6749>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC9113]  Thomson, M., Ed. and C. Benfield, Ed., "HTTP/2", RFC 9113,
-              DOI 10.17487/RFC9113, June 2022,
-              <https://www.rfc-editor.org/rfc/rfc9113>.
-
-   [RFC9420]  Barnes, R., Beurdouche, B., Robert, R., Millican, J.,
-              Omara, E., and K. Cohn-Gordon, "The Messaging Layer
-              Security (MLS) Protocol", RFC 9420, DOI 10.17487/RFC9420,
-              July 2023, <https://www.rfc-editor.org/rfc/rfc9420>.
-
-11.2.  Informative References
+14.2.  Informative References
 
    [A2A]      Google, "Agent2Agent (A2A) Protocol", n.d.,
               <https://google.github.io/A2A/>.
@@ -971,6 +1193,49 @@ Table of Contents
    [ACP]      Community, A. C. P., "Agent Client Protocol (ACP)", n.d.,
               <https://agentclientprotocol.com/get-started/
               introduction>.
+
+   [AgentGateway]
+              Project, A., "Agent Gateway", n.d.,
+              <https://agentgateway.dev/>.
+
+   [AgentGatewayA2A]
+              Project, A., "Agent Gateway A2A Gateway", n.d.,
+              <https://agentgateway.dev/docs/standalone/latest/
+              documentation/agent/a2a/>.
+
+   [AgentGatewayLLM]
+              Project, A., "Agent Gateway LLM Guardrails", n.d.,
+              <https://agentgateway.dev/docs/standalone/latest/
+              documentation/llm/prompt-guards/>.
+
+   [AgentGatewayMCP]
+              Project, A., "Agent Gateway MCP Guardrails", n.d.,
+              <https://agentgateway.dev/docs/standalone/latest/
+              documentation/mcp/guardrails/>.
+
+   [AgentMesh]
+              Google, "Agent Mesh", n.d.,
+              <https://github.com/google/agentmesh>.
+
+   [AgentMeshAgentGateway]
+              Google, "Agent Mesh: Agent Gateway Integration", n.d.,
+              <https://google.github.io/agentmesh/docs/guides/
+              agentgateway/>.
+
+   [AgentMeshAuthorization]
+              Google, "Agent Mesh Authorization", n.d.,
+              <https://google.github.io/agentmesh/docs/concepts/
+              authorization/>.
+
+   [AgentMeshDocs]
+              Google, "Agent Mesh Architecture Documentation", n.d.,
+              <https://google.github.io/agentmesh/docs/concepts/
+              architecture/>.
+
+   [AgentMeshNetworking]
+              Google, "Agent Mesh Networking and Node API", n.d.,
+              <https://google.github.io/agentmesh/docs/concepts/
+              networking/>.
 
    [AMQP]     OASIS, "OASIS Advanced Message Queuing Protocol (AMQP) 1.0
               Specification", n.d.,
@@ -981,6 +1246,11 @@ Table of Contents
    [Kafka]    Foundation, A. S., "Apache Kafka Documentation", n.d.,
               <https://kafka.apache.org/documentation/>.
 
+   [KafkaListeners]
+              Foundation, A. S., "Kafka Broker Configs: Listeners",
+              n.d., <https://kafka.apache.org/44/configuration/broker-
+              configs/#brokerconfigs_advertised.listeners>.
+
    [MCP]      Anthropic, "Model Context Protocol (MCP) Specification",
               n.d., <https://modelcontextprotocol.io/>.
 
@@ -990,6 +1260,21 @@ Table of Contents
 
    [NATS]     Communications, S., "NATS Documentation", n.d.,
               <https://docs.nats.io/>.
+
+   [NATSGateway]
+              Communications, S., "NATS Super-clusters", n.d.,
+              <https://docs.nats.io/learn/topologies/super-clusters>.
+
+   [NATSLeaf] Communications, S., "NATS Leaf Nodes", n.d.,
+              <https://docs.nats.io/learn/topologies/leaf-nodes>.
+
+   [RabbitMQNetworking]
+              Broadcom, "Networking and RabbitMQ", n.d.,
+              <https://www.rabbitmq.com/docs/networking>.
+
+   [RabbitMQWebMQTT]
+              Broadcom, "RabbitMQ Web MQTT Plugin", n.d.,
+              <https://www.rabbitmq.com/docs/web-mqtt>.
 
    [SLIM]     AGNTCY, "AGNTCY SLIM Specification", n.d.,
               <https://spec.slim.agntcy.org>.
