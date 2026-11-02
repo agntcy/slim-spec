@@ -12,19 +12,20 @@
 <meta content="
        This document specifies the Secure Low-Latency Interactive Messaging
 (SLIM), a protocol designed to support real-time interactive AI applications at
-scale. SLIM provides the transport layer for agent protocols (for example, A2A
-and MCP), combining gRPC over HTTP/2 and HTTP/3 with secure messaging, group
-communication, and native RPC semantics. The protocol provides mechanisms for
-connection management, stream multiplexing, and flow control while maintaining
-compatibility with existing gRPC deployments and supporting end-to-end
-encryption via MLS. 
+scale. SLIM provides a name-routed messaging data plane and session layer for
+agent protocols such as A2A and MCP. The data plane carries Protocol Buffers
+messages over streaming gRPC on HTTP/2 or WebSocket, while the session layer
+provides point-to-point and group communication, configurable reliable delivery,
+and optional end-to-end encryption using MLS. SLIM also defines link negotiation
+between routing nodes and control messages for session establishment and group
+membership. 
     " name="description">
 <meta content="xml2rfc 3.34.1" name="generator">
 <meta content="AI" name="keyword">
 <meta content="Agentic AI" name="keyword">
 <meta content="Communications" name="keyword">
 <meta content="Realtime" name="keyword">
-<meta content="draft-mpsb-agntcy-slim-02" name="ietf.draft">
+<meta content="draft-mpsb-agntcy-slim-03" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.1
     Python 3.14.8
@@ -1054,11 +1055,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">agent-slim</td>
-<td class="right">July 2026</td>
+<td class="right">November 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Muscariello, et al.</td>
-<td class="center">Expires 8 January 2027</td>
+<td class="center">Expires 6 May 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,15 +1069,15 @@ svg {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-mpsb-agntcy-slim-02</dd>
+<dd class="internet-draft">draft-mpsb-agntcy-slim-03</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-07" class="published">7 July 2026</time>
+<time datetime="2026-11-02" class="published">2 November 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-08">8 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-05-06">6 May 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,12 +1104,13 @@ svg {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document specifies the Secure Low-Latency Interactive Messaging
 (SLIM), a protocol designed to support real-time interactive AI applications at
-scale. SLIM provides the transport layer for agent protocols (for example, A2A
-and MCP), combining gRPC over HTTP/2 and HTTP/3 with secure messaging, group
-communication, and native RPC semantics. The protocol provides mechanisms for
-connection management, stream multiplexing, and flow control while maintaining
-compatibility with existing gRPC deployments and supporting end-to-end
-encryption via MLS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+scale. SLIM provides a name-routed messaging data plane and session layer for
+agent protocols such as A2A and MCP. The data plane carries Protocol Buffers
+messages over streaming gRPC on HTTP/2 or WebSocket, while the session layer
+provides point-to-point and group communication, configurable reliable delivery,
+and optional end-to-end encryption using MLS. SLIM also defines link negotiation
+between routing nodes and control messages for session establishment and group
+membership.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1137,7 +1139,7 @@ encryption via MLS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 May 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1223,7 +1225,7 @@ encryption via MLS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-challenges-of-rpc-over-mess" class="internal xref">Challenges of RPC over Messaging</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-remote-procedure-calls-over" class="internal xref">Remote Procedure Calls over SLIM (SRPC)</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-remote-procedure-calls-over" class="internal xref">Remote Procedure Calls over SLIM (SLIMRPC)</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1">
                     <p id="section-toc.1-1.4.2.3.2.1.1"><a href="#section-4.3.1" class="auto internal xref">4.3.1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
@@ -1238,7 +1240,7 @@ encryption via MLS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
                     <p id="section-toc.1-1.4.2.3.2.4.1"><a href="#section-4.3.4" class="auto internal xref">4.3.4</a>.  <a href="#name-benefits-for-agentic-applic" class="internal xref">Benefits for Agentic Applications</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5">
-                    <p id="section-toc.1-1.4.2.3.2.5.1"><a href="#section-4.3.5" class="auto internal xref">4.3.5</a>.  <a href="#name-slim-naming-in-srpc" class="internal xref">SLIM Naming in SRPC</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.5.1"><a href="#section-4.3.5" class="auto internal xref">4.3.5</a>.  <a href="#name-slimrpc-method-dispatch" class="internal xref">SLIMRPC Method Dispatch</a></p>
 </li>
                 </ul>
 </li>
@@ -1303,31 +1305,26 @@ for end-to-end encryption, ensuring that messages remain confidential even when
 passing through intermediate nodes or experiencing TLS termination along the
 communication path.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">The architecture is built around a distributed network of routing nodes, each
-maintaining connection and subscription tables to enable efficient message
-routing. A control plane orchestrates the system, handling node discovery,
-configuration management, and administrative operations. This separation of
-control, session, and data planes allows for scalable deployment while keeping
-routing nodes lightweight.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1-4">SLIM employs a hierarchical naming system based on Decentralized Identifiers
-(DIDs) to ensure globally unique, secure, and routable names. The name structure
-follows a <code>organization/namespace/service/instance</code> pattern, supporting anycast
-and unicast routing as well as service discovery. This naming scheme supports
-both decentralized and federated authentication models, enabling flexible
-deployment across different organizational boundaries while maintaining
-security and interoperability.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1-5">The protocol includes a session layer that abstracts the complexity of MLS
-operations and messaging infrastructure from applications, providing secure
-point-to-point and group sessions plus native Remote Procedure Call (RPC)
-semantics via SRPC (SLIM RPC). SRPC enables request/response and streaming RPC
-directly over SLIM's secure messaging fabric (see <span>[<a href="#SRPC" class="cite xref">SRPC</a>]</span>), while handling
-authentication, encryption, connection management, and fault recovery
-automatically. This design enables developers to focus on application logic
-rather than the underlying messaging complexities.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1-6">Security is fundamental to SLIM's design, with authentication and authorization
-handled through MLS groups, cryptographic client identities, and configurable
-access policies. The protocol supports deployment in various environments, from
-data center workloads to mobile applications, while maintaining
-consistent security guarantees and low-latency performance characteristics.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+maintaining connection and subscription state to route messages by hierarchical
+name. An optional, separate control plane configures and manages routing nodes;
+it is not in the message path. The session layer runs at application endpoints
+and manages session state, reliability, and group membership.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">SLIM employs hierarchical names of the form
+<code>organization/namespace/service/id</code>. The first three components support
+aggregation, anycast discovery, and routing; the final identifier distinguishes
+an application instance. The identifier is derived from the application's
+authenticated identity for routing and identity binding. DIDs may be used as
+application identities, but are not required as the wire representation of a
+SLIM name.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-5">The protocol includes a session layer that abstracts messaging and, when
+enabled, MLS operations from applications. It provides point-to-point and group
+sessions. SLIMRPC builds request/response and streaming RPC over SLIM sessions
+(see <span>[<a href="#SLIMRPC" class="cite xref">SLIMRPC</a>]</span>); it is an application-layer facility rather than a data-plane
+message type.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">SLIM supports application authentication and authorization through configured
+identity providers and session policies. MLS-based group encryption and
+identity binding are optional capabilities; the security properties provided
+depend on deployment configuration.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1337,40 +1334,36 @@ consistent security guarantees and low-latency performance characteristics.<a hr
       <h2 id="name-protocol-overview">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-protocol-overview" class="section-name selfRef">Protocol Overview</a>
       </h2>
-<p id="section-3-1">SLIM is designed to work as a messaging layer for applications running as
-workloads in a data center, but also running in a browser or mobile device while
-guaranteeing end-to-end security and low-latency communication.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">SLIM employs a two-tier security architecture. At the <strong>network layer</strong>, HTTP/2
-and HTTP/3 serve as the thin waist of the communication stack, providing
-hop-by-hop TLS 1.3 encryption and eliminating message transcoding along the
-path. HTTP/2 is chosen deliberately: it integrates with the existing
-infrastructure ecosystem—load balancers, API gateways, CDNs, and observability
-tooling—without exposing message content to those components. At the <strong>content
-layer</strong>, MLS <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> provides an application-layer encryption
-envelope around every message payload. Because MLS encryption is independent of
-the TLS session, terminating a TLS connection at an intermediate routing node
-does not compromise confidentiality—routing nodes see only metadata and an
-opaque encrypted blob. This zero-trust intermediary property is what
-distinguishes SLIM from protocols that provide only transport-layer security
-(where relay nodes must decrypt content to route it).<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Authentication and authorization are handled at the application level and can be
-managed in a decentralized or federated way or a mix of both.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">In SLIM there are three main communication elements: routing nodes (data plane),
+<p id="section-3-1">guaranteeing end-to-end security and low-latency communication.
+SLIM is designed to work as a messaging layer for applications running as
+workloads in a data center, a browser, or a mobile device.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">SLIM carries Protocol Buffers messages over streaming gRPC using HTTP/2, or over
+WebSocket. The transport is hop-by-hop and may be protected with TLS;
+transport-layer encryption is independent of session-layer security. When
+enabled for a session, MLS <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> encrypts application content
+at the endpoints. Routing nodes can then forward the encrypted content without
+learning its plaintext. MLS is optional; deployments that do not enable it rely
+on the configured transport security.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">SLIM routing nodes negotiate each inter-node link before processing routed
+messages. Link negotiation exchanges a link identifier, SLIM version, node
+identity, and connection type. Peers can derive a per-link key for header
+integrity; deployments can also negotiate hybrid post-quantum key material.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Authentication and authorization are handled at the application level and can be
+managed in a decentralized or federated way or a mix of both.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">In SLIM there are three main communication elements: routing nodes (data plane),
 session-layer clients, and application endpoints that publish and receive
-messages.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">A producer (also called a "publisher") is an endpoint that encapsulates content
-in SLIM messages for transport within the SLIM message network of nodes. A
-producer <span class="bcp14">MUST</span> belong to an MLS group to encrypt messages that can be decrypted
-by message consumers who are members of the same group, as specified by the MLS
-protocol. Once a SLIM message is encrypted, it can be published under a routable
-name, which is human-readable and hierarchical. This routable channel name is
-used by intermediate nodes to store and forward messages within the same
-channel, allowing consumers to retrieve messages using this name.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">A routable name is a name prefix that is stored in a forwarding table (FIB).
-This enables requests to reach the producer and fetch a response, if one exists.<a href="#section-3-6" class="pilcrow">¶</a></p>
+messages.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">A producer (also called a "publisher") is an endpoint that encapsulates content
+in SLIM messages for transport within the network of routing nodes. A session
+may use MLS to encrypt application content for its members. The publisher sends
+messages to a routable hierarchical name; routing nodes use name prefixes and
+subscription state to select forwarding connections without inspecting
+application content.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">A routable name is a name prefix that is stored in a forwarding table (FIB).
+This enables requests to reach the producer and fetch a response, if one exists.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <span id="name-main-components-of-the-slim"></span><div id="fig-general-arch">
 <figure id="figure-1">
-        <div class="alignLeft art-text artwork" id="section-3-7.1">
+        <div class="alignLeft art-text artwork" id="section-3-8.1">
 <pre>
  +-------------+         +---------------------+         +-------------+
  | Producer 1  |         |                     |         | Consumer 1  |
@@ -1386,31 +1379,29 @@ This enables requests to reach the producer and fetch a response, if one exists.
           |                        |   |   |
           v                        |   |   |
  +------------------------+        |   |   |
- | MLS Authentication     |&lt;-------+---+---+
- | Service                |
+ | Group Moderator        |&lt;-------+---+---+
+ | (application or        |
+ | channel manager)       |
  +------------------------+
 
  Legend:
  - Producers publish to topics via routing nodes.
  - Consumers subscribe to topics via routing nodes.
- - MLS Authentication Service handles group authentication
-   and key management.
- - Encryption group coincides with the topic identifier.
+- The moderator manages group membership and distributes MLS updates
+  when MLS is enabled.
+- Group data and control messages use SLIM channels.
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-main-components-of-the-slim" class="selfRef">Main components of the SLIM architecture.</a>
         </figcaption></figure>
 </div>
-<p id="section-3-8">Secure group members are clients as described in <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> which can write
-messages as producers or read messages as consumers. Most of the time, clients
-are able to read and write messages in the same secure group. Clients join
-secure groups as described in the MLS standard <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> via an
-authentication service and by exchanging messages via the delivery service. In
+<p id="section-3-9">authentication service and by exchanging messages via the delivery service. In
 the SLIM architecture, the SLIM nodes constitute the data-plane infrastructure
-that is responsible for delivering messages in a secure group via a logical
-SLIM channel. MLS commit messages are exchanged directly using the SLIM routing
-nodes.<a href="#section-3-8" class="pilcrow">¶</a></p>
+Group members are application clients that can send and receive messages on a
+group channel. A moderator invites and removes members. When MLS is enabled,
+the session layer exchanges MLS updates over SLIM channels; routing nodes
+provide message delivery and do not act as an MLS authentication service.<a href="#section-3-9" class="pilcrow">¶</a></p>
 <div id="routing-nodes-data-plane">
 <section id="section-3.1">
         <h3 id="name-routing-nodes-data-plane">
@@ -1469,37 +1460,24 @@ the broader network, creating a resilient and scalable messaging infrastructure.
           <h4 id="name-connection-table">
 <a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-connection-table" class="section-name selfRef">Connection Table</a>
           </h4>
-<p id="section-3.1.1-1">The connection table serves as a fundamental data structure within the
-SLIM routing node architecture, maintaining a comprehensive registry of both
-client-to-node and node-to-node connections. Each entry in the table contains
-essential metadata about connected endpoints, including their unique
-identifiers, connection timestamps, authentication status, and current state
-information.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-1">The connection table tracks client-to-node and node-to-node connections and
+provides the connection references used for message forwarding.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-2">For client connections, the table tracks end-user applications that connect to
 receive or send messages through the system. For node connections, it maintains
 the network fabric topology by recording inter-node relationships and routing
 paths. This dual-purpose nature enables SLIM to manage both the edge
 connectivity with clients and the internal communication infrastructure between
 nodes.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-3">Connection states are dynamically tracked and updated to reflect the real-time
-status of each endpoint. This includes monitoring whether clients or nodes are
-actively connected, temporarily disconnected, or in various intermediate states.
-The table maintains crucial session information such as endpoint capabilities,
-protocol versions, and quality of service parameters that influence message
-handling.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-4">By maintaining this detailed connection state, the table enables efficient
-routing decisions across the entire network fabric. It provides each routing
-node with immediate access to both client and node status information, allowing
-for rapid determination of message delivery paths and handling of
-connection-related events. The connection table also plays a vital role in
-system reliability by tracking connection health and enabling quick detection of
-disconnections or network issues at both the client and node levels.<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-5">A connection table maps location-independent channel names to connections to
+<p id="section-3.1.1-3">disconnections or network issues at both the client and node levels.
+Connection state is updated as connections are established and closed. Link
+negotiation identifies inter-node connections before they are used for routed
+traffic.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-4">A connection table maps location-independent channel names to connections to
 remote nodes. The mapping is used to forward messages towards nodes that can
 either route messages or consume them in case consumers are directly connected
-to the node.<a href="#section-3.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-6">Channel names are encoded as human-readable hierarchical names for efficient
-table lookup operations.<a href="#section-3.1.1-6" class="pilcrow">¶</a></p>
+to the node.<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-5">Channel names are encoded as human-readable hierarchical names for efficient
+table lookup operations.<a href="#section-3.1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="subscription-table-and-matching">
@@ -1509,11 +1487,14 @@ table lookup operations.<a href="#section-3.1.1-6" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-3.1.2-1">The subscription table is used to map channel subscriptions to neighboring
 nodes. It manages the distribution of messages based on subscriptions and
-ensures efficient delivery of messages.
-A message carries the data to be delivered as well as the channel name and the
-address locator of the message producer.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">The control plane manages the configuration and updates of the connection and
-subscription tables.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
+ensures efficient delivery of messages. A message carries a SLIM header and
+content. The header includes source and destination names, identity and version
+information, a time-to-live (TTL), and forwarding metadata. Session messages
+additionally carry a session type, session-message type, session identifier,
+and message identifier. Content is either an application payload or a
+session/control payload. Subscription and unsubscription requests can request a
+direct acknowledgement by supplying a non-zero subscription identifier.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-2">Routing state can be configured locally or distributed by a control plane.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
 <span id="name-slim-message-structure-carr"></span><div id="fig-message-structure">
 <figure id="figure-3">
             <div class="alignLeft art-text artwork" id="section-3.1.2-3.1">
@@ -1521,20 +1502,21 @@ subscription tables.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
 +-------------------------------------------------------------+
 |                    SLIM Message Structure                   |
 +-------------------------------------------------------------+
-| Channel Name   | Address Locator   |      Data Payload       |
+| SLIM Header    | Session Header    |         Content         |
 +-------------------------------------------------------------+
-| "/foo/bar"     | 192.0.2.10:12345 |   { ... application ... |
-|                |                  |         data ... }      |
+| names, TTL,    | type, session ID, | application or control  |
+| forwarding info| message type, ID  | payload                 |
 +-------------------------------------------------------------+
 
 Legend:
-- Channel Name: Identifies the logical channel/topic for routing.
-- Address Locator: Specifies the producer's network address.
-- Data Payload: Contains the actual message content.
+- SLIM Header: Identifies endpoints and carries routing and integrity
+  fields.
+- Session Header: Present for session-layer messages.
+- Content: Application data or a session/control payload.
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
-<a href="#name-slim-message-structure-carr" class="selfRef">SLIM message structure carrying channel name, address locator, and data.</a>
+<a href="#name-slim-message-structure-carr" class="selfRef">SLIM message structure carrying channel name, forwarding metadata, session information, and content.</a>
             </figcaption></figure>
 </div>
 </section>
@@ -1546,39 +1528,14 @@ Legend:
         <h3 id="name-control-plane">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-control-plane" class="section-name selfRef">Control Plane</a>
         </h3>
-<p id="section-3.2-1">The control plane is responsible for the management and orchestration of
-SLIM messaging nodes and their interconnections. It handles the configuration,
-provisioning, and monitoring of nodes, ensuring that the messaging
-infrastructure operates smoothly and efficiently.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">Key functions of the control plane include:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.2-3.1">
-            <p id="section-3.2-3.1.1"><strong>Node Discovery and Registration</strong>: New messaging nodes discover
-each other and register their presence with the control plane. This
-enables the control plane to maintain an up-to-date view of the
-messaging infrastructure.<a href="#section-3.2-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-3.2">
-            <p id="section-3.2-3.2.1"><strong>Configuration Management</strong>: The control plane distributes
-configuration updates to messaging nodes, including connection and
-subscription table updates. This ensures consistent and correct
-routing behavior across the node network.<a href="#section-3.2-3.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-3.3">
-            <p id="section-3.2-3.3.1"><strong>Monitoring and Analytics</strong>: The control plane collects and
-analyzes telemetry data from messaging nodes, providing insights
-into system performance, message flow, and potential issues.<a href="#section-3.2-3.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-3.4">
-            <p id="section-3.2-3.4.1"><strong>Security and Access Control</strong>: The control plane manages
-security policies, authentication, and authorization of nodes and
-clients, ensuring a secure messaging environment.<a href="#section-3.2-3.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-3.2-4">By centralizing these management functions, the control plane enhances
-the overall reliability, security, and performance of the SLIM messaging
-infrastructure. It enables efficient scaling, dynamic reconfiguration,
-and proactive maintenance of the node network.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The control plane is a separate management component and is not required in the
+message path. A deployment can configure routing nodes directly or use a
+control plane to register nodes, manage topology and routes, distribute
+configuration, and monitor operation. Control-plane topology may be
+configuration-managed or API-managed.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">When a control plane is used, node registration can be restricted to nodes
+authorized for the claimed routing domain. Deployments can also partition
+topology into routing domains to isolate routes.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="session-layer">
@@ -1596,10 +1553,8 @@ while handling the details of MLS client operations and message distribution.<a 
 <a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-core-responsibilities" class="section-name selfRef">Core Responsibilities</a>
           </h4>
 <p id="section-3.3.1-1">The session layer encapsulates several key functionalities:<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-2"><strong>MLS Client Operations</strong>: The layer implements comprehensive MLS client
-functionality including authentication procedures, message encryption and
-decryption, key management, and group membership operations. It handles the
-complex cryptographic operations transparently from the application perspective.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2"><strong>MLS Client Operations</strong>: When MLS is enabled for a session, the layer handles
+MLS encryption and decryption, key management, and group membership operations.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-3"><strong>Channel Management</strong>: It provides seamless channel subscription and
 unsubscription capabilities, managing the lifecycle of channel memberships and
 maintaining subscription state across connection interruptions or node
@@ -1647,11 +1602,17 @@ help applications handle communication issues and authentication failures.<a hre
           <h4 id="name-session-management">
 <a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-session-management" class="section-name selfRef">Session Management</a>
           </h4>
-<p id="section-3.3.3-1">The session layer maintains persistent session state at the client across network
-disconnections and node failures. It implements automatic reconnection logic,
-subscription recovery, and message queuing to ensure reliable message delivery
-even in unstable network conditions. Session persistence includes maintaining
-MLS group membership state, channel subscriptions, and pending message queues.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">The session layer manages state for point-to-point and group communication.
+Group sessions use distinct data and control channel names. The session layer
+handles discovery, join, leave, group updates, acknowledgements, and (when MLS
+is enabled) MLS messages over these channels. Delivery retries and
+acknowledgements are configurable; they are not guaranteed for every session.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-2">Participants can transition between online and offline states without being
+removed from a group. Participants periodically send one-way heartbeats, and
+each member independently tracks peer liveness. A returning participant can
+rejoin; when MLS is enabled, key material is updated as needed to reconcile an
+epoch mismatch. Session-state persistence is optional and can restore group
+state after a process restart.<a href="#section-3.3.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1661,42 +1622,25 @@ MLS group membership state, channel subscriptions, and pending message queues.<a
         <h3 id="name-naming-considerations">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-naming-considerations" class="section-name selfRef">Naming Considerations</a>
         </h3>
-<p id="section-3.4-1">SLIM requires several types of identifiers: node names, channel names,
-and client locators.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">Node names are used for secure onboarding and authentication. Node names do not
-have aggregation requirements and therefore use decentralized identifiers:<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3"><code>
-node name A: did:key(node_A)
-</code><a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4-4">A channel name identifies a messaging group and must be routable; that is, it
-must include a globally unique network prefix that can be aggregated for
-scalable lookups and message forwarding.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.4-5">A group in SLIM is an MLS group with a moderator client responsible for adding
-and removing group members. The moderator is identified by a cryptographic
-public key as defined in MLS <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>, and in SLIM, also by a decentralized
-identifier derived as the hash of the public key <span>[<a href="#DID-W3C" class="cite xref">DID-W3C</a>]</span>.<a href="#section-3.4-5" class="pilcrow">¶</a></p>
-<p id="section-3.4-6">By naming entities with hashes <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span>, SLIM achieves secure and globally
-unique naming, enabling the creation of permissionless systems where channel
-names and client names can be distributed across administrative boundaries. W3C
-DIDs are optional but can be used when hash links are employed and conform to
-the Named Information <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span> standard, referencing the IANA registry
-<span>[<a href="#NI-Registry" class="cite xref">NI-Registry</a>]</span>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
-<p id="section-3.4-7">SLIM routable name prefixes and client names can use different DID methods
-which have different resolution systems such as did:web <span>[<a href="#DID-Web" class="cite xref">DID-Web</a>]</span>, did:key
-<span>[<a href="#DID-Key" class="cite xref">DID-Key</a>]</span> or did:plc <span>[<a href="#DID-ATProto" class="cite xref">DID-ATProto</a>]</span>. See <span>[<a href="#DID-Methods" class="cite xref">DID-Methods</a>]</span> for well-known DID
-methods.<a href="#section-3.4-7" class="pilcrow">¶</a></p>
-<p id="section-3.4-8">The naming structure follows these patterns:<a href="#section-3.4-8" class="pilcrow">¶</a></p>
-<p id="section-3.4-9"><code>
-client locator: did:key(org)/namespace(org)/service/did:key(client)
-channel name: did:key(org)/namespace(org)/service/did:key(moderator)
-</code><a href="#section-3.4-9" class="pilcrow">¶</a></p>
-<p id="section-3.4-10">Where the moderator is the special client that has the role to create a channel,
-add actual application clients and remove them from the group.
-As mentioned above the moderator is a data plane client which is a decentralized
-instance of the MLS delivery service as described in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>.<a href="#section-3.4-10" class="pilcrow">¶</a></p>
-<p id="section-3.4-11">The hierarchical structure is required to maximize aggregation in subscription
+<p id="section-3.4-1">the Named Information <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span> standard, referencing the IANA registry
 tables, which can aggregate multiple names under name prefixes such as
-organization identifiers, organization namespaces, and services.<a href="#section-3.4-11" class="pilcrow">¶</a></p>
+SLIM names identify applications and channels and are used for routing and
+service discovery. A name has the form:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2"><code>
+organization/namespace/service/id
+</code><a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">The first three components are application-selected and support aggregation.
+The final component identifies an application instance and is derived from its
+authenticated identity. For example, an identity may be a <code>did:key</code> as defined
+in <span>[<a href="#DID-Key" class="cite xref">DID-Key</a>]</span>. A name ID is a routing identifier, not proof of identity; when
+identity binding is enabled, the session layer verifies the peer identity and
+checks its binding to the advertised name.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">The three-component prefix <code>organization/namespace/service</code> addresses a service
+for anycast discovery. Adding the final ID addresses an instance. A group
+channel uses the same four-component form. Its data and control channel IDs are
+derived from the moderator identity and channel name; they share the same first
+three components. The moderator is the group participant authorized to invite
+and remove members.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="deployment-considerations">
@@ -1784,31 +1728,26 @@ invoke or respond to RPCs, and that all messages are authenticated and
 encrypted, is more complex in a distributed, group-based messaging environment.<a href="#section-4.2-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.2-3">The SRPC capability in SLIM addresses these challenges by providing a native,
-secure, and streaming RPC abstraction directly over the SLIM messaging layer, as
-described in the following section.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">SLIMRPC addresses these challenges with an RPC abstraction over the SLIM
+session layer, as described in the following section.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="remote-procedure-calls-over-slim-srpc">
+<div id="remote-procedure-calls-over-slim-slimrpc">
 <section id="section-4.3">
         <h3 id="name-remote-procedure-calls-over">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-remote-procedure-calls-over" class="section-name selfRef">Remote Procedure Calls over SLIM (SRPC)</a>
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-remote-procedure-calls-over" class="section-name selfRef">Remote Procedure Calls over SLIM (SLIMRPC)</a>
         </h3>
-<p id="section-4.3-1">SLIM natively supports Remote Procedure Calls (RPC) through its SRPC (SLIM RPC)
-capability, enabling efficient, secure, and flexible communication patterns for
-distributed and agentic applications. SRPC is designed to provide gRPC-like
-streaming RPC semantics directly over the SLIM transport, leveraging SLIM's
-secure, multiplexed, and group-oriented messaging infrastructure.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">SLIMRPC is an application-layer RPC facility that uses SLIM sessions as its
+transport. It supports the four common RPC patterns: unary, client-streaming,
+server-streaming, and bidirectional streaming.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <div id="overview">
 <section id="section-4.3.1">
           <h4 id="name-overview">
 <a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
           </h4>
-<p id="section-4.3.1-1">SRPC allows applications to define and invoke remote procedures using familiar
-gRPC patterns, including unary calls, client streaming, server streaming, and
-bidirectional streaming. This enables developers to build complex, stateful, and
-interactive workflows between distributed agents, services, and tools, all while
-benefiting from SLIM's end-to-end security and group membership features.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.1-1">Applications define services using Protocol Buffers and invoke their methods
+through generated client and server stubs. SLIMRPC security and delivery
+properties are those of the underlying SLIM session and its configuration.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-features">
@@ -1818,19 +1757,24 @@ benefiting from SLIM's end-to-end security and group membership features.<a href
           </h4>
 <ul class="normal">
 <li class="normal" id="section-4.3.2-1.1">
-              <p id="section-4.3.2-1.1.1"><strong>Streaming RPC Support</strong>: SRPC supports all gRPC streaming modes, allowing
+              <p id="section-4.3.2-1.1.1"><strong>Streaming RPC Support</strong>: SLIMRPC supports all four RPC patterns, allowing
 for flexible data exchange patterns such as real-time data feeds, interactive
 sessions, and collaborative workflows.<a href="#section-4.3.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.3.2-1.2">
-              <p id="section-4.3.2-1.2.1"><strong>Multiplexed Transport</strong>: Multiple concurrent RPC streams can be established
-over a single SLIM connection, reducing overhead and improving resource
-efficiency.<a href="#section-4.3.2-1.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.3.2-1.2.1"><strong>Session Reuse and Multiplexing</strong>: Concurrent RPC calls share a persistent
+SLIM session. Each call has a unique RPC ID, allowing the server to dispatch
+new calls and route subsequent stream messages to the right handler.<a href="#section-4.3.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.3.2-1.3">
-              <p id="section-4.3.2-1.3.1"><strong>Secure Group Communication</strong>: SRPC leverages SLIM's MLS-based security
-model, ensuring that all RPC calls and responses are encrypted and authenticated
-within the context of secure groups.<a href="#section-4.3.2-1.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4.3.2-1.3.1"><strong>Multicast RPC (mRPC)</strong>: A client constructs a group channel with the names
+of the servers to call. On the first RPC call, the SLIMRPC channel lazily
+creates a multicast session and invites those servers through the SLIM session
+layer. The client application acts as the group moderator. The RPC request is
+sent after session establishment; invitations are not part of each RPC call.
+The request is delivered to the group, and responses are returned with the
+source member identified. The response stream completes when all members have
+finished; a member error does not prevent other members' responses.<a href="#section-4.3.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.3.2-1.4">
               <p id="section-4.3.2-1.4.1"><strong>Protocol Buffers Integration</strong>: Service definitions and message schemas are
@@ -1845,15 +1789,10 @@ across languages and platforms.<a href="#section-4.3.2-1.4.1" class="pilcrow">¶
           <h4 id="name-architecture">
 <a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
           </h4>
-<p id="section-4.3.3-1">SRPC is implemented as a protocol extension and a set of client/server libraries
-that integrate with the SLIM session layer. Developers define service interfaces
-using Protocol Buffers, and code generation tools produce client and server
-stubs that handle message serialization, stream management, and invocation logic
-over SLIM channels.<a href="#section-4.3.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.3-2">The SRPC protocol manages the lifecycle of RPC streams, including initiation,
-message exchange, error handling, and stream termination. It ensures that all
-communication adheres to SLIM's security and routing policies, and that group
-membership and authorization are enforced for each RPC interaction.<a href="#section-4.3.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3.3-1">SLIMRPC libraries and generated stubs manage RPC stream lifecycles over SLIM
+sessions. Service and method names, the RPC ID, and call direction are carried
+as message metadata; the server subscribes to its base SLIM name rather than a
+distinct routed name for each method.<a href="#section-4.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="benefits-for-agentic-applications">
@@ -1861,8 +1800,8 @@ membership and authorization are enforced for each RPC interaction.<a href="#sec
           <h4 id="name-benefits-for-agentic-applic">
 <a href="#section-4.3.4" class="section-number selfRef">4.3.4. </a><a href="#name-benefits-for-agentic-applic" class="section-name selfRef">Benefits for Agentic Applications</a>
           </h4>
-<p id="section-4.3.4-1">By providing native, streaming RPC capabilities, SRPC enables agentic AI
-applications and distributed systems to:<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.4-1">By providing streaming RPC capabilities, SLIMRPC enables agentic AI applications
+and distributed systems to:<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3.4-2.1">
               <p id="section-4.3.4-2.1.1">Orchestrate complex, multi-step workflows across multiple agents and services.<a href="#section-4.3.4-2.1.1" class="pilcrow">¶</a></p>
@@ -1877,89 +1816,23 @@ applications and distributed systems to:<a href="#section-4.3.4-1" class="pilcro
               <p id="section-4.3.4-2.4.1">Simplify integration with existing gRPC-based tools and ecosystems.<a href="#section-4.3.4-2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.3.4-3">SRPC makes it possible to build robust, scalable, and secure agentic
+<p id="section-4.3.4-3">SLIMRPC makes it possible to build robust, scalable, and secure agentic
 applications that fully leverage the power of SLIM's messaging and group
 communication model.<a href="#section-4.3.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="slim-naming-in-srpc">
+<div id="slimrpc-method-dispatch">
 <section id="section-4.3.5">
-          <h4 id="name-slim-naming-in-srpc">
-<a href="#section-4.3.5" class="section-number selfRef">4.3.5. </a><a href="#name-slim-naming-in-srpc" class="section-name selfRef">SLIM Naming in SRPC</a>
+          <h4 id="name-slimrpc-method-dispatch">
+<a href="#section-4.3.5" class="section-number selfRef">4.3.5. </a><a href="#name-slimrpc-method-dispatch" class="section-name selfRef">SLIMRPC Method Dispatch</a>
           </h4>
-<p id="section-4.3.5-1">SRPC derives per-service and per-handler routing names directly from the
-structured SLIM naming scheme to enable efficient subscription and message
-dispatch without requiring application developers to manually manage channel
-names.<a href="#section-4.3.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-2">Each application participating in a secure SLIM group already has a hierarchical
-SLIM name composed of multiple components (organization identifier, namespace,
-service, and client/moderator key). SRPC appends a handler-qualified suffix to
-the service component to form unique, routable identifiers for RPC methods.<a href="#section-4.3.5-2" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-3">Service interface definitions (e.g., Protocol Buffers) describe one or more RPC
-handlers supporting the four common gRPC communication patterns:<a href="#section-4.3.5-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.3.5-4.1">
-              <p id="section-4.3.5-4.1.1">Unary → Unary<a href="#section-4.3.5-4.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.5-4.2">
-              <p id="section-4.3.5-4.2.1">Unary → Stream<a href="#section-4.3.5-4.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.5-4.3">
-              <p id="section-4.3.5-4.3.1">Stream → Unary<a href="#section-4.3.5-4.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.5-4.4">
-              <p id="section-4.3.5-4.4.1">Stream → Stream (bidirectional)<a href="#section-4.3.5-4.4.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-4.3.5-5">For every handler declared inside a service, SRPC generates a method routing
-token using the pattern:<a href="#section-4.3.5-5" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-6"><code>
-{package}.{service}-{handler}
-</code><a href="#section-4.3.5-6" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-7">Example: Given a protobuf package <code>example_service</code> and service <code>Test</code> with
-handlers <code>ExampleUnaryUnary</code>, <code>ExampleUnaryStream</code>, <code>ExampleStreamUnary</code>,
-<code>ExampleStreamStream</code>, the generated handler tokens are:<a href="#section-4.3.5-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.3.5-8.1">
-              <p id="section-4.3.5-8.1.1">example_service.Test-ExampleUnaryUnary<a href="#section-4.3.5-8.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.5-8.2">
-              <p id="section-4.3.5-8.2.1">example_service.Test-ExampleUnaryStream<a href="#section-4.3.5-8.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.5-8.3">
-              <p id="section-4.3.5-8.3.1">example_service.Test-ExampleStreamUnary<a href="#section-4.3.5-8.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.5-8.4">
-              <p id="section-4.3.5-8.4.1">example_service.Test-ExampleStreamStream<a href="#section-4.3.5-8.4.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-4.3.5-9">SRPC then embeds the handler token into the second component (service segment)
-of the full SLIM name for routing. If the original SLIM application name
-components <code>c[i]</code> are:<a href="#section-4.3.5-9" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-10"><code>
-c[0]/c[1]/c[2]/c[3]
-</code><a href="#section-4.3.5-10" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-11">The subscribed name for a specific handler becomes:<a href="#section-4.3.5-11" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-12"><code>
-c[0]/c[1]/c[2]-example_service.Test-ExampleUnaryUnary/c[3]
-</code><a href="#section-4.3.5-12" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-13">This transformation yields a distinct, hierarchical, and aggregatable name per
-RPC method while preserving the organizational and namespace prefix structure
-needed for subscription table aggregation. Applications exposing SRPC services
-automatically subscribe to all derived handler names; the SRPC library manages
-these subscriptions and maps incoming messages to the corresponding generated
-server stub functions. Developers implement only the handler logic exactly as
-with conventional gRPC, without manual SLIM channel management.<a href="#section-4.3.5-13" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-14">Benefits of this naming approach:
-- Deterministic and collision-resistant per-method naming.
-- Preserves hierarchical aggregation for routing efficiency.
-- Avoids separate discovery round-trips for method endpoints.
-- Enables capability advertisement to reference method names directly.
-- Simplifies multi-service deployments—adding a new handler produces a single
-new routable token.<a href="#section-4.3.5-14" class="pilcrow">¶</a></p>
-<p id="section-4.3.5-15">This integration of SRPC handler naming with SLIM's hierarchical naming model
-ensures consistent, secure, and scalable routing semantics for RPC traffic
-within agentic groups.<a href="#section-4.3.5-15" class="pilcrow">¶</a></p>
+<p id="section-4.3.5-1">The server subscribes to its base SLIM name. Each initial RPC message carries
+the service name, method name, and a unique RPC ID in metadata. Subsequent
+messages in a streaming call carry the RPC ID, which the server uses to dispatch
+them to the active handler. Multiple calls therefore share a session without
+encoding method-specific names in the SLIM routing name. For multicast calls,
+the channel targets a group and responses can be received from multiple
+members.<a href="#section-4.3.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1971,23 +1844,23 @@ within agentic groups.<a href="#section-4.3.5-15" class="pilcrow">¶</a></p>
       <h2 id="name-security-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-5-1">SLIM's security architecture uses a two-tier model. At the network layer,
-HTTP/2 with TLS 1.3 provides mandatory hop-by-hop encryption. At the content
-layer, MLS <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span> provides an application-layer encryption
-envelope that is independent of the underlying TLS sessions. Routing nodes
-operate as zero-trust intermediaries: they forward opaque encrypted blobs and
-cannot access message content even after TLS termination.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Implementors <span class="bcp14">MUST</span> validate MLS KeyPackages before use and <span class="bcp14">MUST</span> reject stale or
-expired credentials. OAuth bearer tokens used for authentication <span class="bcp14">MUST</span> be
-short-lived and subject to server-side revocation to enable immediate ejection
-of compromised or malicious agents.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">The security properties of the DID methods used for node and client naming
-depend on the security of their respective resolution infrastructure. Operators
-<span class="bcp14">SHOULD</span> prefer DID methods whose resolution is auditable and tamper-evident.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">Forward secrecy and post-compromise security are provided by MLS's ratcheting
-mechanism. Implementors <span class="bcp14">MUST</span> ensure that MLS epoch transitions are applied
-correctly and that removed members cannot decrypt messages sent after their
-removal.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-1">SLIM's security properties depend on deployment configuration. TLS protects a
+transport hop when enabled. MLS <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> <span>[<a href="#RFC9750" class="cite xref">RFC9750</a>]</span>, when enabled for a
+session, provides end-to-end protection for application content; intermediate
+routing nodes then see only routing metadata and ciphertext. Without MLS,
+application content is not protected from routing nodes beyond any transport
+encryption in use.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Link negotiation is required before an inter-node connection processes routed
+messages. When peers negotiate header integrity, implementations <span class="bcp14">MUST</span> verify
+the integrity field before forwarding or accepting a protected message.
+Implementations <span class="bcp14">MUST</span> reject replayed session control messages when replay
+protection is enabled. MLS implementations <span class="bcp14">MUST</span> validate KeyPackages and apply
+epoch transitions according to <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>; removed members <span class="bcp14">MUST NOT</span> be able to
+decrypt messages sent after their removal.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">When identity binding is enabled, implementations <span class="bcp14">MUST</span> bind a peer's advertised
+name to its verified identity. A name ID alone is not an authentication
+credential. Implementations that persist session state <span class="bcp14">MUST</span> protect the stored
+MLS state and associated credentials against unauthorized access.<a href="#section-5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -2009,18 +1882,6 @@ removal.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="DID-Methods">[DID-Methods]</dt>
-        <dd>
-<span class="refAuthor">Group, W. C. C.</span>, <span class="refTitle">"Known DID Methods in the Decentralized Identifier Ecosystem"</span>, <time datetime="2025-04-29" class="refDate">29 April 2025</time>, <span>&lt;<a href="https://www.w3.org/TR/did-extensions-methods/">https://www.w3.org/TR/did-extensions-methods/</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="DID-W3C">[DID-W3C]</dt>
-        <dd>
-<span class="refAuthor">Group, W. C. C.</span>, <span class="refTitle">"Decentralized Identifiers (DIDs) v1.0"</span>, <time datetime="2022-07-19" class="refDate">19 July 2022</time>, <span>&lt;<a href="https://www.w3.org/TR/did-core/">https://www.w3.org/TR/did-core/</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="NI-Registry">[NI-Registry]</dt>
-        <dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"Named Information Hash Algorithm Registry"</span>, <time datetime="2013-08-01" class="refDate">1 August 2013</time>, <span>&lt;<a href="https://www.iana.org/assignments/named-information/named-information.xhtml">https://www.iana.org/assignments/named-information/named-information.xhtml</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
@@ -2050,21 +1911,13 @@ removal.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="DID-ATProto">[DID-ATProto]</dt>
-        <dd>
-<span class="refAuthor">Community, B. P.</span>, <span class="refTitle">"Decentralized Identifiers (DIDs) in the AT Protocol"</span>, <span>n.d.</span>, <span>&lt;<a href="https://atproto.wiki/en/wiki/reference/identifiers/did">https://atproto.wiki/en/wiki/reference/identifiers/did</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="DID-Key">[DID-Key]</dt>
         <dd>
 <span class="refAuthor">Group, W. C. C.</span>, <span class="refTitle">"The did:key Method v0.7: A DID Method for Static Cryptographic Keys"</span>, <time datetime="2025-03-26" class="refDate">26 March 2025</time>, <span>&lt;<a href="https://w3c-ccg.github.io/did-method-key/">https://w3c-ccg.github.io/did-method-key/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="DID-Web">[DID-Web]</dt>
-        <dd>
-<span class="refAuthor">Group, W. C. C.</span>, <span class="refTitle">"The did:web Method Specification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://w3c-ccg.github.io/did-method-web/">https://w3c-ccg.github.io/did-method-web/</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="SRPC">[SRPC]</dt>
+<dt id="SLIMRPC">[SLIMRPC]</dt>
       <dd>
-<span class="refAuthor">AGNTCY</span>, <span class="refTitle">"SLIM RPC (SRPC) Reference"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md">https://github.com/agntcy/slim/blob/main/data-plane/slimrpc-compiler/README.md</a>&gt;</span>. </dd>
+<span class="refAuthor">AGNTCY</span>, <span class="refTitle">"SLIMRPC Reference"</span>, <span>n.d.</span>, <span>&lt;<a href="https://docs.agntcy.org/slim/slim-rpc/">https://docs.agntcy.org/slim/slim-rpc/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
