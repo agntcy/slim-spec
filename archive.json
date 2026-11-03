@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-10-20T00:43:11.143839+00:00",
+  "timestamp": "2026-11-03T00:27:17.118777+00:00",
   "repo": "agntcy/slim-spec",
   "labels": [
     {
@@ -1078,6 +1078,62 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 24,
+      "id": "PR_kwDON1QDo88AAAABMZN9fA",
+      "title": "Update SLIM Internet-Draft for current protocol",
+      "url": "https://github.com/agntcy/slim-spec/pull/24",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Refresh the SLIM draft to reflect current protocol behavior and address omissions in the previous version.\\n\\n- Update to draft-03 and current publication date.\\n- Clarify HTTP/2 gRPC and WebSocket transport, optional TLS/MLS, link negotiation, name routing, and session lifecycle.\\n- Document SLIMRPC session reuse, method dispatch, multicast server invitations, and response completion.\\n- Regenerate XML, TXT, and HTML locally; generated formats are ignored by Git.\\n\\nValidation: ./build.sh draft-mpsb-agntcy-slim.md",
+      "createdAt": "2026-11-02T20:11:30Z",
+      "updatedAt": "2026-11-02T20:29:06Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "20d92915ef4b3ed3a8d3233e08a225d4a97bcd0d",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "update-slim-internet-draft",
+      "headRefOid": "0888dd3cf9d5c391e45c7be473de845cad9041e3",
+      "closedAt": "2026-11-02T20:29:03Z",
+      "mergedAt": "2026-11-02T20:29:03Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "c4e5f8e6afcba12591f9b36d2a1aeebc867efa7a"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDON1QDo88AAAABMaARUA",
+      "title": "Update messaging draft for agent connectivity and gateways",
+      "url": "https://github.com/agntcy/slim-spec/pull/25",
+      "state": "MERGED",
+      "author": "muscariello",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Update the Internet-Draft to describe agent-network overlays, private-network connectivity, and inline gateway inspection.\n\n- Add a factual Agent Mesh architecture description and distinguish point-to-point calls from group messaging.\n- Explain connectivity patterns for agents behind NATs and private networks across AMQP, MQTT, NATS, Kafka, SLIM, and Agent Mesh.\n- Describe Agent Gateway enforcement timing, buffering, streaming limits, and encrypted relay boundaries.\n- Align SLIM transport, delivery, and security statements with the current specification; advance the draft to -03.\n\nValidation: draft build passed with ./build.sh --no-install draft-mpsb-agntcy-messaging.md.",
+      "createdAt": "2026-11-02T21:15:26Z",
+      "updatedAt": "2026-11-02T21:18:37Z",
+      "baseRepository": "agntcy/slim-spec",
+      "baseRefName": "main",
+      "baseRefOid": "c4e5f8e6afcba12591f9b36d2a1aeebc867efa7a",
+      "headRepository": "agntcy/slim-spec",
+      "headRefName": "update-messaging-draft",
+      "headRefOid": "35a9898445cd64b17fce1fee293c03abd2df6a8c",
+      "closedAt": "2026-11-02T21:18:35Z",
+      "mergedAt": "2026-11-02T21:18:35Z",
+      "mergedBy": "muscariello",
+      "mergeCommit": {
+        "oid": "76d5807511421b18525256d391f6a0ee2d5eade2"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
